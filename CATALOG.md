@@ -1,7 +1,7 @@
 # 📚 Kho Tham Chiếu Repository & Chỉ Mục Tri Thức Cho AI-Agent
 
-> Cập nhật lần cuối: 2026-09-06 00:22:10  
-> Tổng số repository: **34** | Phân loại thành: **9 danh mục**  
+> Cập nhật lần cuối: 2026-09-05 19:11:21  
+> Tổng số repository: **35** | Phân loại thành: **9 danh mục**  
 > Kiến trúc: *Thin Local Index (Chỉ mục cục bộ) + Google NotebookLM (Tri thức sâu)*
 
 ## 📌 Mục Lục Danh Mục Phân Loại Của AI:
@@ -12,7 +12,7 @@
 - [Developer Tools, CLI & Terminal](#developer-tools-cli-terminal) (5 repos)
 - [Fullstack, Web & UI Frameworks](#fullstack-web-ui-frameworks) (4 repos)
 - [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (4 repos)
-- [Cybersecurity & Reverse Engineering](#cybersecurity-reverse-engineering) (1 repos)
+- [Cybersecurity & Reverse Engineering](#cybersecurity-reverse-engineering) (2 repos)
 - [Trading & Algorithmic Finance](#trading-algorithmic-finance) (2 repos)
 
 ---
@@ -191,7 +191,7 @@
 
 
 ## 📂 Cybersecurity & Reverse Engineering
-*Tổng số: 1 repository*
+*Tổng số: 2 repository*
 
 ### 📦 [RfidResearchGroup/ChameleonUltra](https://github.com/RfidResearchGroup/ChameleonUltra)
 - **Chỉ số**: ⭐ **2,977** stars | 🍴 **440** forks | Ngôn ngữ: `C` | License: `GPL-3.0` | Tags: `RFID` `NFC` `card emulation` `NRF52840` `hardware`
@@ -202,6 +202,15 @@
 - **Ứng dụng thực tế**:
   - Kiểm tra và đánh giá độ bảo mật của hệ thống kiểm soát truy cập RFID/NFC
   - Phát triển và mô phỏng các loại thẻ thông minh (Mifare, Ultralight, ISO14443A) để thử nghiệm ứng dụng
+
+### 📦 [magoly/techsecurity](https://github.com/magoly/techsecurity)
+- **Chỉ số**: ⭐ **1** stars | 🍴 **0** forks | Ngôn ngữ: `Unknown` | License: `N/A` | Tags: `security` `tech` `tools` `automation`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Repository này tập trung vào các công cụ và kỹ thuật bảo mật công nghệ, giúp phát hiện, phân tích và giảm thiểu rủi ro bảo mật. Thích hợp cho các nhà phát triển và chuyên gia an ninh muốn tích hợp các giải pháp bảo mật vào quy trình phát triển phần mềm.
+- **Ứng dụng thực tế**:
+  - Kiểm tra lỗ hổng bảo mật tự động trong môi trường CI/CD
+  - Phân tích lưu lượng mạng và phát hiện hành vi bất thường
 
 
 ## 📂 Data Scraping & Web Automation

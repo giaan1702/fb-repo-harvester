@@ -1210,5 +1210,30 @@
     "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
     "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
     "created_at": "2026-09-06T00:22:10.543375"
+  },
+  {
+    "full_name": "magoly/techsecurity",
+    "category": "Cybersecurity & Reverse Engineering",
+    "tags": [
+      "security",
+      "tech",
+      "tools",
+      "automation"
+    ],
+    "summary": "Repository này tập trung vào các công cụ và kỹ thuật bảo mật công nghệ, giúp phát hiện, phân tích và giảm thiểu rủi ro bảo mật. Thích hợp cho các nhà phát triển và chuyên gia an ninh muốn tích hợp các giải pháp bảo mật vào quy trình phát triển phần mềm.",
+    "use_cases": [
+      "Kiểm tra lỗ hổng bảo mật tự động trong môi trường CI/CD",
+      "Phân tích lưu lượng mạng và phát hiện hành vi bất thường"
+    ],
+    "repo_url": "https://github.com/magoly/techsecurity",
+    "stars": 1,
+    "language": "Unknown",
+    "description": "tech security",
+    "source_url": "https://www.facebook.com/reel/1707492177001260",
+    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/magoly_techsecurity_knowledge.md",
+    "synced_to_notebooklm": false,
+    "notebook_title": "",
+    "notebook_ref": "",
+    "created_at": "2026-09-05T19:11:21.024442"
   }
 ]
