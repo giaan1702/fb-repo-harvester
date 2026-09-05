@@ -179,7 +179,9 @@ class IdeationChatAgent:
         self.notebook_id = os.environ.get("NOTEBOOKLM_ID", "c3472703-67c1-451c-8c62-a6818213d261")
         self.nlm_exe = r"C:\Users\Administrator\AppData\Local\Python\pythoncore-3.14-64\Scripts\nlm.exe"
         if not os.path.exists(self.nlm_exe):
-            self.nlm_exe = "nlm"
+            import shutil
+            self.nlm_exe = shutil.which("nlm") or "nlm"
+        self.nlm_available = os.path.exists(self.nlm_exe) or shutil.which(self.nlm_exe) is not None
         self.python_exe = r"C:\Users\Administrator\AppData\Local\Python\pythoncore-3.14-64\python.exe"
         if not os.path.exists(self.python_exe):
             self.python_exe = sys.executable
@@ -341,6 +343,9 @@ class IdeationChatAgent:
     # =========================================================================
     def query_notebooklm(self, query: str, timeout: int = 45) -> Optional[Dict[str, Any]]:
         """Truy vấn sâu vào Google NotebookLM thông qua CLI nlm, hỗ trợ multi-turn conversation_id và citations."""
+        if not self.nlm_available:
+            logger.info("nlm CLI không khả dụng trên server này, bỏ qua truy vấn NotebookLM trực tiếp.")
+            return None
         cmd = [self.nlm_exe, "query", "notebook", self.notebook_id, query, "--json"]
         if self.conversation_id:
             cmd.extend(["--conversation-id", self.conversation_id])
@@ -392,6 +397,8 @@ except Exception as e:
 
     def get_studio_status(self) -> List[Dict[str, Any]]:
         """Lấy danh sách studio artifacts của notebook."""
+        if not self.nlm_available:
+            return []
         cmd = [self.nlm_exe, "studio", "status", self.notebook_id, "--json"]
         try:
             proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=15)

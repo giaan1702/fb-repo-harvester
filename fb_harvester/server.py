@@ -59,17 +59,19 @@ class ThreadedHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
     """Máy chủ HTTP đa luồng xử lý đồng thời nhiều request mà không bị nghẽn."""
     daemon_threads = True
 
-_AUTH_STATUS_CACHE = {"auth": None, "last_check": 0}
+_AUTH_STATUS_CACHE = {"auth": None, "available": None, "last_check": 0}
 
-def get_cached_auth_status() -> bool:
+def get_cached_auth_status() -> dict:
     now = time.time()
     if _AUTH_STATUS_CACHE["auth"] is not None and now - _AUTH_STATUS_CACHE["last_check"] < 30:
-        return _AUTH_STATUS_CACHE["auth"]
+        return {"authenticated": _AUTH_STATUS_CACHE["auth"], "available": _AUTH_STATUS_CACHE["available"]}
     sync_engine = NotebookSyncEngine()
-    is_auth = sync_engine.is_authenticated()
+    is_avail = getattr(sync_engine, "nlm_available", True)
+    is_auth = sync_engine.is_authenticated() if is_avail else False
     _AUTH_STATUS_CACHE["auth"] = is_auth
+    _AUTH_STATUS_CACHE["available"] = is_avail
     _AUTH_STATUS_CACHE["last_check"] = now
-    return is_auth
+    return {"authenticated": is_auth, "available": is_avail}
 
 HTML_PAGE = """<!DOCTYPE html>
 <html lang="vi">
@@ -704,19 +706,23 @@ HTML_PAGE = """<!DOCTYPE html>
 
         async function loginNotebookLM() {
             const btn = document.getElementById('btn-login-nlm');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang mở Chrome...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang kết nối...';
             btn.disabled = true;
             try {
                 const res = await fetch('/api/login-nlm', { method: 'POST' });
                 const data = await res.json();
-                alert(data.message || 'Trình duyệt Chrome đang được mở để đăng nhập Google NotebookLM.');
+                if (data.status === 'unavailable') {
+                    alert(data.message);
+                } else {
+                    alert(data.message || 'Trình duyệt Chrome đang được mở để đăng nhập Google NotebookLM.');
+                }
             } catch (e) {
                 alert('Lỗi: ' + e.message);
             } finally {
                 setTimeout(() => {
                     btn.disabled = false;
                     checkStatus();
-                }, 3000);
+                }, 1500);
             }
         }
 
@@ -739,19 +745,27 @@ HTML_PAGE = """<!DOCTYPE html>
                 const data = await res.json();
                 const badge = document.getElementById('auth-badge');
                 const btn = document.getElementById('btn-login-nlm');
-                if (data.notebooklm_authenticated) {
-                    badge.className = 'px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5';
-                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> NotebookLM: Đã kết nối';
+                if (data.notebooklm_available === false) {
+                    badge.className = 'px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span class="hidden sm:inline">NotebookLM:</span> Local Only';
                     if (btn) {
+                        btn.style.display = 'none';
+                    }
+                } else if (data.notebooklm_authenticated) {
+                    badge.className = 'px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span class="hidden sm:inline">NotebookLM:</span> Đã kết nối';
+                    if (btn) {
+                        btn.style.display = 'inline-flex';
                         btn.className = 'bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium px-3 py-1 rounded-lg border border-slate-700 flex items-center gap-1.5 transition';
-                        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Đổi Tài Khoản';
+                        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="hidden sm:inline">Đổi</span> TK';
                     }
                 } else {
-                    badge.className = 'px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5';
-                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> NotebookLM: Chưa login';
+                    badge.className = 'px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span> <span class="hidden sm:inline">NotebookLM:</span> Chưa login';
                     if (btn) {
-                        btn.className = 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition';
-                        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập NotebookLM';
+                        btn.style.display = 'inline-flex';
+                        btn.className = 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition';
+                        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập';
                     }
                 }
             } catch (e) {}
@@ -1213,7 +1227,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif path == "/api/logs":
             self._send_json(LOGS_QUEUE)
         elif path == "/api/status":
-            self._send_json({"notebooklm_authenticated": get_cached_auth_status()})
+            auth_info = get_cached_auth_status()
+            self._send_json({
+                "notebooklm_authenticated": auth_info["authenticated"],
+                "notebooklm_available": auth_info["available"]
+            })
         elif path == "/api/ideas":
             engine = IdeaEngine(BASE_DIR)
             self._send_json(engine.load_ideas())
@@ -1290,6 +1308,12 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         elif path == "/api/login-nlm":
             sync_engine = NotebookSyncEngine()
+            if not sync_engine.nlm_available:
+                self._send_json({
+                    "status": "unavailable",
+                    "message": "⚠️ Tính năng NotebookLM không khả dụng trên server này (Render).\nChỉ hoạt động khi chạy trên máy local có cài nlm CLI."
+                })
+                return
             def nlm_login_worker():
                 add_log("Đang mở trình duyệt để đăng nhập Google NotebookLM...")
                 try:

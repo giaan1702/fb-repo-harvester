@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import shutil
 import logging
 import json
 from pathlib import Path
@@ -18,7 +19,8 @@ class NotebookSyncEngine:
         self.nlm_exe = nlm_executable or DEFAULT_NLM_PATH
         if not os.path.exists(self.nlm_exe):
             # Fallback to PATH
-            self.nlm_exe = "nlm"
+            self.nlm_exe = shutil.which("nlm") or "nlm"
+        self.nlm_available = os.path.exists(self.nlm_exe) or shutil.which(self.nlm_exe) is not None
 
     def recover_auth_headless(self) -> bool:
         """Tự động làm mới cookie và CSRF token qua Headless Chrome không cần người dùng thao tác."""
@@ -38,6 +40,9 @@ class NotebookSyncEngine:
 
     def is_authenticated(self) -> bool:
         """Kiểm tra xem nlm đã đăng nhập và sẵn sàng chưa. Tự động phục hồi qua Headless Chrome nếu hết hạn."""
+        if not self.nlm_available:
+            logger.debug("nlm CLI không khả dụng trên server này, bỏ qua kiểm tra auth.")
+            return False
         try:
             cmd = [self.nlm_exe, "login", "--check"]
             res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=15)
