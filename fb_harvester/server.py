@@ -75,14 +75,19 @@ HTML_PAGE = """<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>FB Repo Harvester - Trung Tâm Thu Thập Repo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .prose-dark { color: #e2e8f0; }
         .prose-dark h1, .prose-dark h2, .prose-dark h3, .prose-dark h4 { color: #f8fafc; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
         .prose-dark h3 { font-size: 1.1rem; color: #a5b4fc; }
@@ -100,72 +105,73 @@ HTML_PAGE = """<!DOCTYPE html>
         .prose-dark th { background: #1e293b; color: #f8fafc; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen">
+<body class="bg-slate-900 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                    <i class="fa-brands fa-facebook text-white text-xl"></i>
+    <header class="border-b border-slate-800 bg-slate-950/90 sticky top-0 z-40 backdrop-blur">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30 shrink-0">
+                    <i class="fa-brands fa-facebook text-white text-lg sm:text-xl"></i>
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg text-white">FB Repo Harvester</h1>
-                    <p class="text-xs text-slate-400">Tự động cào video Facebook & Sync NotebookLM</p>
+                <div class="min-w-0">
+                    <h1 class="font-bold text-sm sm:text-lg text-white truncate">FB Repo Harvester</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 hidden sm:block truncate">Tự động cào video & Co-Ideation Partner</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <span id="auth-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-slate-500"></span> NotebookLM: Đang kiểm tra...
+            <div class="flex items-center space-x-1.5 sm:space-x-2.5 shrink-0">
+                <span id="auth-badge" class="px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-slate-500"></span> <span class="hidden sm:inline">NotebookLM:</span> Đang ktra...
                 </span>
-                <button id="btn-login-nlm" onclick="loginNotebookLM()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập NotebookLM
+                <button id="btn-login-nlm" onclick="loginNotebookLM()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[10px] sm:text-xs font-semibold px-2.5 sm:px-3.5 py-1.5 rounded-lg shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition active:scale-95">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> <span class="hidden sm:inline">Đăng Nhập</span> NLM
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <main class="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-5 sm:space-y-8">
         
         <!-- Input Tabs Section -->
-        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 shadow-xl backdrop-blur">
-            <div class="flex border-b border-slate-700 mb-6 space-x-4">
-                <button onclick="switchTab('page-tab')" id="btn-page-tab" class="tab-btn pb-3 font-semibold text-blue-400 border-b-2 border-blue-500 flex items-center gap-2">
-                    <i class="fa-solid fa-flag"></i> Dán Link Fanpage / Kênh
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3.5 sm:p-6 shadow-xl backdrop-blur">
+            <!-- Responsive Horizontal Scrollable Tabs -->
+            <div class="flex border-b border-slate-700 mb-4 sm:mb-6 space-x-2 sm:space-x-4 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap pb-1">
+                <button onclick="switchTab('page-tab')" id="btn-page-tab" class="tab-btn pb-2 sm:pb-3 font-semibold text-blue-400 border-b-2 border-blue-500 flex items-center gap-1.5 text-xs sm:text-sm shrink-0 transition">
+                    <i class="fa-solid fa-flag"></i> Cào Fanpage
                 </button>
-                <button onclick="switchTab('single-tab')" id="btn-single-tab" class="tab-btn pb-3 font-medium text-slate-400 hover:text-slate-200 flex items-center gap-2">
-                    <i class="fa-solid fa-video"></i> Dán Link Video / Ghi Chú
+                <button onclick="switchTab('single-tab')" id="btn-single-tab" class="tab-btn pb-2 sm:pb-3 font-medium text-slate-400 hover:text-slate-200 flex items-center gap-1.5 text-xs sm:text-sm shrink-0 transition">
+                    <i class="fa-solid fa-video"></i> Video Lẻ
                 </button>
-                <button onclick="switchTab('channels-tab')" id="btn-channels-tab" class="tab-btn pb-3 font-medium text-slate-400 hover:text-slate-200 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check"></i> Quản Lý Kênh Theo Dõi
+                <button onclick="switchTab('channels-tab')" id="btn-channels-tab" class="tab-btn pb-2 sm:pb-3 font-medium text-slate-400 hover:text-slate-200 flex items-center gap-1.5 text-xs sm:text-sm shrink-0 transition">
+                    <i class="fa-solid fa-list-check"></i> Quản Lý Kênh
                 </button>
-                <button onclick="switchTab('ideas-tab')" id="btn-ideas-tab" class="tab-btn pb-3 font-medium text-amber-400 hover:text-amber-300 flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Lên Ý Tưởng (Idea Lab)
+                <button onclick="switchTab('ideas-tab')" id="btn-ideas-tab" class="tab-btn pb-2 sm:pb-3 font-medium text-amber-400 hover:text-amber-300 flex items-center gap-1.5 text-xs sm:text-sm shrink-0 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Idea Lab (AI)
                 </button>
-                <button onclick="switchTab('ops-tab')" id="btn-ops-tab" class="tab-btn pb-3 font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-2">
-                    <i class="fa-solid fa-tower-broadcast text-emerald-400"></i> Vận Hành & Giám Sát (24/7)
+                <button onclick="switchTab('ops-tab')" id="btn-ops-tab" class="tab-btn pb-2 sm:pb-3 font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 text-xs sm:text-sm shrink-0 transition">
+                    <i class="fa-solid fa-tower-broadcast text-emerald-400"></i> Vận Hành (24/7)
                 </button>
             </div>
 
             <!-- Tab 1: Cào Fanpage -->
-            <div id="page-tab" class="tab-content space-y-4">
-                <p class="text-sm text-slate-300">Nhập link Fanpage hoặc Profile Facebook thường đăng video về các repository mở:</p>
+            <div id="page-tab" class="tab-content space-y-3.5 sm:space-y-4">
+                <p class="text-xs sm:text-sm text-slate-300">Nhập link Fanpage hoặc Profile Facebook đăng video về repository:</p>
                 <div class="space-y-3">
                     <div class="relative">
-                        <i class="fa-solid fa-link absolute left-4 top-3.5 text-slate-400"></i>
+                        <i class="fa-solid fa-link absolute left-3.5 top-3.5 text-slate-400 text-xs sm:text-sm"></i>
                         <input type="text" id="page-url" placeholder="https://www.facebook.com/lachcachai hoặc https://www.facebook.com/Aixamxi" 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full pl-9 sm:pl-11 pr-3.5 py-2.5 sm:py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3 text-sm text-slate-400">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                        <div class="flex items-center space-x-2 text-xs text-slate-400">
                             <span>Số lượng video gần nhất:</span>
-                            <select id="page-limit" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
+                            <select id="page-limit" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
                                 <option value="3" selected>3 video</option>
                                 <option value="5">5 video</option>
                                 <option value="10">10 video</option>
                             </select>
                         </div>
-                        <button onclick="startCrawlPage()" id="btn-crawl-page" class="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-xl shadow-lg shadow-blue-600/30 flex items-center gap-2 transition">
+                        <button onclick="startCrawlPage()" id="btn-crawl-page" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition text-xs sm:text-sm active:scale-95">
                             <i class="fa-solid fa-bolt"></i> Bắt Đầu Cào Video & Repo
                         </button>
                     </div>
@@ -173,15 +179,15 @@ HTML_PAGE = """<!DOCTYPE html>
             </div>
 
             <!-- Tab 2: Cào Video Lẻ / Text -->
-            <div id="single-tab" class="tab-content hidden space-y-4">
-                <p class="text-sm text-slate-300">Dán trực tiếp URL video Facebook (Reels, Watch) hoặc đoạn text bài viết:</p>
+            <div id="single-tab" class="tab-content hidden space-y-3.5 sm:space-y-4">
+                <p class="text-xs sm:text-sm text-slate-300">Dán link video Facebook (Reels, Watch) hoặc đoạn text bài viết:</p>
                 <div class="space-y-3">
                     <input type="text" id="single-url" placeholder="https://www.facebook.com/watch/?v=123... hoặc link bài viết" 
-                        class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full px-3.5 py-2.5 sm:py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <textarea id="single-text" rows="3" placeholder="Hoặc dán đoạn caption / mô tả công cụ vào đây nếu video không có link..." 
-                        class="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+                        class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"></textarea>
                     <div class="flex justify-end">
-                        <button onclick="startHarvestSingle()" id="btn-harvest-single" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition">
+                        <button onclick="startHarvestSingle()" id="btn-harvest-single" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition text-xs sm:text-sm active:scale-95">
                             <i class="fa-solid fa-download"></i> Thu Hoạch Ngay
                         </button>
                     </div>
@@ -189,122 +195,121 @@ HTML_PAGE = """<!DOCTYPE html>
             </div>
 
             <!-- Tab 3: Quản Lý Kênh -->
-            <div id="channels-tab" class="tab-content hidden space-y-4">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm text-slate-300">Danh sách các kênh Facebook đang theo dõi tự động:</p>
-                    <div class="flex items-center gap-3">
+            <div id="channels-tab" class="tab-content hidden space-y-3.5 sm:space-y-4">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                    <p class="text-xs sm:text-sm text-slate-300">Danh sách các kênh Facebook đang theo dõi tự động:</p>
+                    <div class="flex items-center justify-between sm:justify-end gap-2">
                         <div class="flex items-center gap-1.5 text-xs text-slate-400">
-                            <span>Số video/kênh:</span>
-                            <select id="crawl-all-limit" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
-                                <option value="1">1 video</option>
-                                <option value="2">2 video</option>
-                                <option value="3" selected>3 video</option>
-                                <option value="5">5 video</option>
-                                <option value="10">10 video</option>
+                            <span>Video/kênh:</span>
+                            <select id="crawl-all-limit" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                                <option value="5">5</option>
                             </select>
                         </div>
-                        <button onclick="crawlAllChannels()" id="btn-crawl-all" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 rounded-xl shadow-lg shadow-emerald-600/30 flex items-center gap-2 transition">
-                            <i class="fa-solid fa-arrows-rotate"></i> Quét Tất Cả Các Kênh
+                        <button onclick="crawlAllChannels()" id="btn-crawl-all" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-medium px-3.5 py-1.5 sm:py-2 rounded-xl shadow-lg shadow-emerald-600/30 flex items-center gap-1.5 transition active:scale-95">
+                            <i class="fa-solid fa-arrows-rotate"></i> Quét Tất Cả
                         </button>
                     </div>
                 </div>
-                <div class="flex gap-2">
-                    <input type="text" id="new-ch-url" placeholder="URL Page mới (https://facebook.com/...)" class="flex-1 px-4 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-sm text-white">
-                    <input type="text" id="new-ch-name" placeholder="Tên Kênh" class="w-48 px-4 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-sm text-white">
-                    <button onclick="addNewChannel()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-sm font-medium">
-                        <i class="fa-solid fa-plus"></i> Thêm
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="new-ch-url" placeholder="URL Page mới (https://facebook.com/...)" class="flex-1 px-3.5 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-xs sm:text-sm text-white">
+                    <input type="text" id="new-ch-name" placeholder="Tên Kênh" class="w-full sm:w-44 px-3.5 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-xs sm:text-sm text-white">
+                    <button onclick="addNewChannel()" class="w-full sm:w-auto bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-1 active:scale-95">
+                        <i class="fa-solid fa-plus"></i> Thêm Kênh
                     </button>
                 </div>
                 <div id="channels-list" class="space-y-2 pt-2"></div>
             </div>
 
             <!-- Tab 4: Lên Ý Tưởng (Idea Lab & Co-Ideation Chatbox) -->
-            <div id="ideas-tab" class="tab-content hidden space-y-6">
+            <div id="ideas-tab" class="tab-content hidden space-y-4 sm:space-y-6">
                 <!-- Header Banner -->
-                <div class="bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-blue-500/10 border border-amber-500/20 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 text-lg">
+                <div class="bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-blue-500/10 border border-amber-500/20 rounded-2xl p-3.5 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 text-base shrink-0">
                             <i class="fa-solid fa-brain"></i>
                         </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-white text-base">Cộng Sự Đồng Sáng Tạo Ý Tưởng (Co-Ideation Partner)</h3>
-                                <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 font-semibold flex items-center gap-1 shadow-sm">
-                                    <i class="fa-brands fa-google text-blue-400"></i> Google NotebookLM (65 Sources | 1M Context)
+                        <div class="min-w-0">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <h3 class="font-bold text-white text-sm sm:text-base">Co-Ideation Partner</h3>
+                                <span class="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 font-semibold flex items-center gap-1 shadow-sm">
+                                    <i class="fa-brands fa-google text-blue-400"></i> NotebookLM (65 Sources)
                                 </span>
                             </div>
-                            <p class="text-xs text-slate-300 mt-0.5">
-                                Khai thác trực tiếp 65 nguồn tri thức kỹ thuật từ Google NotebookLM để phân tích điểm chạm, kiến trúc Mermaid & Glue Code.
+                            <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 line-clamp-1 sm:line-clamp-none">
+                                Khai thác trực tiếp 65 nguồn tri thức kỹ thuật từ Google NotebookLM.
                             </p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="triggerStudio('audio')" id="btn-studio-audio" class="bg-indigo-600/80 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-xl border border-indigo-500/40 text-xs font-medium flex items-center gap-1.5 transition shadow" title="Tạo podcast âm thanh 2 người dẫn thảo luận về các repo">
-                            <i class="fa-solid fa-podcast"></i> Tạo Podcast Audio
+                    <div class="flex items-center flex-wrap gap-1.5 w-full sm:w-auto justify-end">
+                        <button onclick="triggerStudio('audio')" id="btn-studio-audio" class="flex-1 sm:flex-initial bg-indigo-600/80 hover:bg-indigo-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-indigo-500/40 text-[11px] sm:text-xs font-medium flex items-center justify-center gap-1 transition shadow active:scale-95" title="Tạo podcast âm thanh">
+                            <i class="fa-solid fa-podcast"></i> Podcast Audio
                         </button>
-                        <button onclick="triggerStudio('report')" id="btn-studio-doc" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-medium flex items-center gap-1.5 transition shadow" title="Tạo tài liệu tóm lược">
-                            <i class="fa-solid fa-file-lines"></i> Tạo Briefing Doc
+                        <button onclick="triggerStudio('report')" id="btn-studio-doc" class="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700 text-[11px] sm:text-xs font-medium flex items-center justify-center gap-1 transition shadow active:scale-95" title="Tạo tài liệu tóm lược">
+                            <i class="fa-solid fa-file-lines"></i> Briefing Doc
                         </button>
-                        <button onclick="resetChat()" id="btn-reset-chat" class="bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-medium flex items-center gap-1.5 transition shadow">
-                            <i class="fa-solid fa-rotate-left"></i> Làm Mới Hội Thoại
+                        <button onclick="resetChat()" id="btn-reset-chat" class="p-2 sm:px-3 sm:py-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700 text-[11px] sm:text-xs font-medium flex items-center justify-center transition shadow active:scale-95" title="Làm mới hội thoại">
+                            <i class="fa-solid fa-rotate-left"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Chatbox Container -->
-                <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col h-[650px] overflow-hidden">
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col h-[500px] sm:h-[650px] overflow-hidden">
                     <!-- Messages Log Area -->
-                    <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4">
+                    <div id="chat-messages" class="flex-1 p-3 sm:p-5 overflow-y-auto space-y-3 sm:space-y-4">
                         <!-- Default greeting message from Assistant -->
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center text-white text-xs shrink-0 shadow">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <div class="flex items-start gap-2.5 sm:gap-3">
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center text-white text-xs shrink-0 shadow">
+                                <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i>
                             </div>
-                            <div class="max-w-[85%] bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-4 text-xs text-slate-200 shadow-md">
+                            <div class="max-w-[92%] sm:max-w-[85%] bg-slate-800/90 border border-slate-700/80 rounded-2xl rounded-tl-none p-3 sm:p-4 text-xs text-slate-200 shadow-md">
                                 <div class="font-semibold text-amber-300 mb-1 flex items-center gap-1.5">
                                     <span>Co-Ideation Partner</span>
                                     <span class="text-[10px] text-slate-400 font-normal">vừa xong</span>
                                 </div>
-                                <p class="leading-relaxed">
-                                    Chào bạn! Tôi là Cộng Sự Đồng Sáng Tạo Ý Tưởng của bạn. Tôi có khả năng tra cứu toàn bộ <strong>29+ repositories mã nguồn mở</strong> trong kho, truy vấn sâu tài liệu <strong>Google NotebookLM</strong>, phân tích tính khả thi kỹ thuật, vẽ <strong>sơ đồ kiến trúc Mermaid</strong> và viết <strong>PoC Glue Code</strong> thực chiến.
+                                <p class="leading-relaxed text-[11px] sm:text-xs">
+                                    Chào bạn! Tôi là Cộng Sự Đồng Sáng Tạo Ý Tưởng. Tôi tra cứu trực tiếp toàn bộ <strong>34+ repositories mã nguồn mở</strong> trong kho và 65 tài liệu kỹ thuật <strong>Google NotebookLM</strong>, sẵn sàng phân tích tính khả thi, vẽ <strong>sơ đồ Mermaid</strong> và sinh <strong>PoC Glue Code</strong> thực chiến.
                                 </p>
-                                <p class="mt-2 text-slate-300 leading-relaxed">
-                                    Bạn đang ấp ủ bài toán nào, hay muốn kết hợp những công nghệ gì? Hãy chia sẻ với tôi hoặc chọn các gợi ý bên dưới để cùng bắt đầu nhé!
+                                <p class="mt-2 text-slate-300 leading-relaxed text-[11px] sm:text-xs">
+                                    Bạn muốn xây dựng hệ thống gì, hay muốn kết hợp công nghệ nào? Hãy nhắn cho tôi hoặc chọn gợi ý bên dưới nhé!
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Prompt Suggestion Chips -->
-                    <div class="px-5 py-2.5 bg-slate-950/70 border-t border-slate-800/80 flex items-center gap-2 overflow-x-auto text-xs">
-                        <span class="text-[11px] text-slate-400 shrink-0 font-medium"><i class="fa-regular fa-lightbulb text-amber-400"></i> Gợi ý:</span>
-                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-3 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-xs transition">
-                            🤖 Làm Trợ lý phân tích video FB & tóm tắt tự động
+                    <!-- Prompt Suggestion Chips (Horizontal Swipe on Mobile) -->
+                    <div class="px-3 sm:px-5 py-2 bg-slate-950/70 border-t border-slate-800/80 flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap text-xs">
+                        <span class="text-[10px] sm:text-[11px] text-slate-400 shrink-0 font-medium"><i class="fa-regular fa-lightbulb text-amber-400"></i> Gợi ý:</span>
+                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-2.5 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-[11px] sm:text-xs transition active:scale-95">
+                            🤖 Trợ lý phân tích video FB & tóm tắt tự động
                         </button>
-                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-3 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-xs transition">
-                            🎙️ Cào nội dung mạng xã hội + Voice AI làm Podcast tự động
+                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-2.5 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-[11px] sm:text-xs transition active:scale-95">
+                            🎙️ Cào nội dung MXH + Voice AI làm Podcast
                         </button>
-                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-3 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-xs transition">
-                            💡 Khám phá các ý tưởng đột phá từ 29 repo hiện có
+                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-2.5 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-[11px] sm:text-xs transition active:scale-95">
+                            💡 Khám phá ý tưởng đột phá từ các repo
                         </button>
-                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-3 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-xs transition">
-                            🎲 Ghép 2 repo bất ngờ bằng tư duy First-Principles
+                        <button onclick="sendPromptSuggestion(this)" class="shrink-0 px-2.5 py-1 bg-slate-900 hover:bg-indigo-950/60 border border-slate-700 hover:border-indigo-500/50 rounded-full text-slate-300 text-[11px] sm:text-xs transition active:scale-95">
+                            🎲 Ghép 2 repo bất ngờ bằng First-Principles
                         </button>
                     </div>
 
-                    <!-- Tool execution indicator bar (hidden by default) -->
-                    <div id="chat-tool-indicator" class="hidden px-5 py-1.5 bg-indigo-950/60 border-t border-indigo-900/60 text-[11px] text-indigo-300 flex items-center gap-2">
+                    <!-- Tool execution indicator bar -->
+                    <div id="chat-tool-indicator" class="hidden px-3 sm:px-5 py-1.5 bg-indigo-950/60 border-t border-indigo-900/60 text-[10px] sm:text-[11px] text-indigo-300 flex items-center gap-2">
                         <i class="fa-solid fa-gear fa-spin text-indigo-400"></i>
-                        <span id="chat-tool-text">Đang phân tích và tra cứu công cụ...</span>
+                        <span id="chat-tool-text">Đang phân tích và tra cứu...</span>
                     </div>
 
                     <!-- Input Box -->
-                    <div class="p-4 bg-slate-950/90 border-t border-slate-800 flex items-end gap-3">
-                        <textarea id="chat-input" rows="2" placeholder="Hỏi hoặc thảo luận với AI: 'Tôi muốn làm hệ thống...', 'Hãy vẽ sơ đồ', 'Viết mã kết nối'..." 
-                            class="flex-1 px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none"></textarea>
-                        <button onclick="sendChatMessage()" id="btn-chat-send" class="h-10 px-5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition shrink-0">
-                            <span>Gửi</span>
-                            <i class="fa-solid fa-paper-plane"></i>
+                    <div class="p-2.5 sm:p-4 bg-slate-950/90 border-t border-slate-800 flex items-end gap-2">
+                        <textarea id="chat-input" rows="1" placeholder="Hỏi AI: 'Tôi muốn làm...', 'Hãy vẽ sơ đồ', 'Viết mã kết nối'..." 
+                            class="flex-1 px-3 py-2 sm:px-4 sm:py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none max-h-24"></textarea>
+                        <button onclick="sendChatMessage()" id="btn-chat-send" class="h-9 sm:h-10 px-3.5 sm:px-5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/30 transition shrink-0 active:scale-95">
+                            <span class="hidden sm:inline">Gửi</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </div>
                 </div>
@@ -328,8 +333,8 @@ HTML_PAGE = """<!DOCTYPE html>
             <!-- Tab 5: Vận Hành & Giám Sát (24/7) -->
             <div id="ops-tab" class="tab-content hidden space-y-6">
                 <!-- Status Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3 sm:p-4">
                         <div class="text-xs text-slate-400 mb-1 flex items-center justify-between">
                             <span>TRẠNG THÁI SERVER</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
@@ -342,17 +347,17 @@ HTML_PAGE = """<!DOCTYPE html>
                         </p>
                     </div>
 
-                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4">
+                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3 sm:p-4">
                         <div class="text-xs text-slate-400 mb-1">BACKGROUND SCHEDULER</div>
-                        <div id="ops-sched-status" class="text-base font-bold text-emerald-400 flex items-center gap-2">
+                        <div id="ops-sched-status" class="text-sm sm:text-base font-bold text-emerald-400 flex items-center gap-2">
                             <i class="fa-solid fa-clock-rotate-left"></i> Đang Chạy Ngầm
                         </div>
                         <p id="ops-last-crawl" class="text-[11px] text-slate-400 mt-2">Lần cào gần nhất: Chưa ghi nhận</p>
                     </div>
 
-                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4">
+                    <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3 sm:p-4 sm:col-span-2 md:col-span-1">
                         <div class="text-xs text-slate-400 mb-1">BÁO CÁO HÀNG NGÀY</div>
-                        <div id="ops-report-time-display" class="text-base font-bold text-amber-400 flex items-center gap-2">
+                        <div id="ops-report-time-display" class="text-sm sm:text-base font-bold text-amber-400 flex items-center gap-2">
                             <i class="fa-solid fa-newspaper"></i> 07:00 Sáng
                         </div>
                         <p id="ops-last-report" class="text-[11px] text-slate-400 mt-2">Báo cáo gần nhất: Chưa gửi</p>
@@ -360,9 +365,9 @@ HTML_PAGE = """<!DOCTYPE html>
                 </div>
 
                 <!-- Cấu hình Telegram & Lịch trình -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <!-- Cột trái: Kênh Cảnh Báo Telegram & Webhook -->
-                    <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-5 space-y-4">
+                    <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3.5 sm:p-5 space-y-3 sm:space-y-4">
                         <h4 class="font-bold text-sm text-white flex items-center gap-2">
                             <i class="fa-brands fa-telegram text-sky-400 text-base"></i> Cảnh Báo Khẩn Cấp & Báo Cáo (Telegram)
                         </h4>
@@ -388,9 +393,9 @@ HTML_PAGE = """<!DOCTYPE html>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-3 pt-2">
-                            <button onclick="testTelegramConnection()" id="btn-test-tg" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition flex items-center gap-1.5 shadow">
-                                <i class="fa-solid fa-paper-plane"></i> Gửi Thử Tin Nhắn Kiểm Tra
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 pt-2">
+                            <button onclick="testTelegramConnection()" id="btn-test-tg" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold px-4 py-2.5 sm:py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow active:scale-95">
+                                <i class="fa-solid fa-paper-plane"></i> Gửi Thử Tin Nhắn
                             </button>
                             <span id="test-tg-result" class="text-xs text-slate-400"></span>
                         </div>
@@ -405,7 +410,7 @@ HTML_PAGE = """<!DOCTYPE html>
                     </div>
 
                     <!-- Cột phải: Lịch Trình Tự Động -->
-                    <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-5 space-y-4 flex flex-col justify-between">
+                    <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3.5 sm:p-5 space-y-3 sm:space-y-4 flex flex-col justify-between">
                         <div class="space-y-4">
                             <h4 class="font-bold text-sm text-white flex items-center gap-2">
                                 <i class="fa-solid fa-sliders text-emerald-400 text-base"></i> Thiết Lập Tự Động Hóa (Automation)
@@ -455,11 +460,11 @@ HTML_PAGE = """<!DOCTYPE html>
                             </div>
                         </div>
 
-                        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-                            <button onclick="triggerDailyReportNow()" id="btn-trigger-digest" class="bg-amber-600/90 hover:bg-amber-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 shadow">
+                        <div class="pt-3 sm:pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0">
+                            <button onclick="triggerDailyReportNow()" id="btn-trigger-digest" class="bg-amber-600/90 hover:bg-amber-500 text-white text-xs font-semibold px-3.5 py-2.5 sm:py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow active:scale-95">
                                 <i class="fa-solid fa-paper-plane"></i> Gửi Báo Cáo Ngay
                             </button>
-                            <button onclick="saveSettings()" id="btn-save-settings" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-5 py-2 rounded-lg transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+                            <button onclick="saveSettings()" id="btn-save-settings" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-5 py-2.5 sm:py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/20 active:scale-95">
                                 <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Vận Hành
                             </button>
                         </div>
@@ -469,31 +474,31 @@ HTML_PAGE = """<!DOCTYPE html>
         </div>
 
         <!-- Activity / Live Log Section -->
-        <div id="log-card" class="bg-slate-950 border border-slate-800 rounded-2xl p-5 shadow-xl">
-            <div class="flex items-center justify-between mb-3">
+        <div id="log-card" class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 sm:p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-2 sm:mb-3">
                 <div class="flex items-center gap-2">
-                    <span id="log-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <h3 class="font-semibold text-sm text-white">Tiến Trình Đang Chạy Thực Tế (Live Logs)</h3>
+                    <span id="log-dot" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500"></span>
+                    <h3 class="font-semibold text-xs sm:text-sm text-white">Live Logs</h3>
                 </div>
-                <span id="log-status" class="text-xs text-slate-400">Sẵn sàng</span>
+                <span id="log-status" class="text-[11px] sm:text-xs text-slate-400">Sẵn sàng</span>
             </div>
-            <div id="log-content" class="bg-slate-900/90 rounded-xl p-4 font-mono text-xs text-slate-300 h-48 overflow-y-auto space-y-1">
+            <div id="log-content" class="bg-slate-900/90 rounded-xl p-3 sm:p-4 font-mono text-[11px] sm:text-xs text-slate-300 h-36 sm:h-48 overflow-y-auto space-y-1">
                 <div>[INFO] Hệ thống sẵn sàng cào video...</div>
             </div>
         </div>
 
         <!-- Catalog Section -->
-        <div class="space-y-4">
+        <div class="space-y-3 sm:space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-stacked text-blue-500"></i> Kho Repo Đã Thu Thập (<span id="repo-count">0</span>)
+                <h2 class="text-base sm:text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-blue-500"></i> Kho Repo (<span id="repo-count">0</span>)
                 </h2>
-                <button onclick="loadCatalog()" class="text-sm text-slate-400 hover:text-white flex items-center gap-1">
+                <button onclick="loadCatalog()" class="text-xs sm:text-sm text-slate-400 hover:text-white flex items-center gap-1 active:scale-95">
                     <i class="fa-solid fa-rotate"></i> Làm mới
                 </button>
             </div>
 
-            <div id="catalog-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div id="catalog-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4"></div>
         </div>
     </main>
 
@@ -542,10 +547,10 @@ HTML_PAGE = """<!DOCTYPE html>
 
                 data.forEach(item => {
                     const card = document.createElement('div');
-                    card.className = 'bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 hover:border-blue-500/50 transition flex flex-col justify-between';
+                    card.className = 'bg-slate-800/50 border border-slate-700/60 rounded-xl p-3.5 sm:p-5 hover:border-blue-500/50 transition flex flex-col justify-between';
                     const syncBadge = item.synced_to_notebooklm ? 
-                        '<span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">NotebookLM: Đã đồng bộ</span>' :
-                        '<span class="text-xs px-2 py-0.5 rounded bg-slate-700 text-slate-300">Kho cục bộ</span>';
+                        '<span class="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">NLM ✓</span>' :
+                        '<span class="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded bg-slate-700 text-slate-300">Local</span>';
 
                     const catBadge = item.category ? 
                         `<span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">${item.category}</span>` : '';
@@ -553,18 +558,18 @@ HTML_PAGE = """<!DOCTYPE html>
                     const tagsHtml = (item.tags || []).map(t => `<span class="text-[10px] bg-slate-900 border border-slate-700 text-slate-400 px-1.5 py-0.5 rounded">${t}</span>`).join(' ');
 
                     const aiSummary = item.summary ? 
-                        `<div class="bg-slate-900/60 rounded-lg p-2.5 my-2 border border-slate-700/40">
+                        `<div class="bg-slate-900/60 rounded-lg p-2 sm:p-2.5 my-2 border border-slate-700/40">
                             <div class="text-[10px] font-semibold text-amber-300 mb-1 flex items-center gap-1">
-                                <i class="fa-solid fa-robot"></i> Tóm Tắt AI:
+                                <i class="fa-solid fa-robot"></i> AI:
                             </div>
-                            <p class="text-xs text-slate-300 leading-relaxed">${item.summary}</p>
-                         </div>` : `<p class="text-xs text-slate-400 my-2 line-clamp-2">${item.description || 'Không có mô tả'}</p>`;
+                            <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed line-clamp-3">${item.summary}</p>
+                         </div>` : `<p class="text-[11px] sm:text-xs text-slate-400 my-2 line-clamp-2">${item.description || 'Không có mô tả'}</p>`;
 
                     card.innerHTML = `
                         <div>
                             <div class="flex items-start justify-between gap-2 mb-1.5">
-                                <a href="${item.repo_url}" target="_blank" class="font-bold text-blue-400 hover:underline flex items-center gap-1.5 text-base">
-                                    <i class="fa-brands fa-github"></i> ${item.full_name}
+                                <a href="${item.repo_url}" target="_blank" class="font-bold text-blue-400 hover:underline flex items-center gap-1.5 text-sm sm:text-base truncate">
+                                    <i class="fa-brands fa-github shrink-0"></i> ${item.full_name}
                                 </a>
                                 ${syncBadge}
                             </div>
@@ -598,20 +603,20 @@ HTML_PAGE = """<!DOCTYPE html>
                 container.innerHTML = '';
                 data.forEach(ch => {
                     const row = document.createElement('div');
-                    row.className = 'flex items-center justify-between bg-slate-900/60 border border-slate-700/60 px-4 py-3 rounded-xl text-sm';
+                    row.className = 'flex flex-col sm:flex-row sm:items-center justify-between bg-slate-900/60 border border-slate-700/60 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm gap-2';
                     row.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <i class="fa-brands fa-facebook text-blue-400 text-lg"></i>
-                            <div>
-                                <div class="font-medium text-white">${ch.name}</div>
-                                <a href="${ch.url}" target="_blank" class="text-xs text-slate-400 hover:text-blue-400">${ch.url}</a>
+                        <div class="flex items-center gap-3 min-w-0">
+                            <i class="fa-brands fa-facebook text-blue-400 text-lg shrink-0"></i>
+                            <div class="min-w-0">
+                                <div class="font-medium text-white text-sm truncate">${ch.name}</div>
+                                <a href="${ch.url}" target="_blank" class="text-[11px] sm:text-xs text-slate-400 hover:text-blue-400 truncate block">${ch.url}</a>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="crawlSpecificPage('${ch.url}')" class="text-xs bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-lg transition">
+                        <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                            <button onclick="crawlSpecificPage('${ch.url}')" class="text-xs bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-lg transition active:scale-95">
                                 <i class="fa-solid fa-play"></i> Quét
                             </button>
-                            <button onclick="deleteChannel('${ch.url}', '${ch.name}')" class="text-xs bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 px-3 py-1.5 rounded-lg transition">
+                            <button onclick="deleteChannel('${ch.url}', '${ch.name}')" class="text-xs bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 px-3 py-1.5 rounded-lg transition active:scale-95">
                                 <i class="fa-solid fa-trash"></i> Xóa
                             </button>
                         </div>

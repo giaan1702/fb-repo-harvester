@@ -1,7 +1,7 @@
 {
-  "telegram_bot_token": "",
-  "telegram_chat_id": "",
-  "telegram_enabled": false,
+  "telegram_bot_token": "8852593449:AAHJSXG_9-WT91jh_zRnTlCeYM_QHcnuWlM",
+  "telegram_chat_id": "6429151618",
+  "telegram_enabled": true,
   "discord_webhook_url": "",
   "auto_crawl_enabled": true,
   "crawl_interval_hours": 12,
