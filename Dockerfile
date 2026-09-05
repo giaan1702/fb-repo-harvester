@@ -23,8 +23,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Cài đặt trình duyệt Playwright Chromium kèm các thư viện đồ họa headless
 RUN playwright install --with-deps chromium
 
-# Cài đặt nlm CLI (Google NotebookLM) nếu có
-RUN pip install --no-cache-dir notebooklm-mcp || true
+# Cài đặt nlm CLI (Google NotebookLM)
+RUN pip install --no-cache-dir notebooklm-mcp-cli || true
 
 # Copy toàn bộ mã nguồn vào container
 COPY . .

@@ -33,19 +33,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install notebooklm-mcp || true
+          pip install notebooklm-mcp-cli || true
 
       - name: Install Playwright Browsers & OS Dependencies
         run: |
           playwright install --with-deps chromium
 
-      - name: Restore NotebookLM Token (Nếu có secret)
-        if: env.NLM_TOKENS_JSON != ''
+      - name: Restore NotebookLM Token from Secret
+        if: env.NOTEBOOKLM_AUTH_JSON != ''
         env:
-          NLM_TOKENS_JSON: ${{ secrets.NLM_TOKENS_JSON }}
+          NOTEBOOKLM_AUTH_JSON: ${{ secrets.NOTEBOOKLM_AUTH_JSON }}
         run: |
-          mkdir -p ~/.config/nlm
-          echo "$NLM_TOKENS_JSON" > ~/.config/nlm/tokens.json
+          mkdir -p ~/.notebooklm-mcp-cli
+          echo "$NOTEBOOKLM_AUTH_JSON" > ~/.notebooklm-mcp-cli/auth.json
+          nlm login --check || echo "NotebookLM session check warning"
 
       - name: Run Crawler for All Channels
         env:

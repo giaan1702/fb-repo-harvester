@@ -38,6 +38,18 @@ PORT = int(os.getenv("PORT", 7860))
 HOST = os.getenv("HOST", "0.0.0.0")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Tự động phục hồi xác thực NotebookLM nếu có cấu hình biến môi trường (Render/Cloud)
+auth_env = os.getenv("NOTEBOOKLM_AUTH_JSON")
+if auth_env:
+    try:
+        auth_dir = Path.home() / ".notebooklm-mcp-cli"
+        auth_dir.mkdir(parents=True, exist_ok=True)
+        auth_file = auth_dir / "auth.json"
+        auth_file.write_text(auth_env.strip(), encoding="utf-8")
+        logger.info(f"Đã tự động nạp xác thực NotebookLM từ biến môi trường vào {auth_file}")
+    except Exception as e:
+        logger.warning(f"Không thể nạp NOTEBOOKLM_AUTH_JSON: {e}")
+
 # Global logs memory
 LOGS_QUEUE = []
 
