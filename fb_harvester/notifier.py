@@ -135,9 +135,9 @@ class Notifier:
         if new_repos:
             msg_lines.append("🌟 *TOP REPOSITORIES MỚI KHÁM PHÁ:*")
             for idx, r in enumerate(new_repos[:5], 1):
-                name = r.get("repo_name") or r.get("name") or "Unknown"
+                name = r.get("full_name") or r.get("repo_name") or r.get("name") or "Unknown"
                 desc = r.get("description", "Không có mô tả")[:90]
-                url = r.get("url") or f"https://github.com/{name}"
+                url = r.get("repo_url") or r.get("html_url") or r.get("url") or f"https://github.com/{name}"
                 cat = r.get("category", "General")
                 msg_lines.append(f"{idx}. 🚀 *[{name}]({url})* `[{cat}]`\n   _{desc}_")
         else:
