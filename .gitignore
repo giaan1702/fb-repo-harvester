@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+venv/
+ENV/
+
+# Cloned repositories & temporary outputs
+repos/
+*.log
+
+# Operating System
+.DS_Store
+Thumbs.db

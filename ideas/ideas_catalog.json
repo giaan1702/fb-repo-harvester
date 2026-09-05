@@ -1,0 +1,177 @@
+[
+  {
+    "id": "idea_autonomous_tech_pulse",
+    "title": "Autonomous Tech Pulse (Giám Sát Tình Huống & Tự Động Sản Xuất Podcast/Video)",
+    "tagline": "Trạm radar AI quét tin tức công nghệ toàn cầu, phân tích qua OpenManus và xuất bản tin đa phương tiện tự động",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "DIYgod/RSSHub",
+      "FoundationAgents/OpenManus",
+      "koala73/worldmonitor",
+      "Cuongyd196/auto-compare-video"
+    ],
+    "created_at": "2026-09-06 00:35:07",
+    "mode": "pair_programming_co_ideation",
+    "file_path": "ideas/idea_autonomous_tech_pulse.md"
+  },
+  {
+    "id": "idea_1788626648_8433",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & hydrafusion",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và Computer Vision & Generative Media",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "AICPS/hydrafusion"
+    ],
+    "created_at": "2026-09-05 23:44:08",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788626648_8433_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___hy.md"
+  },
+  {
+    "id": "idea_1788626639_2215",
+    "title": "Hệ Thống Tích Hợp Đột Phá: freqtrade & worldmonitor",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Trading & Algorithmic Finance và AI & Autonomous Agents",
+    "source_repos": [
+      "freqtrade/freqtrade",
+      "koala73/worldmonitor"
+    ],
+    "created_at": "2026-09-05 23:43:59",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788626639_2215_Hệ_Thống_Tích_Hợp_Đột_Phá__freqtrade___w.md"
+  },
+  {
+    "id": "idea_1788626614_3170",
+    "title": "Hệ Thống Tích Hợp Đột Phá: wibusaka & illa-builder",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Backend & High-Performance Systems và Developer Tools, CLI & Terminal",
+    "source_repos": [
+      "qctfw/wibusaka",
+      "illacloud/illa-builder"
+    ],
+    "created_at": "2026-09-05 23:43:34",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788626614_3170_Hệ_Thống_Tích_Hợp_Đột_Phá__wibusaka___il.md"
+  },
+  {
+    "id": "idea_1788626590_1484",
+    "title": "Hệ Thống Tích Hợp Đột Phá: freqtrade & hermes-agent",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Trading & Algorithmic Finance và AI & Autonomous Agents",
+    "source_repos": [
+      "freqtrade/freqtrade",
+      "NousResearch/hermes-agent"
+    ],
+    "created_at": "2026-09-05 23:43:10",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788626590_1484_Hệ_Thống_Tích_Hợp_Đột_Phá__freqtrade___h.md"
+  },
+  {
+    "id": "idea_1788626515_7305",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & hermes-agent",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và AI & Autonomous Agents",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "NousResearch/hermes-agent",
+      "adamdickmeiss/tigon"
+    ],
+    "created_at": "2026-09-05 23:41:55",
+    "mode": "goal",
+    "file_path": "ideas/idea_1788626515_7305_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___he.md"
+  },
+  {
+    "id": "idea_1788626442_7300",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & OpenManus",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và AI & Autonomous Agents",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "FoundationAgents/OpenManus"
+    ],
+    "created_at": "2026-09-05 23:40:42",
+    "mode": "manual",
+    "file_path": "ideas/idea_1788626442_7300_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___Op.md"
+  },
+  {
+    "id": "idea_1788626243_9968",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & hermes-agent",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và AI & Autonomous Agents",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "NousResearch/hermes-agent",
+      "adamdickmeiss/tigon"
+    ],
+    "created_at": "2026-09-05 23:37:23",
+    "mode": "goal",
+    "file_path": "ideas/idea_1788626243_9968_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___he.md"
+  },
+  {
+    "id": "idea_1788626220_8566",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & hermes-agent",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và AI & Autonomous Agents",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "NousResearch/hermes-agent",
+      "adamdickmeiss/tigon"
+    ],
+    "created_at": "2026-09-05 23:37:00",
+    "mode": "goal",
+    "file_path": "ideas/idea_1788626220_8566_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___he.md"
+  },
+  {
+    "id": "idea_1788626026_2122",
+    "title": "Hệ Thống Tích Hợp Đột Phá: openclaw & hydrafusion",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp AI & Autonomous Agents và Computer Vision & Generative Media",
+    "source_repos": [
+      "openclaw/openclaw",
+      "AICPS/hydrafusion"
+    ],
+    "created_at": "2026-09-05 23:33:46",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788626026_2122_Hệ_Thống_Tích_Hợp_Đột_Phá__openclaw___hy.md"
+  },
+  {
+    "id": "idea_1788625906_1465",
+    "title": "Hệ Thống Tích Hợp Đột Phá: crawl4ai & OpenManus",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Data Scraping & Web Automation và AI & Autonomous Agents",
+    "source_repos": [
+      "unclecode/crawl4ai",
+      "FoundationAgents/OpenManus"
+    ],
+    "created_at": "2026-09-05 23:31:46",
+    "mode": "manual",
+    "file_path": "ideas/idea_1788625906_1465_Hệ_Thống_Tích_Hợp_Đột_Phá__crawl4ai___Op.md"
+  },
+  {
+    "id": "idea_1788625898_5923",
+    "title": "Hệ Thống Tích Hợp Đột Phá: RSSHub & solofounder",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Backend & High-Performance Systems và AI & Autonomous Agents",
+    "source_repos": [
+      "DIYgod/RSSHub",
+      "solofounder-ai/solofounder",
+      "openclaw/openclaw"
+    ],
+    "created_at": "2026-09-05 23:31:38",
+    "mode": "goal",
+    "file_path": "ideas/idea_1788625898_5923_Hệ_Thống_Tích_Hợp_Đột_Phá__RSSHub___solo.md"
+  },
+  {
+    "id": "idea_1788625893_6715",
+    "title": "Hệ Thống Tích Hợp Đột Phá: AutoGPT & hydrafusion",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp AI & Autonomous Agents và Computer Vision & Generative Media",
+    "source_repos": [
+      "Significant-Gravitas/AutoGPT",
+      "AICPS/hydrafusion"
+    ],
+    "created_at": "2026-09-05 23:31:33",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788625893_6715_Hệ_Thống_Tích_Hợp_Đột_Phá__AutoGPT___hyd.md"
+  },
+  {
+    "id": "idea_1788625888_8508",
+    "title": "Hệ Thống Tích Hợp Đột Phá: astro-theme-cactus & crawl4ai",
+    "tagline": "Tự động hóa quy trình nghiệp vụ bằng phối hợp Fullstack, Web & UI Frameworks và Data Scraping & Web Automation",
+    "source_repos": [
+      "chrismwilliams/astro-theme-cactus",
+      "unclecode/crawl4ai"
+    ],
+    "created_at": "2026-09-05 23:31:28",
+    "mode": "surprise",
+    "file_path": "ideas/idea_1788625888_8508_Hệ_Thống_Tích_Hợp_Đột_Phá__astro-theme-c.md"
+  }
+]

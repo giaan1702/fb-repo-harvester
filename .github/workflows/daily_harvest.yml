@@ -1,0 +1,71 @@
+name: Daily Continuous Harvest & Telegram Digest
+
+on:
+  schedule:
+    # Chạy tự động lúc 00:00 UTC (07:00 AM giờ Việt Nam) hàng ngày
+    - cron: '0 0 * * *'
+    # Chạy thêm đợt quét chiều lúc 06:00 UTC (13:00 PM giờ Việt Nam)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Cho phép bấm nút kích hoạt thủ công từ giao diện GitHub Actions
+
+jobs:
+  harvest-and-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install notebooklm-mcp || true
+
+      - name: Install Playwright Browsers & OS Dependencies
+        run: |
+          playwright install --with-deps chromium
+
+      - name: Restore NotebookLM Token (Nếu có secret)
+        if: env.NLM_TOKENS_JSON != ''
+        env:
+          NLM_TOKENS_JSON: ${{ secrets.NLM_TOKENS_JSON }}
+        run: |
+          mkdir -p ~/.config/nlm
+          echo "$NLM_TOKENS_JSON" > ~/.config/nlm/tokens.json
+
+      - name: Run Crawler for All Channels
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -m fb_harvester.cli crawl-all --limit 3 || echo "Crawl completed with warnings"
+
+      - name: Generate & Send Daily Digest via Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c "from fb_harvester.scheduler import BackgroundScheduler; s = BackgroundScheduler(); res = s.generate_and_send_daily_digest(); print('Digest Result:', res)"
+
+      - name: Commit & Push Changes to Repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add catalog.json CATALOG.md ideas/ settings.json || true
+          if git diff --staged --quiet; then
+            echo "Không có thay đổi mới trong catalog."
+          else
+            git commit -m "chore(auto-harvest): Cập nhật catalog và tri thức mới [skip ci]"
+            git push
+          fi

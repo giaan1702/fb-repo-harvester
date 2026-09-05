@@ -1,0 +1,14 @@
+{
+  "telegram_bot_token": "",
+  "telegram_chat_id": "",
+  "telegram_enabled": false,
+  "discord_webhook_url": "",
+  "auto_crawl_enabled": true,
+  "crawl_interval_hours": 12,
+  "crawl_limit_per_channel": 3,
+  "daily_report_enabled": true,
+  "daily_report_time": "07:00",
+  "last_crawl_time": null,
+  "last_report_date": null,
+  "github_token": ""
+}

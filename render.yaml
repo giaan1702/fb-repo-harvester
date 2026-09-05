@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: fb-repo-harvester
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 7860
+      - key: AUTO_CRAWL_ENABLED
+        value: "true"
+      - key: CRAWL_INTERVAL_HOURS
+        value: "6"
+      - key: DAILY_REPORT_TIME
+        value: "07:00"
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: DISCORD_WEBHOOK_URL
+        sync: false

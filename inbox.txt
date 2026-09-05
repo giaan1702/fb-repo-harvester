@@ -1,0 +1,6 @@
+﻿# ============================================================
+# HỘP THƯ TỰ ĐỘNG THU HOẠCH REPO TỪ FACEBOOK (INBOX)
+# Dán các liên kết video/post hoặc ghi chú vào đây (mỗi dòng 1 mục)
+# Sau đó chạy lệnh: python -m fb_harvester.cli harvest --inbox
+# Hoặc bảo Agent Antigravity: "Thu hoạch các link trong inbox giùm tôi"
+# ============================================================

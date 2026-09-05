@@ -1,0 +1,1214 @@
+[
+  {
+    "full_name": "unclecode/crawl4ai",
+    "repo_url": "https://github.com/unclecode/crawl4ai",
+    "stars": 81503,
+    "language": "Python",
+    "description": "🚀🤖 Crawl4AI: Open-source LLM Friendly Web Crawler & Scraper. Don't be shy, join here: https://discord.gg/jP8KfhDhyN",
+    "source_url": "",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\unclecode_crawl4ai_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:03:30.584467",
+    "category": "Data Scraping & Web Automation",
+    "tags": [
+      "web crawling",
+      "scraping",
+      "LLM-friendly",
+      "Python"
+    ],
+    "summary": "Crawl4AI là một thư viện web crawler và scraper mã nguồn mở, được tối ưu để cung cấp dữ liệu sạch cho các mô hình LLM. Nó hỗ trợ truy xuất bất đồng bộ, xử lý JavaScript và tích hợp dễ dàng với các pipeline AI. Dùng khi cần thu thập dữ liệu web lớn để huấn luyện hoặc truy vấn LLM.",
+    "use_cases": [
+      "Thu thập dữ liệu từ trang web để huấn luyện mô hình ngôn ngữ",
+      "Trích xuất nội dung cấu trúc từ các trang news/blog để xây dựng knowledge base"
+    ],
+    "updated_at": "2026-09-05T23:08:57.208439",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 8401,
+    "license": "Apache-2.0",
+    "html_url": "https://github.com/unclecode/crawl4ai",
+    "install_cmd": "pip install crawl4ai",
+    "architecture": "Async Pipeline",
+    "core_components": [
+      "AsyncWebCrawler",
+      "HTMLParser",
+      "DataCleaner"
+    ],
+    "code_snippet": "import asyncio\\nfrom crawl4ai import AsyncWebCrawler\\n\\nasync def main():\\n    async with AsyncWebCrawler() as crawler:\\n        result = await crawler.arun(url='https://example.com')\\n        print(result.markdown[:500])\\n\\nasyncio.run(main())"
+  },
+  {
+    "full_name": "FoundationAgents/OpenManus",
+    "repo_url": "https://github.com/FoundationAgents/OpenManus",
+    "stars": 58195,
+    "language": "Python",
+    "description": "No fortress, purely open ground.  OpenManus is Coming.",
+    "source_url": "",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\FoundationAgents_OpenManus_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:03:57.056616",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AI",
+      "autonomous agents",
+      "open-source"
+    ],
+    "summary": "OpenManus là một triển khai mã nguồn mở của Manus, cho phép tạo ra các agent tự hành hoạt động dựa trên mô hình ngôn ngữ lớn mà không cần mã mời. Dự án cung cấp một khung làm việc đơn giản để lập kế hoạch, thực hiện công cụ và quản lý bộ nhớ, phù hợp với việc phát triển nhanh các ứng dụng AI agent tùy chỉnh.",
+    "use_cases": [
+      "Tạo agent tự động thực hiện nhiệm vụ nghiên cứu web và tóm tắt thông tin",
+      "Xây dựng trợ lý mã nguồn mở giúp viết, sửa lỗi và tối ưu hóa code dựa trên hướng dẫn ngôn ngữ tự nhiên"
+    ],
+    "updated_at": "2026-09-05T23:09:11.493420",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 10102,
+    "license": "MIT",
+    "html_url": "https://github.com/FoundationAgents/OpenManus",
+    "install_cmd": "git clone https://github.com/FoundationAgents/OpenManus.git && cd OpenManus && pip install -e .",
+    "architecture": "Autonomous Multi-Agent",
+    "core_components": [
+      "Agent (luồng điều phối và quyết định)",
+      "Planner (sinh kế hoạch hành động từ mục tiêu)",
+      "ToolExecutor (thực hiện các công cụ như truy vấn web, chạy code)",
+      "Memory (bộ nhớ ngắn hạn và dài hạn để lưu trữ bối cảnh)"
+    ],
+    "code_snippet": "from openmanus import Agent, Planner, ToolExecutor, Memory\\n\\n# Khởi tạo thành phần\\nmemory = Memory()\\nplanner = Planner()\\ntool_executor = ToolExecutor()\\nagent = Agent(planner, tool_executor, memory)\\n\\n# Định nghĩa mục tiêu\\ngoal = \"Tìm kiếm thông tin về missão Artemis của NASA và tóm tắt trong 3 câu.\"\n\\n# Chạy agent\\nresult = agent.run(goal)\\nprint(result)\\n"
+  },
+  {
+    "full_name": "Comfy-Org/ComfyUI",
+    "repo_url": "https://github.com/Comfy-Org/ComfyUI",
+    "stars": 131622,
+    "language": "Python",
+    "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.",
+    "source_url": "",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\Comfy-Org_ComfyUI_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:14:38.540412",
+    "category": "Computer Vision & Generative Media",
+    "tags": [
+      "diffusion",
+      "GUI",
+      "Stable Diffusion",
+      "nodes",
+      "AI art"
+    ],
+    "summary": "Dự án Comfy-Org/ComfyUI: The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "updated_at": "2026-09-05T23:09:40.674962",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 15515,
+    "license": "GPL-3.0",
+    "html_url": "https://github.com/Comfy-Org/ComfyUI",
+    "install_cmd": "git clone https://github.com/Comfy-Org/ComfyUI && cd ComfyUI",
+    "architecture": "Open-source Python Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án ComfyUI\nimport sys\nprint('Đang nạp module ComfyUI...')\n"
+  },
+  {
+    "full_name": "fastapi/fastapi",
+    "repo_url": "https://github.com/fastapi/fastapi",
+    "stars": 102095,
+    "language": "Python",
+    "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+    "source_url": "",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\fastapi_fastapi_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:14:59.124215",
+    "category": "Backend & High-Performance Systems",
+    "tags": [
+      "fastapi",
+      "python",
+      "api",
+      "async",
+      "web framework"
+    ],
+    "summary": "FastAPI là framework web hiện đại, hiệu suất cao để xây dựng API bằng Python dựa trên type hints. Nó cho phép phát triển nhanh các endpoint RESTful, GraphQL hoặc WebSocket với tự động tạo tài liệu OpenAPI/Swagger. Dùng khi cần API mạnh mẽ, dễ mở rộng và tích hợp dễ dàng với các server ASGI như Uvicorn.",
+    "use_cases": [
+      "Xây dựng microservices RESTful với hiệu suất cao",
+      "Phát triển API nội bộ hoặc công khai hỗ trợ async/await và WebSocket"
+    ],
+    "updated_at": "2026-09-05T23:09:55.627046",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 9855,
+    "license": "MIT",
+    "html_url": "https://github.com/fastapi/fastapi",
+    "install_cmd": "pip install fastapi uvicorn[standard]",
+    "architecture": "Async Web Framework",
+    "core_components": [
+      "FastAPI application instance",
+      "Pydantic models for data validation",
+      "Starlette-based routing and dependency injection"
+    ],
+    "code_snippet": "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n\n# To run: uvicorn main:app --reload"
+  },
+  {
+    "full_name": "astral-sh/uv",
+    "repo_url": "https://github.com/astral-sh/uv",
+    "stars": 89479,
+    "language": "Rust",
+    "description": "An extremely fast Python package and project manager, written in Rust.",
+    "source_url": "https://github.com/astral-sh/uv",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\astral-sh_uv_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:15:04.026503",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "python",
+      "package manager",
+      "rust",
+      "cli",
+      "uv"
+    ],
+    "summary": "uv là một trình quản lý gói và dự án Python cực nhanh, viết bằng Rust, nhằm thay thế các công cụ như pip, pip-tools, poetry, virtualenv và nhiều hơn. Nó cung cấp khả năng cài đặt gói, tạo môi trường ảo và tạo lockfile toàn diện với hiệu năng 10-100x cao hơn pip.",
+    "use_cases": [
+      "Cài đặt và quản lý phụ thuộc Python trong dự án",
+      "Tạo môi trường ảo và khóa phiên bản dependencies qua lockfile"
+    ],
+    "updated_at": "2026-09-05T23:10:16.294687",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 3543,
+    "license": "Apache-2.0",
+    "html_url": "https://github.com/astral-sh/uv",
+    "install_cmd": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "architecture": "CLI Tool",
+    "core_components": [
+      "uv binary (CLI)",
+      "Dependency resolver",
+      "Project & lockfile manager"
+    ],
+    "code_snippet": "fn main() {\n    // Example: run `uv --version` to verify installation\n    let output = std::process::Command::new(\"uv\")\n        .arg(\"--version\")\n        .output()\n        .expect(\"Failed to execute uv\");\n    println!(\"uv version: {}\", String::from_utf8_lossy(&output.stdout));\n}"
+  },
+  {
+    "full_name": "AICPS/hydrafusion",
+    "repo_url": "https://github.com/AICPS/hydrafusion",
+    "stars": 30,
+    "language": "Python",
+    "description": "Model code for our paper titled \"HydraFusion: Context-Aware Selective Sensor Fusion for Robust and Efficient Autonomous Vehicle Perception\"",
+    "source_url": "https://www.facebook.com/reel/4101443290149537",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\AICPS_hydrafusion_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:53:32.282748",
+    "category": "Computer Vision & Generative Media",
+    "tags": [
+      "Python"
+    ],
+    "summary": "HydraFusion là mô hình fusión cảm biến bối cảnh cho xe tự hành, kết hợp dữ liệu từ camera, radar và lidar để cải thiện độ chính xác và hiệu suất nhận diện đối tượng trong các điều kiện môi trường phức tạp. Mô hình sử dụng kiến trúc Stem-Branch-Gate với backbone ResNet-18 và Faster R-CNN để chọn lọc và fusión các đặc trưng từ các cảm biến hoạt động.",
+    "use_cases": [
+      "Nhận diện và theo dõi đối tượng cho xe tự hành trong thời tiết schlecht (mưa, sương, đêm)",
+      "Tích hợp vào hệ thống percep­tion của xe tự động để giảm số lượng cảm biến cần thiết mà vẫn duy trì độ tin cậy cao"
+    ],
+    "updated_at": "2026-09-05T23:10:34.166250",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 8,
+    "license": "MIT",
+    "html_url": "https://github.com/AICPS/hydrafusion",
+    "install_cmd": "pip install torch==1.9 torchvision",
+    "architecture": "Modular Neural Network with Stem-Branch-Gate-Fusion pipeline",
+    "core_components": [
+      "HydraFusion",
+      "Stem",
+      "Branch",
+      "Gate",
+      "Fusion"
+    ],
+    "code_snippet": "import torch\nfrom hydranet import HydraFusion\nfrom stem import Stem\nfrom branch import Branch\nfrom gate import Gate\nfrom fusion import Fusion\n\n# Dummy inputs: 2 camera images, 1 radar, 1 lidar (B=1, C=3, H=224, W=224)\ncam1 = torch.randn(1, 3, 224, 224)\ncam2 = torch.randn(1, 3, 224, 224)\nradar = torch.randn(1, 3, 224, 224)\nlidar = torch.randn(1, 3, 224, 224)\n\n# Initialize model\nmodel = HydraFusion()\n\n# Forward pass\noutputs = model([cam1, cam2, radar, lidar])\nprint('Detected boxes:', outputs['boxes'])\nprint('Scores:', outputs['scores'])\nprint('Labels:', outputs['labels'])\n"
+  },
+  {
+    "full_name": "DIYgod/RSSHub",
+    "repo_url": "https://github.com/DIYgod/RSSHub",
+    "stars": 46037,
+    "language": "TypeScript",
+    "description": "🧡 Everything is RSSible",
+    "source_url": "https://www.facebook.com/reel/1550984832863943",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\DIYgod_RSSHub_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:53:40.708362",
+    "category": "Backend & High-Performance Systems",
+    "tags": [
+      "rss",
+      "feed",
+      "api",
+      "typescript",
+      "web-scraping"
+    ],
+    "summary": "RSSHub là một dịch vụ tự động tạo RSS feed từ nhiều trang web và API khác nhau, cho phép người dùng theo dõi nội dung mà không cần API chính thức. Dùng khi muốn tổng hợp tin tức, bài viết, video từ các nền tảng như YouTube, Twitter, Bilibili… vào một reader RSS.",
+    "use_cases": [
+      "Tạo feed cá nhân cho các trang web không cung cấp RSS (ví dụ: Twitter, Bilibili) và đọc qua Inoreader, Feedbin.",
+      "Tích hợp vào quy trình tự động hoá (IFTTT, Zapier, GitHub Actions) để kích hoạt công việc khi có bài viết mới."
+    ],
+    "updated_at": "2026-09-05T23:11:01.329648",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 10195,
+    "license": "AGPL-3.0",
+    "html_url": "https://github.com/DIYgod/RSSHub",
+    "install_cmd": "git clone https://github.com/DIYgod/RSSHub.git && cd RSSHub && npm install && npm start",
+    "architecture": "Node.js/Express-based web service with modular route handlers and async processing",
+    "core_components": [
+      "lib/rss.js – hàm tạo RSS feed chuẩn",
+      "routes/ – bộ xử lý route cho từng nền tảng (bilibili, twitter, youtube, …)",
+      "lib/cache.js – hệ thống caching nội dung",
+      "lib/utils.js – các tiện ích chung (request, parse)"
+    ],
+    "code_snippet": "import express from 'express';\nimport { createRSSHub } from 'rsshub';\n\nconst app = express();\nconst rsshub = createRSSHub();\n\n// Mount RSSHub middleware\napp.use(rsshub.middleware);\n\nconst PORT = process.env.PORT || 3000;\napp.listen(PORT, () => {\n  console.log(`🚀 RSSHub is running on http://localhost:${PORT}`);\n});"
+  },
+  {
+    "full_name": "NousResearch/hermes-agent",
+    "repo_url": "https://github.com/NousResearch/hermes-agent",
+    "stars": 241844,
+    "language": "Python",
+    "description": "The agent that grows with you",
+    "source_url": "https://www.facebook.com/reel/1440633317986519",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\NousResearch_hermes-agent_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T16:53:47.895941",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AI agent",
+      "Hermes",
+      "autonomous"
+    ],
+    "summary": "Hermes Agent là một AI agent tự cải thiện được xây dựng bởi Nous Research, có vòng lặp học tập nội bộ để tạo và nâng cấp kỹ năng tự động. Nó tích hợp các mô hình LLM như Claude, GPT để thực hiện các tác vụ phù hợp với nhu cầu người dùng. Dùng khi cần một trợ lý thông minh có khả năng học hỏi từ kinh nghiệm và mở rộng chức năng mà không cần can thiệp thủ công.",
+    "use_cases": [
+      "Trợ lý cá nhân tự động hóa công việc hàng ngày (lên lịch, trả email, tra cứu thông tin)",
+      "Phát triển và kiểm thử kỹ năng mới cho agent qua vòng lặp học tập tự động"
+    ],
+    "updated_at": "2026-09-05T23:11:29.453936",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 49661,
+    "license": "MIT",
+    "html_url": "https://github.com/NousResearch/hermes-agent",
+    "install_cmd": "pip install hermes-agent",
+    "architecture": "Autonomous Agent with Built‑in Learning Loop",
+    "core_components": [
+      "HermesAgent (luồng điều phối chính)",
+      "SkillManager (tạo, lưu trữ và nâng cấp kỹ năng)",
+      "LearningLoop (phản hồi và cập nhật kiến thức từ trải nghiệm)",
+      "LLMInterface (kết nối với các mô hình như Claude, GPT)"
+    ],
+    "code_snippet": "from hermes_agent import HermesAgent\\n\\n# Khởi tạo agent\\nagent = HermesAgent(model='claude')\\n\\n# Định nghĩa một mục tiêu đơn giản\\ngoal = \"Tóm tắt bài báo về AI trong 3 câu\"\\n\\n# Chạy agent để đạt mục tiêu\\nresult = agent.run(goal)\\n\\nprint(\"Kết quả:\")\\nprint(result)"
+  },
+  {
+    "full_name": "adamdickmeiss/tigon",
+    "repo_url": "https://github.com/adamdickmeiss/tigon",
+    "stars": 0,
+    "language": "C",
+    "description": "bcm5720 driver for Linux 4.4 / 4.8 - no longer supported by Broadcom",
+    "source_url": "https://www.facebook.com/reel/343266126497999",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\adamdickmeiss_tigon_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:05:04.635069",
+    "category": "Backend & High-Performance Systems",
+    "tags": [
+      "network driver",
+      "Linux kernel",
+      "Broadcom bcm5720"
+    ],
+    "summary": "Tigon là driver nhân Linux cho bộ điều khiển Ethernet Broadcom BCM5720, hỗ trợ kernel 4.4 và 4.8. Nó cung cấp giao tiếp phần cứng mạng cho hệ điều hành khi Broadcom không còn hỗ trợ chính thức.",
+    "use_cases": [
+      "Tích hợp vào kernel Linux để hỗ trợ NIC BCM5720 trên máy chủ hoặc workstation",
+      "Phát triển hoặc tùy chỉnh driver cho thiết bị mạng cũ trong môi trường doanh nghiệp"
+    ],
+    "updated_at": "2026-09-05T23:11:55.822129",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 0,
+    "license": "None",
+    "html_url": "https://github.com/adamdickmeiss/tigon",
+    "install_cmd": "git clone https://github.com/adamdickmeiss/tigon.git && cd tigon && make && sudo insmod tigon.ko",
+    "architecture": "Kernel Module",
+    "core_components": [
+      "tigon.c (driver core)",
+      "tigon.h (header)"
+    ],
+    "code_snippet": "#include <linux/module.h>\n#include <linux/kernel.h>\n#include <linux/init.h>\n\nstatic int __init tigon_hello_init(void)\n{\n    pr_info(\"Hello, Tigon driver\\n\");\n    return 0;\n}\n\nstatic void __exit tigon_hello_exit(void)\n{\n    pr_info(\"Goodbye, Tigon driver\\n\");\n}\n\nmodule_init(tigon_hello_init);\nmodule_exit(tigon_hello_exit);\nMODULE_LICENSE(\"GPL\");\nMODULE_AUTHOR(\"adamdickmeiss\");\nMODULE_DESCRIPTION(\"A simple Hello World kernel module for Tigon\");"
+  },
+  {
+    "full_name": "HewlettPackard/PowerShell-ProLiant-SDK",
+    "repo_url": "https://github.com/HewlettPackard/PowerShell-ProLiant-SDK",
+    "stars": 97,
+    "language": "PowerShell",
+    "description": "PowerShell sample scripts for managing HPE servers",
+    "source_url": "https://www.facebook.com/reel/2223364987917220",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\HewlettPackard_PowerShell-ProLiant-SDK_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:05:13.873321",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "PowerShell",
+      "HPE",
+      "server management"
+    ],
+    "summary": "Cung cấp các script PowerShell mẫu để quản lý và cấu hình máy chủ HPE ProLiant qua SDK, giúp tự động hóa các tác vụ phần cứng như監控, cấu hình BIOS, cập nhật firmware. Dùng khi cần tích hợp quản lý server vào pipeline tự động hóa hoặc quản trị hạ tầng.",
+    "use_cases": [
+      "Tự động cấu hình BIOS và RAID trên máy chủ HPE ProLiant",
+      "Giám sát sức khỏe phần cứng và tạo báo cáo cảnh báo"
+    ],
+    "updated_at": "2026-09-05T23:12:12.438576",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 44,
+    "license": "None",
+    "html_url": "https://github.com/HewlettPackard/PowerShell-ProLiant-SDK",
+    "install_cmd": "git clone https://github.com/HewlettPackard/PowerShell-ProLiant-SDK.git",
+    "architecture": "CLI Tool",
+    "core_components": [
+      "ProLiant SDK PowerShell Module",
+      "Sample Scripts"
+    ],
+    "code_snippet": "# Hello World: Lấy thông tin hệ thống từ máy chủ HPE ProLiant\nImport-Module .\\ProLiantSDK.psd1\n\n$server = \"10.0.0.1\"\n$username = \"admin\"\n$password = ConvertTo-SecureString \"pwd\" -AsPlainText -Force\n$cred = New-Object System.Management.Automation.PSCredential ($username, $password)\n\ntry {\n    $info = Get-HPEServerInfo -ServerAddress $server -Credential $cred\n    Write-Output \"Máy chủ: $($info.Hostname)\"\n    Write-Output \"Model: $($info.Model)\"\n    Write-Output \"Serial: $($info.SerialNumber)\"\n    Write-Output \"BIOS Version: $($info.BiosVersion)\"\n} catch {\n    Write-Error \"Không thể kết nối tới $_\"\n}"
+  },
+  {
+    "full_name": "chrismwilliams/astro-theme-cactus",
+    "repo_url": "https://github.com/chrismwilliams/astro-theme-cactus",
+    "stars": 1723,
+    "language": "Astro",
+    "description": "A simple Astro theme. Use it to create your blog or website.",
+    "source_url": "https://www.facebook.com/reel/522000147374502",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\chrismwilliams_astro-theme-cactus_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:14:52.363890",
+    "updated_at": "2026-09-05T23:12:32.133934",
+    "category": "Fullstack, Web & UI Frameworks",
+    "tags": [
+      "Astro",
+      "theme",
+      "blog"
+    ],
+    "summary": "Astro Cactus là một starter theme đơn giản dựa trên Astro và Tailwind CSS, giúp tạo nhanh blog hoặc website tĩnh với hỗ trợ MD/MDX, chế độ tối/sáng, SEO và RSS tự động. Dùng khi bạn cần một nền tảng nhanh, dễ tùy chỉnh để xuất bản nội dung cá nhân hoặc portfolio mà không phải cấu hình phức tạp.",
+    "use_cases": [
+      "Blog cá nhân hoặc kỹ thuật",
+      "Trang portfolio hoặc trang giới thiệu sản phẩm"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 278,
+    "license": "MIT",
+    "html_url": "https://github.com/chrismwilliams/astro-theme-cactus",
+    "install_cmd": "npx create-astro@latest my-site --template chrismwilliams/astro-theme-cactus",
+    "architecture": "Static Site Generator (Astro + Tailwind + MDX)",
+    "core_components": [
+      "Astro pages & layouts",
+      "Tailwind CSS styling",
+      "MDX content with frontmatter",
+      "Satori OG image generation",
+      "Automatic RSS & sitemap"
+    ],
+    "code_snippet": "---\\nimport Layout from '../layouts/BaseLayout.astro';\\nexport const frontmatter = {\\n  title: 'Hello Cactus',\\n  date: '2025-08-22',\\n};\\n---\\n<Layout frontmatter={frontmatter}>\\n  <h1>Hello, Astro Cactus!</h1>\\n  <p>Welcome to your new blog.</p>\\n</Layout>"
+  },
+  {
+    "full_name": "Giangvp689/LaptrinhNhung",
+    "repo_url": "https://github.com/Giangvp689/LaptrinhNhung",
+    "stars": 16,
+    "language": "Unknown",
+    "description": "Không có mô tả.",
+    "source_url": "https://www.facebook.com/reel/8663168583748941",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\Giangvp689_LaptrinhNhung_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:15:01.395324",
+    "category": "Education, Cheatsheets & Resource Guides",
+    "tags": [
+      "programming",
+      "learning",
+      "resources"
+    ],
+    "summary": "LaptrinhNhung là bộ tài liệu học lập trình bằng tiếng Việt, tổng hợp bài học, ví dụ code và mẹo nhanh cho các ngôn ngữ phổ biến. Dùng khi cần tra cứu nhanh hoặc học tự học lập trình.",
+    "use_cases": [
+      "Tra cứu cú pháp nhanh",
+      "Học lập trình tự directed"
+    ],
+    "updated_at": "2026-09-05T23:13:02.189553",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 0,
+    "license": "None",
+    "html_url": "https://github.com/Giangvp689/LaptrinhNhung",
+    "install_cmd": "git clone https://github.com/Giangvp689/LaptrinhNhung.git",
+    "architecture": "Static Documentation",
+    "core_components": [
+      "Tài liệu bài học",
+      "Mã ví dụ",
+      "Bài tập"
+    ],
+    "code_snippet": "def hello():\\n    print(\"Xin chào, thế giới!\")\\n\\nif __name__ == \"__main__\":\\n    hello()"
+  },
+  {
+    "full_name": "koala73/worldmonitor",
+    "repo_url": "https://github.com/koala73/worldmonitor",
+    "stars": 85611,
+    "language": "TypeScript",
+    "description": "Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface",
+    "source_url": "https://www.facebook.com/reel/4479946592333169",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\koala73_worldmonitor_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:17:41.881743",
+    "updated_at": "2026-09-05T23:13:31.303764",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AI",
+      "news aggregation",
+      "geopolitics",
+      "dashboard",
+      "TypeScript"
+    ],
+    "summary": "Dự án koala73/worldmonitor: Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 12923,
+    "license": "AGPL-3.0",
+    "html_url": "https://github.com/koala73/worldmonitor",
+    "install_cmd": "git clone https://github.com/koala73/worldmonitor && cd worldmonitor",
+    "architecture": "Open-source TypeScript Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án worldmonitor\nimport sys\nprint('Đang nạp module worldmonitor...')\n"
+  },
+  {
+    "full_name": "solofounder-ai/solofounder",
+    "repo_url": "https://github.com/solofounder-ai/solofounder",
+    "stars": 3,
+    "language": "JavaScript",
+    "description": "AI virtual team for solopreneurs. One request — SoloFounder assembles specialist roles, designs the optimal workflow, and executes with review gates at every stage",
+    "source_url": "https://www.facebook.com/reel/1778571810053730",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\solofounder-ai_solofounder_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:17:50.286504",
+    "updated_at": "2026-09-05T23:13:51.952747",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AI",
+      "virtual team",
+      "solopreneur",
+      "workflow automation"
+    ],
+    "summary": "SoloFounder giải quyết bài toán của founder một người cần thực hiện nhiều vai trò chuyên biệt (phát triển phần mềm, marketing, pháp lý, thiết kế…) mà không phải thuê đội ngũ thực. Nó tự động lắp ráp đội ngũ ảo AI chuyên môn, tạo quy trình làm việc tối ưu và thực hiện với các cổng xem xét ở mỗi giai đoạn. Dùng khi bạn cần một giải pháp end-to-end linh hoạt, không có pipeline cứng, để nhanh chóng chuyển ý tưởng thành sản phẩm.",
+    "use_cases": [
+      "Xây dựng MVP phần mềm từ ý tưởng đến bản phát hành",
+      "Thiết kế và triển khai chiến dịch marketing bao gồm nội dung, quảng cáo và phân tích",
+      "Kiểm tra hợp đồng pháp lý, tạo tài liệu tuân thủ và đưa ra lời khuyên",
+      "Thiết kế thương hiệu, logo và hướng dẫn kiểu dáng cho sản phẩm"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 0,
+    "license": "MIT",
+    "html_url": "https://github.com/solofounder-ai/solofounder",
+    "install_cmd": "npm install solofounder",
+    "architecture": "Autonomous Multi-Agent",
+    "core_components": [
+      "TeamOrchestrator",
+      "SpecialistAgent",
+      "WorkflowGenerator",
+      "ReviewGate"
+    ],
+    "code_snippet": "const { SoloFounder } = require('solofounder');\n\nasync function demo() {\n  // Định nghĩa mục tiêu kinh doanh\n  const goal = { description: 'Build a landing page for a SaaS product', techStack: ['React', 'TailwindCSS'] };\n\n  // Tự động lắp ráp đội ngũ chuyên gia\n  const team = await SoloFounder.assembleTeam(goal);\n  console.log('Assembled team:', team.map(a => a.role));\n\n  // Thực hiện quy trình làm việc được tạo ra\n  const result = await SoloFounder.execute(team, goal);\n  console.log('Output:', result);\n}\n\ndemo().catch(console.error);\n"
+  },
+  {
+    "full_name": "openclaw/openclaw",
+    "repo_url": "https://github.com/openclaw/openclaw",
+    "stars": 388945,
+    "language": "TypeScript",
+    "description": "The AI that really does things. Any OS. Any Platform. The lobster way. 🦞 ",
+    "source_url": "https://www.facebook.com/reel/2593254667801446",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\openclaw_openclaw_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:17:57.529940",
+    "updated_at": "2026-09-05T23:14:10.062832",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AI",
+      "autonomous",
+      "cross-platform"
+    ],
+    "summary": "OpenClaw là một AI assistant chạy trên thiết bị cá nhân, tích hợp các mô hình AI, công cụ và các kênh nhắn tin qua một Gateway, cho phép người dùng sở hữu dữ liệu và tương tác trong các ứng dụng họ đã dùng. Dùng khi muốn một trợ lý thông minh chạy cục bộ, không phụ thuộc vào dịch vụ đám mây, hỗ trợ nhiều nền tảng.",
+    "use_cases": [
+      "Trò chuyện với AI trong Discord, Slack hoặc ứng dụng nhắn tin cá nhân",
+      "Thực hiện tự động hóa tác vụ cá nhân như quản lý lịch, ghi chú qua lệnh ngôn ngữ tự nhiên"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 81713,
+    "license": "NOASSERTION",
+    "html_url": "https://github.com/openclaw/openclaw",
+    "install_cmd": "npm install openclaw",
+    "architecture": "Modular Gateway Architecture",
+    "core_components": [
+      "Gateway",
+      "Model Adapter",
+      "Channel Adapter",
+      "Tool Plugin"
+    ],
+    "code_snippet": "import { OpenClaw } from 'openclaw';\\n\\n// Khởi tạo OpenClaw với cấu hình cơ bản\\nconst assistant = new OpenClaw({\\n  gateway: { port: 3000 },\\n  models: [{ provider: 'local', name: 'llama2' }],\\n  channels: [{ type: 'discord', token: process.env.DISCORD_TOKEN }]\\n});\\n\\n// Bắt đầu gateway và kết nối kênh\\nassistant.start().then(() => {\\n  console.log('OpenClaw gateway is running on http://localhost:3000');\\n  // Gửi tin nhắn thử\\n  assistant.sendMessage('Hello from OpenClaw!', { channel: 'discord' });\\n});"
+  },
+  {
+    "full_name": "Cuongyd196/auto-compare-video",
+    "repo_url": "https://github.com/Cuongyd196/auto-compare-video",
+    "stars": 165,
+    "language": "HTML",
+    "description": "🎬 Tạo video \"so sánh kiến thức\" ngắn tự động — HyperFrames + AI voice, 1 template nhiều chủ đề.",
+    "source_url": "https://www.facebook.com/reel/1855108012137489",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\Cuongyd196_auto-compare-video_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:18:04.945643",
+    "updated_at": "2026-09-05T23:14:26.686063",
+    "category": "Computer Vision & Generative Media",
+    "tags": [
+      "video generation",
+      "AI voice",
+      "HyperFrames",
+      "template",
+      "auto compare"
+    ],
+    "summary": "Repository cung cấp một template HyperFrames để tự động tạo video ngắn so sánh kiến thức (TikTok/Reels/Shorts) bằng cách thay đổi nội dung trong bố cục cố định, kết hợp AI voice-over. Dùng để nhanh chóng sản xuất series video giáo dục mà không cần thiết kế lại mỗi lần.",
+    "use_cases": [
+      "Tạo series video so sánh khái niệm để đăng trên mạng xã hội ngắn",
+      "Sản xuất nội dung giáo dục nhanh cho khóa học trực tuyến hoặc bài giảng microlearning"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 94,
+    "license": "MIT",
+    "html_url": "https://github.com/Cuongyd196/auto-compare-video",
+    "install_cmd": "git clone https://github.com/Cuongyd196/auto-compare-video.git && cd auto-compare-video && npm install",
+    "architecture": "Template-based Video Generation Pipeline",
+    "core_components": [
+      "HyperFrames template file",
+      "AI voice synthesis script (using Claude/Azure TTS)",
+      "JSON configuration for topic pairs"
+    ],
+    "code_snippet": "const { renderVideo } = require('@hyperframes/cli');\n\nasync function generateComparisonVideo(topicA, topicB) {\n  const config = {\n    template: 'comparison-template.hf',\n    data: { left: topicA, right: topicB },\n    voice: { provider: 'azure', language: 'vi-VN', name: 'vi-VN-HoaiNeural' }\n  };\n  await renderVideo(config, 'output/video.mp4');\n  console.log('Video rendered:', 'output/video.mp4');\n}\n\n// Example usage\ngenerateComparisonVideo('Thiên thạch', 'Sao băng');"
+  },
+  {
+    "full_name": "public-apis/public-apis",
+    "repo_url": "https://github.com/public-apis/public-apis",
+    "stars": 475759,
+    "language": "Python",
+    "description": "A collective list of free APIs",
+    "source_url": "https://www.facebook.com/reel/1789060445632979",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\public-apis_public-apis_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:19:44.000451",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "API",
+      "danh sách",
+      "miễn phí",
+      "nguồn tài nguyên"
+    ],
+    "summary": "Dự án public-apis/public-apis: A collective list of free APIs",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "updated_at": "2026-09-05T23:14:56.164832",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 52553,
+    "license": "MIT",
+    "html_url": "https://github.com/public-apis/public-apis",
+    "install_cmd": "git clone https://github.com/public-apis/public-apis && cd public-apis",
+    "architecture": "Open-source Python Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án public-apis\nimport sys\nprint('Đang nạp module public-apis...')\n"
+  },
+  {
+    "full_name": "ultraworkers/claw-code",
+    "repo_url": "https://github.com/ultraworkers/claw-code",
+    "stars": 195170,
+    "language": "Rust",
+    "description": "An agent-managed museum exhibit, built in Rust with Gajae-Code / LazyCodex — developed and maintained with no human intervention.",
+    "source_url": "https://www.facebook.com/reel/2172650416653323",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\ultraworkers_claw-code_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:19:52.764314",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "Rust",
+      "AI agents",
+      "museum exhibit"
+    ],
+    "summary": "Claw Code là một triển lãm bảo tàng được quản lý hoàn toàn bởi các agent tự trị, viết bằng Rust và tích hợp Gajae-Code cùng LazyCodex để tự động hoá quy trình phát triển, triển khai và bảo trì mà không cần can thiệp con người. Dự án minh họa cách các agent có thể tương tác với môi trường thực tế để tạo ra trải nghiệm tương tác liên tục và thông minh.",
+    "use_cases": [
+      "Triển lãm bảo tàng tương tác tự động",
+      "Nghiên cứu và thử nghiệm hệ thống agent tự trị trong môi trường vật lý"
+    ],
+    "updated_at": "2026-09-05T23:15:12.283563",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 108699,
+    "license": "MIT",
+    "html_url": "https://github.com/ultraworkers/claw-code",
+    "install_cmd": "git clone https://github.com/ultraworkers/claw-code.git && cd claw-code && cargo build --release",
+    "architecture": "Autonomous Multi-Agent",
+    "core_components": [
+      "Agent Manager",
+      "Exhibit Controller",
+      "Gajae-Code Harness",
+      "LazyCodex Interface"
+    ],
+    "code_snippet": "use claw_code::{Agent, Exhibit};\n\n#[tokio::main]\nasync fn main() {\n    // Khởi tạo agent với tên \"claw-bot\"\n    let mut agent = Agent::new(\"claw-bot\");\n    \n    // Tải mô tả triển lãm từ cấu hình\n    let exhibit = Exhibit::load(\"museum_hall\");\n    \n    // Gắn agent vào triển lãm\n    agent.attach_exhibit(exhibit).await;\n    \n    // Bắt đầu vòng lặp tự trị của agent\n    agent.run().await;\n}"
+  },
+  {
+    "full_name": "daimajia/AndroidViewAnimations",
+    "repo_url": "https://github.com/daimajia/AndroidViewAnimations",
+    "stars": 12442,
+    "language": "Java",
+    "description": "Cute view animation collection.",
+    "source_url": "https://www.facebook.com/reel/1012093204026724",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\daimajia_AndroidViewAnimations_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:19:53.308941",
+    "updated_at": "2026-09-05T23:15:29.241257",
+    "category": "Fullstack, Web & UI Frameworks",
+    "tags": [
+      "Android",
+      "Animation",
+      "UI"
+    ],
+    "summary": "Thư viện AndroidViewAnimations cung cấp bộ sưu tập các hiệu ứng animation đẹp và dễ sử dụng cho các view Android, bao gồm flash, pulse, shake, wobble... Dùng để tăng tính tương tác và sinh động cho giao diện mà không cần viết animation phức tạp từ đầu.",
+    "use_cases": [
+      "Thêm hiệu ứng khi nút được nhấn hoặc khi hiển thị dialog",
+      "Tạo hiệu ứng loading hoặc khi item trong RecyclerView xuất hiện"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 2412,
+    "license": "MIT",
+    "html_url": "https://github.com/daimajia/AndroidViewAnimations",
+    "install_cmd": "git clone https://github.com/daimajia/AndroidViewAnimations.git",
+    "architecture": "Android Library (AAR)",
+    "core_components": [
+      "YoYo",
+      "Techniques"
+    ],
+    "code_snippet": "import android.os.Bundle;\nimport android.support.v7.app.AppCompatActivity;\nimport android.view.View;\nimport com.daimajia.androidanimations.library.Techniques;\nimport com.daimajia.androidanimations.library.YoYo;\n\npublic class MainActivity extends AppCompatActivity {\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n        View myView = findViewById(R.id.my_view);\n        // Áp dụng hiệu ứng Tada lặp 3 lần, mỗi lần 600ms\n        YoYo.with(Techniques.Tada)\n            .duration(600)\n            .repeat(3)\n            .playOn(myView);\n    }\n}\n"
+  },
+  {
+    "full_name": "illacloud/illa-builder",
+    "repo_url": "https://github.com/illacloud/illa-builder",
+    "stars": 12312,
+    "language": "TypeScript",
+    "description": "Low-code platform allows you to build business apps, enables you to quickly create internal tools such as dashboard, crud app, admin panel, crm, cms, etc. Supports PostgreSQL, MySQL, Supabase, GraphQL, MongoDB, MSSQL, Rest API, Hugging Face, Redis, etc. Automate workflows with schedule or webhook. Open source Retool. ",
+    "source_url": "https://www.facebook.com/reel/1376260454665968",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\illacloud_illa-builder_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:01.098717",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "low-code",
+      "internal tools",
+      "dashboard",
+      "CRUD",
+      "workflow automation"
+    ],
+    "summary": "Dự án illacloud/illa-builder: Low-code platform allows you to build business apps, enables you to quickly create internal tools such as dashboard, crud app, admin panel, crm, cms, etc. Supports PostgreSQL, MySQL, Supabase, GraphQL, MongoDB, MSSQL, Rest API, Hugging Face, Redis, etc. Automate workflows with schedule or webhook. Open source Retool. ",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "updated_at": "2026-09-05T23:15:58.329605",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 1208,
+    "license": "Apache-2.0",
+    "html_url": "https://github.com/illacloud/illa-builder",
+    "install_cmd": "git clone https://github.com/illacloud/illa-builder && cd illa-builder",
+    "architecture": "Open-source TypeScript Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án illa-builder\nimport sys\nprint('Đang nạp module illa-builder...')\n"
+  },
+  {
+    "full_name": "jwasham/coding-interview-university",
+    "repo_url": "https://github.com/jwasham/coding-interview-university",
+    "stars": 360389,
+    "language": "Unknown",
+    "description": "A complete computer science study plan to become a software engineer.",
+    "source_url": "https://www.facebook.com/reel/492927983523074",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\jwasham_coding-interview-university_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:05.105674",
+    "category": "Education, Cheatsheets & Resource Guides",
+    "tags": [
+      "study-plan",
+      "computer-science",
+      "interview-preparation"
+    ],
+    "summary": "Repo cung cấp một lộ trình học toàn diện về khoa học máy tính và cấu trúc dữ liệu để chuẩn bị cho các buổi phỏng vấn kỹ thuật tại các công ty công nghệ lớn. Nó bao gồm danh sách chủ đề, tài liệu tham khảo và bản dịch nhiều ngôn ngữ. Dùng khi muốn tự học hệ thống để vượt qua phỏng vấn tại Amazon, Facebook, Google, Microsoft.",
+    "use_cases": [
+      "Chuẩn bị phỏng vấn kỹ thuật tại FAANG và các công ty phần mềm lớn",
+      "Học lại kiến thức cơ bản về thuật toán và cấu trúc dữ liệu cho nhà phát triển phần mềm"
+    ],
+    "updated_at": "2026-09-05T23:16:17.603408",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 84805,
+    "license": "CC-BY-SA-4.0",
+    "html_url": "https://github.com/jwasham/coding-interview-university",
+    "install_cmd": "git clone https://github.com/jwasham/coding-interview-university.git",
+    "architecture": "Static Documentation",
+    "core_components": [
+      "Study Plan Outline",
+      "Topic Lists",
+      "Translation Files"
+    ],
+    "code_snippet": "#!/bin/bash\n# Hello World from Coding Interview University\n echo \"Welcome to Coding Interview University!\"\n echo \"Start your study plan by opening the README.md file.\"\n"
+  },
+  {
+    "full_name": "qctfw/wibusaka",
+    "repo_url": "https://github.com/qctfw/wibusaka",
+    "stars": 61,
+    "language": "PHP",
+    "description": "A simple website to inform you where to watch anime legally in Indonesia.",
+    "source_url": "https://www.facebook.com/reel/324276933867256",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\qctfw_wibusaka_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:08.750055",
+    "category": "Backend & High-Performance Systems",
+    "tags": [
+      "anime",
+      "legal streaming",
+      "Indonesia",
+      "PHP website"
+    ],
+    "summary": "Dự án qctfw/wibusaka: A simple website to inform you where to watch anime legally in Indonesia.",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "updated_at": "2026-09-05T23:16:47.162773",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 5,
+    "license": "None",
+    "html_url": "https://github.com/qctfw/wibusaka",
+    "install_cmd": "git clone https://github.com/qctfw/wibusaka && cd wibusaka",
+    "architecture": "Open-source PHP Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án wibusaka\nimport sys\nprint('Đang nạp module wibusaka...')\n"
+  },
+  {
+    "full_name": "bangoc123/learn-machine-learning-in-two-months",
+    "repo_url": "https://github.com/bangoc123/learn-machine-learning-in-two-months",
+    "stars": 2149,
+    "language": "Jupyter Notebook",
+    "description": "Những kiến thức cần thiết để học tốt Machine Learning trong vòng 2 tháng. Essential Knowledge for learning Machine Learning in two months.",
+    "source_url": "https://www.facebook.com/reel/1067882947966660",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\bangoc123_learn-machine-learning-in-two-months_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:18.530452",
+    "updated_at": "2026-09-05T23:17:06.665230",
+    "category": "Education, Cheatsheets & Resource Guides",
+    "tags": [
+      "machine learning",
+      "education",
+      "tutorial"
+    ],
+    "summary": "Khoá học cung cấp lộ trình học Machine Learning và Deep Learning trong 2 tháng, từ cơ bản Python và NumPy đến các mô hình cao cấp như TensorFlow/Keras. Mục tiêu là giúp người mới bắt đầu nắm vững lý thuyết và thực hành qua các notebook thực tế. Dùng khi cần một lộ trình có cấu trúc để tự học ML hoặc chuẩn bị cho dự án thực tế.",
+    "use_cases": [
+      "Self-study machine learning roadmap for beginners",
+      "Prepare for machine learning interviews with hands‑on projects",
+      "Build first TensorFlow/Keras models following step‑by‑step notebooks"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 667,
+    "license": "None",
+    "html_url": "https://github.com/bangoc123/learn-machine-learning-in-two-months",
+    "install_cmd": "git clone https://github.com/bangoc123/learn-machine-learning-in-two-months.git",
+    "architecture": "Jupyter Notebook Series",
+    "core_components": [
+      "Learning notebooks (Python, NumPy, Pandas)",
+      "TensorFlow/Keras experiments and tutorials",
+      "Project‑based exercises and solutions"
+    ],
+    "code_snippet": "import tensorflow as tf\nimport numpy as np\n\n# Load and normalize MNIST dataset\nmnist = tf.keras.datasets.mnist\n(x_train, y_train), (x_test, y_test) = mnist.load_data()\nx_train, x_test = x_train / 255.0, x_test / 255.0\n\n# Build a simple neural network\nmodel = tf.keras.models.Sequential([\n    tf.keras.layers.Flatten(input_shape=(28, 28)),\n    tf.keras.layers.Dense(128, activation='relu'),\n    tf.keras.layers.Dropout(0.2),\n    tf.keras.layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(optimizer='adam',\n              loss='sparse_categorical_crossentropy',\n              metrics=['accuracy'])\n\n# Train the model\nmodel.fit(x_train, y_train, epochs=5)\n\n# Evaluate\nmodel.evaluate(x_test, y_test, verbose=2)"
+  },
+  {
+    "full_name": "Significant-Gravitas/AutoGPT",
+    "repo_url": "https://github.com/Significant-Gravitas/AutoGPT",
+    "stars": 187149,
+    "language": "Python",
+    "description": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.",
+    "source_url": "https://www.facebook.com/reel/251573134417706",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\Significant-Gravitas_AutoGPT_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:32.621573",
+    "updated_at": "2026-09-05T23:17:32.485231",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "AutoGPT",
+      "autonomous agents",
+      "LLM"
+    ],
+    "summary": "AutoGPT là một framework cho phép tạo ra các agent AI tự chủ có thể tự lập lập kế hoạch, thực hiện các nhiệm vụ và trả kết quả dựa trên mô hình LLM như GPT-4. Người dùng chỉ cần mô tả mục tiêu, AutoGPT sẽ tự động xây dựng, chạy agent và báo cáo tiến độ. Dùng khi muốn tự động hoá công việc lặp lại, nghiên cứu, viết mã, hoặc bất kỳ quy trình nào có thể được chia thành các bước nhỏ.",
+    "use_cases": [
+      "Tự động hoá nghiên cứu thị trường và tóm tắt báo cáo",
+      "Tạo mã nguồn hoặc sửa lỗi dựa trên mô tả chức năng",
+      "Thực hiện các quy trình làm việc văn phòng như lên lịch họp, soạn email"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 46041,
+    "license": "NOASSERTION",
+    "html_url": "https://github.com/Significant-Gravitas/AutoGPT",
+    "install_cmd": "pip install autogpt",
+    "architecture": "Autonomous Agent Loop",
+    "core_components": [
+      "Agent",
+      "Memory",
+      "Planner",
+      "Executor"
+    ],
+    "code_snippet": "import os\nfrom autogpt import AutoGPT\n\nos.environ[\"OPENAI_API_KEY\"] = \"sk-your-openai-key\"\nagent = AutoGPT(goal=\"Write a Python script that prints 'Hello, World!'\")\nresult = agent.start()\nprint(result)"
+  },
+  {
+    "full_name": "AnimeKaizoku/SaitamaRobot",
+    "repo_url": "https://github.com/AnimeKaizoku/SaitamaRobot",
+    "stars": 351,
+    "language": "Python",
+    "description": "An anime-themed telegram group management bot.",
+    "source_url": "https://www.facebook.com/reel/896988281627811",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\AnimeKaizoku_SaitamaRobot_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:20:45.666052",
+    "updated_at": "2026-09-05T23:18:01.710675",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "telegram",
+      "bot",
+      "group-management",
+      "anime",
+      "python"
+    ],
+    "summary": "Dự án AnimeKaizoku/SaitamaRobot: An anime-themed telegram group management bot.",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 1109,
+    "license": "GPL-3.0",
+    "html_url": "https://github.com/AnimeKaizoku/SaitamaRobot",
+    "install_cmd": "git clone https://github.com/AnimeKaizoku/SaitamaRobot && cd SaitamaRobot",
+    "architecture": "Open-source Python Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án SaitamaRobot\nimport sys\nprint('Đang nạp module SaitamaRobot...')\n"
+  },
+  {
+    "full_name": "maitrungduc1410/viblo-microfrontend",
+    "repo_url": "https://github.com/maitrungduc1410/viblo-microfrontend",
+    "stars": 21,
+    "language": "TypeScript",
+    "description": "Không có mô tả.",
+    "source_url": "https://www.facebook.com/reel/713362178109860",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\maitrungduc1410_viblo-microfrontend_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:21:10.900917",
+    "updated_at": "2026-09-05T23:18:17.957563",
+    "category": "Fullstack, Web & UI Frameworks",
+    "tags": [
+      "microfrontend",
+      "TypeScript",
+      "Viblo"
+    ],
+    "summary": "Repository minh hoá cách xây dựng ứng dụng microfrontend kết hợp Vue, Angular và React trong một app shell. Giải quyết bài toán tách biệt các đội phát triển và cho phép tích hợp nhiều framework khác nhau mà không ảnh hưởng đến trải nghiệm người dùng.",
+    "use_cases": [
+      "Xây dựng ứng dụng web lớn với nhiều đội làm việc độc lập trên các công nghệ frontend khác nhau",
+      "Tích hợp Gradually các thành phần mới (Vue/Angular/React) vào hệ thống legacy mà không cần viết lại toàn bộ"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 18,
+    "license": "None",
+    "html_url": "https://github.com/maitrungduc1410/viblo-microfrontend",
+    "install_cmd": "npm install",
+    "architecture": "Microfrontend (Module Federation) App Shell",
+    "core_components": [
+      "App Shell",
+      "Vue Microfrontend",
+      "Angular Microfrontend",
+      "React Microfrontend"
+    ],
+    "code_snippet": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\n\nconst App = () => <h1>Hello from React Microfrontend</h1>;\n\nconst root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);\nroot.render(<App />);"
+  },
+  {
+    "full_name": "RfidResearchGroup/ChameleonUltra",
+    "repo_url": "https://github.com/RfidResearchGroup/ChameleonUltra",
+    "stars": 2977,
+    "language": "C",
+    "description": "The new generation chameleon based on NRF52840 makes the performance of card emulation more stable. And gave the chameleon the ability to read, write, and decrypt cards.",
+    "source_url": "https://www.facebook.com/reel/1034903429549840",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\RfidResearchGroup_ChameleonUltra_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:22:08.716934",
+    "category": "Cybersecurity & Reverse Engineering",
+    "tags": [
+      "RFID",
+      "NFC",
+      "card emulation",
+      "NRF52840",
+      "hardware"
+    ],
+    "summary": "ChameleonUltra là firmware phần cứng dựa trên NRF52840 cho phép mô phỏng, đọc, ghi và giải mã thẻ RFID/NFC. Nó cung cấp nền tảng ổn định để kiểm thử và phát triển các ứng dụng thẻ thông minh, đặc biệt hữu ích trong nghiên cứu bảo mật và reverse engineering.",
+    "use_cases": [
+      "Kiểm tra và đánh giá độ bảo mật của hệ thống kiểm soát truy cập RFID/NFC",
+      "Phát triển và mô phỏng các loại thẻ thông minh (Mifare, Ultralight, ISO14443A) để thử nghiệm ứng dụng"
+    ],
+    "updated_at": "2026-09-05T23:18:34.399178",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 440,
+    "license": "GPL-3.0",
+    "html_url": "https://github.com/RfidResearchGroup/ChameleonUltra",
+    "install_cmd": "git clone https://github.com/RfidResearchGroup/ChameleonUltra.git && cd ChameleonUltra && make",
+    "architecture": "Embedded Firmware with CLI Interface",
+    "core_components": [
+      "NRF52840 MCU",
+      "USB CDC Interface",
+      "RFID Frontend (125kHz/13.56MHz)"
+    ],
+    "code_snippet": "#include <nrfx.h>\n#include <nrfx_uart.h>\n\nstatic const nrfx_uart_t uart = NRFX_UART_INSTANCE(0);\n\nvoid uart_handler(nrfx_uart_event_t const * p_event, void* p_context)\n{\n    if (p_event->type == NRFX_UART_EVT_TX_DONE)\n        ; // nothing\n}\n\nint main(void)\n{\n    nrfx_uart_config_t config = NRFX_UART_DEFAULT_CONFIG;\n    config.pseltxd = 6;   // TX pin\n    config.pselrxd = 8;   // RX pin\n    config.baudrate = NRF_UART_BAUDRATE_115200;\n    nrfx_uart_init(&uart, &config, uart_handler);\n    nrfx_uart_tx(&uart, (uint8_t*)\"Hello ChameleonUltra\\n\", 24);\n    while (true) {\n        __WFE();\n    }\n}\n"
+  },
+  {
+    "full_name": "codecrafters-io/build-your-own-x",
+    "repo_url": "https://github.com/codecrafters-io/build-your-own-x",
+    "stars": 545384,
+    "language": "Markdown",
+    "description": "Master programming by recreating your favorite technologies from scratch.",
+    "source_url": "https://www.facebook.com/reel/1034903429549840",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\codecrafters-io_build-your-own-x_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:22:09.548143",
+    "category": "Education, Cheatsheets & Resource Guides",
+    "tags": [
+      "learning",
+      "tutorial",
+      "build-from-scratch"
+    ],
+    "summary": "Dự án codecrafters-io/build-your-own-x: Master programming by recreating your favorite technologies from scratch.",
+    "use_cases": [
+      "Áp dụng tự động hóa quy trình làm việc.",
+      "Tích hợp vào hệ thống lập trình cá nhân."
+    ],
+    "updated_at": "2026-09-05T23:19:04.327976",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 51357,
+    "license": "None",
+    "html_url": "https://github.com/codecrafters-io/build-your-own-x",
+    "install_cmd": "git clone https://github.com/codecrafters-io/build-your-own-x && cd build-your-own-x",
+    "architecture": "Open-source Markdown Module",
+    "core_components": [
+      "Core Engine",
+      "CLI / Entrypoint"
+    ],
+    "code_snippet": "# Khởi chạy nhanh dự án build-your-own-x\nimport sys\nprint('Đang nạp module build-your-own-x...')\n"
+  },
+  {
+    "full_name": "freqtrade/freqtrade",
+    "repo_url": "https://github.com/freqtrade/freqtrade",
+    "stars": 54040,
+    "language": "Python",
+    "description": "Free, open source crypto trading bot",
+    "source_url": "https://www.facebook.com/reel/1390605346527094",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\freqtrade_freqtrade_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T17:22:20.744715",
+    "updated_at": "2026-09-05T23:19:25.538894",
+    "category": "Trading & Algorithmic Finance",
+    "tags": [
+      "crypto",
+      "trading",
+      "bot",
+      "freqtrade",
+      "python"
+    ],
+    "summary": "Freqtrade là một bot giao dịch mã nguồn mở viết bằng Python, hỗ trợ giao dịch tự động trên nhiều sàn tiền điện tử qua giao diện Telegram hoặc webUI. Nó cung cấp công cụ backtesting, tối ưu hóa chiến lược bằng machine learning và quản lý rủi ro. Dùng khi muốn phát triển, kiểm tra và triển khai chiến lược giao dịch tự động mà không cần viết từ zero.",
+    "use_cases": [
+      "Backtesting và đánh giá hiệu suất chiến lược giao dịch trên dữ liệu lịch sử",
+      "Chạy bot giao dịch thực tế trên sàn Binance, Kraken, v.v. qua lệnh Telegram hoặc webUI",
+      "Tối ưu hóa tham số chiến lược bằng hyperopt và machine learning"
+    ],
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "forks": 11212,
+    "license": "GPL-3.0",
+    "html_url": "https://github.com/freqtrade/freqtrade",
+    "install_cmd": "pip install freqtrade",
+    "architecture": "Modular Python Application (CLI Tool + WebUI + Telegram Bot)",
+    "core_components": [
+      "freqtrade CLI (entrypoint)",
+      "IStrategy base class (custom strategies)",
+      "Backtesting Engine",
+      "Hyperopt Optimizer",
+      "Telegram Bot Interface",
+      "WebUI (REST API + frontend)"
+    ],
+    "code_snippet": "from freqtrade.strategy import IStrategy\nfrom pandas import DataFrame\n\nclass MyStrategy(IStrategy):\n    timeframe = '5m'\n    \n    def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:\n        dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)\n        return dataframe\n    \n    def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:\n        dataframe.loc[\n            (dataframe['rsi'] < 30),\n            'buy'] = 1\n        return dataframe\n    \n    def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:\n        dataframe.loc[\n            (dataframe['rsi'] > 70),\n            'sell'] = 1\n        return dataframe\n\n# Lưu đoạn trên vào file user_data/strategies/MyStrategy.py\n# Sau đó chạy: freqtrade trade --strategy MyStrategy"
+  },
+  {
+    "full_name": "alvinunreal/oh-my-opencode-slim",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "agentic-ai",
+      "opencode",
+      "orchestration",
+      "multi-agent",
+      "typescript",
+      "plugin"
+    ],
+    "summary": "oh-my-opencode-slim là plugin orchestration cho OpenCode, cung cấp một đội ngũ agent tự động phối hợp để thực hiện các tác vụ đa mô hình. Thích hợp cho các dự án cần tích hợp và tự động ủy quyền công việc cho nhiều mô hình AI mà không viết code phức tạp.",
+    "use_cases": [
+      "Tự động tạo nội dung (bài viết, mã nguồn) bằng cách giao nhiệm vụ cho các agent chuyên môn khác nhau.",
+      "Kết hợp các mô hình LLM và công cụ bên ngoài để thực hiện quy trình khai thác dữ liệu và tổng hợp báo cáo."
+    ],
+    "repo_url": "https://github.com/alvinunreal/oh-my-opencode-slim",
+    "stars": 8646,
+    "language": "TypeScript",
+    "description": "Lean, fine tuned Opencode multi agent suite · Mix any models · Auto delegate tasks",
+    "source_url": "https://www.facebook.com/reel/1828882055141967",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\alvinunreal_oh-my-opencode-slim_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T00:17:02.968475"
+  },
+  {
+    "full_name": "magnus919/groktocrawl-x",
+    "category": "Data Scraping & Web Automation",
+    "tags": [
+      "web-scraping",
+      "crawling",
+      "search",
+      "automation",
+      "autonomous-agent",
+      "docker",
+      "MIT"
+    ],
+    "summary": "GroktoCrawl X là nền tảng tự‑host cho việc thu thập, lập chỉ mục và truy vấn dữ liệu web, tích hợp scraping, crawl, trích xuất cấu trúc và một agent nghiên cứu tự động. Dùng khi cần xây dựng pipeline dữ liệu web toàn diện trong môi trường Docker.",
+    "use_cases": [
+      "Thu thập và lập chỉ mục nội dung website để xây dựng công cụ tìm kiếm nội bộ.",
+      "Tự động trích xuất thông tin có cấu trúc (bảng, danh sách) từ các trang web và đưa vào hệ thống phân tích."
+    ],
+    "repo_url": "https://github.com/magnus919/groktocrawl-x",
+    "stars": 1,
+    "language": "Python",
+    "description": "Experimental fork of groktopus/groktocrawl for evidence-first research and a new architecture. Not a replacement for mainline GroktoCrawl.",
+    "source_url": "https://www.facebook.com/reel/1117796693937644",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\magnus919_groktocrawl-x_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T00:20:16.520748"
+  },
+  {
+    "full_name": "ccxt/ccxt",
+    "category": "Trading & Algorithmic Finance",
+    "tags": [
+      "crypto",
+      "exchange",
+      "api",
+      "trading",
+      "arbitrage",
+      "market-data",
+      "bot"
+    ],
+    "summary": "Thư viện CCXT cung cấp API thống nhất để truy cập hơn 100 sàn giao dịch tiền mã hoá, cho phép lấy dữ liệu thị trường và thực hiện lệnh mua/bán. Thích hợp cho việc xây dựng bot giao dịch, chiến lược arbitrage hoặc phân tích dữ liệu thị trường.",
+    "use_cases": [
+      "Xây dựng bot tự động giao dịch trên nhiều sàn",
+      "Thu thập dữ liệu lịch sử giá để phân tích và backtesting"
+    ],
+    "repo_url": "https://github.com/ccxt/ccxt",
+    "stars": 43873,
+    "language": "Rust",
+    "description": "A unified trading API with more than 100 crypto exchanges and prediction markets in JavaScript / TypeScript / Python / C# / PHP / Go / Java / Rust",
+    "source_url": "https://www.facebook.com/reel/1043626908552074",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\ccxt_ccxt_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T00:20:47.538509"
+  },
+  {
+    "full_name": "colbymchenry/codegraph",
+    "category": "AI & Autonomous Agents",
+    "tags": [
+      "code-indexing",
+      "semantic-graph",
+      "local",
+      "Rust",
+      "CLI",
+      "AI-code-assist"
+    ],
+    "summary": "CodeGraph tạo đồ thị tri thức mã nguồn tự động, đồng bộ khi có thay đổi, giúp các agent AI như Claude, Copilot truy vấn ngữ cảnh nhanh hơn và giảm token. Thích hợp khi cần tăng độ chính xác và tốc độ phản hồi của công cụ hỗ trợ lập trình mà không phụ thuộc vào dịch vụ đám mây.",
+    "use_cases": [
+      "Tăng độ chính xác cho Claude Code khi thực hiện truy vấn hàm hoặc biến trong dự án lớn.",
+      "Giảm lượng token và thời gian phản hồi cho GitHub Copilot bằng cách cung cấp ngữ cảnh code cục bộ."
+    ],
+    "repo_url": "https://github.com/colbymchenry/codegraph",
+    "stars": 69723,
+    "language": "C",
+    "description": "Pre-indexed code knowledge graph, auto syncs on code changes, for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, CoPilot, and Hermes Agent — fewer tokens, fewer tool calls, 100% local",
+    "source_url": "https://www.facebook.com/reel/911801061489478",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\colbymchenry_codegraph_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T00:21:34.401920"
+  },
+  {
+    "full_name": "insanj/ContentTableViewController",
+    "category": "Fullstack, Web & UI Frameworks",
+    "tags": [
+      "cocoapods",
+      "ios",
+      "objective-c",
+      "tableview",
+      "content-presentation"
+    ],
+    "summary": "Thư viện CocoaPod đơn giản giúp hiển thị nội dung đa dạng (text, image, video, view) trong một UITableView chỉ với một dòng code. Thích hợp cho các ứng dụng iOS cần một giao diện danh sách nhanh chóng mà không viết nhiều boilerplate.",
+    "use_cases": [
+      "Xây dựng màn hình trợ giúp hoặc FAQ trong app iOS, nơi mỗi mục có thể là văn bản, hình ảnh hoặc video.",
+      "Tạo danh sách tin tức hoặc blog nội bộ, cho phép người dùng nhấn vào URL để mở trình duyệt."
+    ],
+    "repo_url": "https://github.com/insanj/ContentTableViewController",
+    "stars": 24,
+    "language": "Objective-C",
+    "description": "🏓 Super simple CocoaPod to present content. https://insanj.github.io/ContentTableViewController/ ",
+    "source_url": "https://www.facebook.com/reel/2329987257743802",
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\insanj_ContentTableViewController_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T00:22:10.543375"
+  }
+]
