@@ -1230,11 +1230,12 @@
     "language": "Unknown",
     "description": "tech security",
     "source_url": "https://www.facebook.com/reel/1707492177001260",
-    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/magoly_techsecurity_knowledge.md",
-    "synced_to_notebooklm": false,
-    "notebook_title": "",
-    "notebook_ref": "",
-    "created_at": "2026-09-05T19:11:21.024442"
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\magoly_techsecurity_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-05T19:11:21.024442",
+    "updated_at": "2026-09-06T13:12:24.412929"
   },
   {
     "full_name": "ripienaar/free-for-dev",
@@ -1256,11 +1257,12 @@
     "language": "HTML",
     "description": "A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
     "source_url": "https://www.facebook.com/reel/924620353565707",
-    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/ripienaar_free-for-dev_knowledge.md",
-    "synced_to_notebooklm": false,
-    "notebook_title": "",
-    "notebook_ref": "",
-    "created_at": "2026-09-06T03:12:00.397098"
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\ripienaar_free-for-dev_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T03:12:00.397098",
+    "updated_at": "2026-09-06T13:12:34.142863"
   },
   {
     "full_name": "AdamStrojek/rust-agentai",
@@ -1283,11 +1285,12 @@
     "language": "Rust",
     "description": "AgentAI is a Rust library designed to simplify the creation of AI agents",
     "source_url": "https://www.facebook.com/reel/1809718173804765",
-    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/AdamStrojek_rust-agentai_knowledge.md",
-    "synced_to_notebooklm": false,
-    "notebook_title": "",
-    "notebook_ref": "",
-    "created_at": "2026-09-06T03:12:15.680621"
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\AdamStrojek_rust-agentai_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T03:12:15.680621",
+    "updated_at": "2026-09-06T13:12:42.782888"
   },
   {
     "full_name": "leeyeel/Sketch2Motion",
@@ -1308,11 +1311,12 @@
     "language": "Python",
     "description": "convert photo or sketch to motion video",
     "source_url": "https://www.facebook.com/reel/1096912486614111",
-    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/leeyeel_Sketch2Motion_knowledge.md",
-    "synced_to_notebooklm": false,
-    "notebook_title": "",
-    "notebook_ref": "",
-    "created_at": "2026-09-06T03:14:50.930542"
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\leeyeel_Sketch2Motion_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T03:14:50.930542",
+    "updated_at": "2026-09-06T13:12:50.475213"
   },
   {
     "full_name": "nilbuild/developer-roadmap",
@@ -1334,10 +1338,11 @@
     "language": "TypeScript",
     "description": "Interactive roadmaps, guides and other educational content to help developers grow in their careers.",
     "source_url": "https://www.facebook.com/reel/1397874561727330",
-    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/nilbuild_developer-roadmap_knowledge.md",
-    "synced_to_notebooklm": false,
-    "notebook_title": "",
-    "notebook_ref": "",
-    "created_at": "2026-09-06T06:05:21.639135"
+    "knowledge_doc": "D:\\PROJECT\\REPOCraw\\outputs\\nilbuild_developer-roadmap_knowledge.md",
+    "synced_to_notebooklm": true,
+    "notebook_title": "c3472703-67c1-451c-8c62-a6818213d261",
+    "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
+    "created_at": "2026-09-06T06:05:21.639135",
+    "updated_at": "2026-09-06T13:13:00.122964"
   }
 ]

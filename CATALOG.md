@@ -1,6 +1,6 @@
 # 📚 Kho Tham Chiếu Repository & Chỉ Mục Tri Thức Cho AI-Agent
 
-> Cập nhật lần cuối: 2026-09-06 06:05:21  
+> Cập nhật lần cuối: 2026-09-06 13:13:00  
 > Tổng số repository: **39** | Phân loại thành: **9 danh mục**  
 > Kiến trúc: *Thin Local Index (Chỉ mục cục bộ) + Google NotebookLM (Tri thức sâu)*
 
@@ -101,7 +101,7 @@
 
 ### 📦 [AdamStrojek/rust-agentai](https://github.com/AdamStrojek/rust-agentai)
 - **Chỉ số**: ⭐ **168** stars | 🍴 **0** forks | Ngôn ngữ: `Rust` | License: `N/A` | Tags: `rust` `ai-agents` `llm` `toolbox` `mcp`
-- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **Tham chiếu NotebookLM**: `c3472703-67c1-451c-8c62-a6818213d261` (✅ Đã nạp vào NotebookLM)
 - **🤖 Tóm tắt cho AI-Agent**:
   > AgentAI là thư viện Rust giúp tạo AI agent một cách đơn giản, tích hợp với các LLM phổ biến qua GenAI và cung cấp công cụ tùy chỉnh (ToolBox) cũng như hỗ trợ MCP Server. Thư viện thích hợp khi cần xây dựng agent AI linh hoạt, mạnh mẽ, an toàn kiểu tĩnh và dễ mở rộng.
 - **Ứng dụng thực tế**:
@@ -181,7 +181,7 @@
 
 ### 📦 [leeyeel/Sketch2Motion](https://github.com/leeyeel/Sketch2Motion)
 - **Chỉ số**: ⭐ **349** stars | 🍴 **0** forks | Ngôn ngữ: `Python` | License: `N/A` | Tags: `sketch-to-video` `manim` `image-to-svg` `animation`
-- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **Tham chiếu NotebookLM**: `c3472703-67c1-451c-8c62-a6818213d261` (✅ Đã nạp vào NotebookLM)
 - **🤖 Tóm tắt cho AI-Agent**:
   > Chuyển đổi ảnh vẽ tay hoặc sketch thành video hoạt ảnh bằng cách vector hoá thành SVG rồi render với Manim. Dùng khi muốn tạo video minh họa từ hình ảnh tĩnh mà không cần kỹ năng animation phức tạp.
 - **Ứng dụng thực tế**:
@@ -224,7 +224,7 @@
 
 ### 📦 [magoly/techsecurity](https://github.com/magoly/techsecurity)
 - **Chỉ số**: ⭐ **1** stars | 🍴 **0** forks | Ngôn ngữ: `Unknown` | License: `N/A` | Tags: `security` `tech` `tools` `automation`
-- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **Tham chiếu NotebookLM**: `c3472703-67c1-451c-8c62-a6818213d261` (✅ Đã nạp vào NotebookLM)
 - **🤖 Tóm tắt cho AI-Agent**:
   > Repository này tập trung vào các công cụ và kỹ thuật bảo mật công nghệ, giúp phát hiện, phân tích và giảm thiểu rủi ro bảo mật. Thích hợp cho các nhà phát triển và chuyên gia an ninh muốn tích hợp các giải pháp bảo mật vào quy trình phát triển phần mềm.
 - **Ứng dụng thực tế**:
@@ -324,7 +324,7 @@
 
 ### 📦 [nilbuild/developer-roadmap](https://github.com/nilbuild/developer-roadmap)
 - **Chỉ số**: ⭐ **366,382** stars | 🍴 **0** forks | Ngôn ngữ: `TypeScript` | License: `N/A` | Tags: `roadmap` `developer` `learning` `typescript` `interactive`
-- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **Tham chiếu NotebookLM**: `c3472703-67c1-451c-8c62-a6818213d261` (✅ Đã nạp vào NotebookLM)
 - **🤖 Tóm tắt cho AI-Agent**:
   > Repository cung cấp các lộ trình học tập tương tác cho các nhà phát triển, bao gồm frontend, backend, DevOps, blockchain và nhiều chuyên ngành khác. Người dùng có thể click vào các node để đọc chi tiết và truy cập tài nguyên học tập.
 - **Ứng dụng thực tế**:
@@ -343,7 +343,7 @@
 
 ### 📦 [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev)
 - **Chỉ số**: ⭐ **136,659** stars | 🍴 **0** forks | Ngôn ngữ: `HTML` | License: `N/A` | Tags: `free-tier` `devops` `saas` `paas` `iaas`
-- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **Tham chiếu NotebookLM**: `c3472703-67c1-451c-8c62-a6818213d261` (✅ Đã nạp vào NotebookLM)
 - **🤖 Tóm tắt cho AI-Agent**:
   > Repository này tổng hợp danh sách các dịch vụ SaaS, PaaS và IaaS cung cấp gói miễn phí dành cho nhà phát triển và các chuyên gia DevOps/infrastructure. Nó giúp người dùng nhanh速 tìm kiếm và so sánh các dịch vụ miễn phí phù hợp với nhu cầu triển khai, quản lý và giám sát hệ thống.
 - **Ứng dụng thực tế**:
