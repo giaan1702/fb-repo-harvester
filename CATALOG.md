@@ -1,24 +1,24 @@
 # 📚 Kho Tham Chiếu Repository & Chỉ Mục Tri Thức Cho AI-Agent
 
-> Cập nhật lần cuối: 2026-09-05 19:11:21  
-> Tổng số repository: **35** | Phân loại thành: **9 danh mục**  
+> Cập nhật lần cuối: 2026-09-06 03:14:50  
+> Tổng số repository: **38** | Phân loại thành: **9 danh mục**  
 > Kiến trúc: *Thin Local Index (Chỉ mục cục bộ) + Google NotebookLM (Tri thức sâu)*
 
 ## 📌 Mục Lục Danh Mục Phân Loại Của AI:
 - [Data Scraping & Web Automation](#data-scraping-web-automation) (2 repos)
-- [AI & Autonomous Agents](#ai-autonomous-agents) (9 repos)
-- [Computer Vision & Generative Media](#computer-vision-generative-media) (3 repos)
+- [AI & Autonomous Agents](#ai-autonomous-agents) (10 repos)
+- [Computer Vision & Generative Media](#computer-vision-generative-media) (4 repos)
 - [Backend & High-Performance Systems](#backend-high-performance-systems) (4 repos)
 - [Developer Tools, CLI & Terminal](#developer-tools-cli-terminal) (5 repos)
 - [Fullstack, Web & UI Frameworks](#fullstack-web-ui-frameworks) (4 repos)
-- [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (4 repos)
+- [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (5 repos)
 - [Cybersecurity & Reverse Engineering](#cybersecurity-reverse-engineering) (2 repos)
 - [Trading & Algorithmic Finance](#trading-algorithmic-finance) (2 repos)
 
 ---
 
 ## 📂 AI & Autonomous Agents
-*Tổng số: 9 repository*
+*Tổng số: 10 repository*
 
 ### 📦 [openclaw/openclaw](https://github.com/openclaw/openclaw)
 - **Chỉ số**: ⭐ **388,945** stars | 🍴 **81,713** forks | Ngôn ngữ: `TypeScript` | License: `NOASSERTION` | Tags: `AI` `autonomous` `cross-platform`
@@ -99,6 +99,16 @@
   - Tự động tạo nội dung (bài viết, mã nguồn) bằng cách giao nhiệm vụ cho các agent chuyên môn khác nhau.
   - Kết hợp các mô hình LLM và công cụ bên ngoài để thực hiện quy trình khai thác dữ liệu và tổng hợp báo cáo.
 
+### 📦 [AdamStrojek/rust-agentai](https://github.com/AdamStrojek/rust-agentai)
+- **Chỉ số**: ⭐ **168** stars | 🍴 **0** forks | Ngôn ngữ: `Rust` | License: `N/A` | Tags: `rust` `ai-agents` `llm` `toolbox` `mcp`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > AgentAI là thư viện Rust giúp tạo AI agent một cách đơn giản, tích hợp với các LLM phổ biến qua GenAI và cung cấp công cụ tùy chỉnh (ToolBox) cũng như hỗ trợ MCP Server. Thư viện thích hợp khi cần xây dựng agent AI linh hoạt, mạnh mẽ, an toàn kiểu tĩnh và dễ mở rộng.
+- **Ứng dụng thực tế**:
+  - Xây dựng agent trò chuyện đa mô hình (OpenAI, Anthropic, Gemini, Ollama...)
+  - Tích hợp công cụ tự động (tool) vào workflow AI để thực hiện hành động ngoài như truy vấn DB, gọi API
+  - Phát triển hệ thống agent dựa trên Model-Context-Protocol (MCP) để tái sử dụng các giải pháp agent hiện có
+
 ### 📦 [solofounder-ai/solofounder](https://github.com/solofounder-ai/solofounder)
 - **Chỉ số**: ⭐ **3** stars | 🍴 **0** forks | Ngôn ngữ: `JavaScript` | License: `MIT` | Tags: `AI` `virtual team` `solopreneur` `workflow automation`
 - **🚀 Cài đặt nhanh**: `npm install solofounder`
@@ -157,7 +167,7 @@
 
 
 ## 📂 Computer Vision & Generative Media
-*Tổng số: 3 repository*
+*Tổng số: 4 repository*
 
 ### 📦 [Comfy-Org/ComfyUI](https://github.com/Comfy-Org/ComfyUI)
 - **Chỉ số**: ⭐ **131,622** stars | 🍴 **15,515** forks | Ngôn ngữ: `Python` | License: `GPL-3.0` | Tags: `diffusion` `GUI` `Stable Diffusion` `nodes` `AI art`
@@ -168,6 +178,15 @@
 - **Ứng dụng thực tế**:
   - Áp dụng tự động hóa quy trình làm việc.
   - Tích hợp vào hệ thống lập trình cá nhân.
+
+### 📦 [leeyeel/Sketch2Motion](https://github.com/leeyeel/Sketch2Motion)
+- **Chỉ số**: ⭐ **349** stars | 🍴 **0** forks | Ngôn ngữ: `Python` | License: `N/A` | Tags: `sketch-to-video` `manim` `image-to-svg` `animation`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Chuyển đổi ảnh vẽ tay hoặc sketch thành video hoạt ảnh bằng cách vector hoá thành SVG rồi render với Manim. Dùng khi muốn tạo video minh họa từ hình ảnh tĩnh mà không cần kỹ năng animation phức tạp.
+- **Ứng dụng thực tế**:
+  - Tạo video giới thiệu sản phẩm từ bản phác thảo tay
+  - Tạo bài giảng minh họa động từ bản vẽ tay hoặc ảnh chụp màn hình
 
 ### 📦 [Cuongyd196/auto-compare-video](https://github.com/Cuongyd196/auto-compare-video)
 - **Chỉ số**: ⭐ **165** stars | 🍴 **94** forks | Ngôn ngữ: `HTML` | License: `MIT` | Tags: `video generation` `AI voice` `HyperFrames` `template` `auto compare`
@@ -291,7 +310,7 @@
 
 
 ## 📂 Education, Cheatsheets & Resource Guides
-*Tổng số: 4 repository*
+*Tổng số: 5 repository*
 
 ### 📦 [codecrafters-io/build-your-own-x](https://github.com/codecrafters-io/build-your-own-x)
 - **Chỉ số**: ⭐ **545,384** stars | 🍴 **51,357** forks | Ngôn ngữ: `Markdown` | License: `None` | Tags: `learning` `tutorial` `build-from-scratch`
@@ -312,6 +331,15 @@
 - **Ứng dụng thực tế**:
   - Chuẩn bị phỏng vấn kỹ thuật tại FAANG và các công ty phần mềm lớn
   - Học lại kiến thức cơ bản về thuật toán và cấu trúc dữ liệu cho nhà phát triển phần mềm
+
+### 📦 [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev)
+- **Chỉ số**: ⭐ **136,659** stars | 🍴 **0** forks | Ngôn ngữ: `HTML` | License: `N/A` | Tags: `free-tier` `devops` `saas` `paas` `iaas`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Repository này tổng hợp danh sách các dịch vụ SaaS, PaaS và IaaS cung cấp gói miễn phí dành cho nhà phát triển và các chuyên gia DevOps/infrastructure. Nó giúp người dùng nhanh速 tìm kiếm và so sánh các dịch vụ miễn phí phù hợp với nhu cầu triển khai, quản lý và giám sát hệ thống.
+- **Ứng dụng thực tế**:
+  - Tìm kiếm dịch vụ lưu trữ, CI/CD, monitoring có gói miễn phí để triển khai ứng dụng
+  - Đánh giá và so sánh các tùy chọn miễn phí trước khi quyết định đầu tư vào dịch vụ trả phí
 
 ### 📦 [bangoc123/learn-machine-learning-in-two-months](https://github.com/bangoc123/learn-machine-learning-in-two-months)
 - **Chỉ số**: ⭐ **2,149** stars | 🍴 **667** forks | Ngôn ngữ: `Jupyter Notebook` | License: `None` | Tags: `machine learning` `education` `tutorial`
