@@ -1313,5 +1313,31 @@
     "notebook_title": "",
     "notebook_ref": "",
     "created_at": "2026-09-06T03:14:50.930542"
+  },
+  {
+    "full_name": "nilbuild/developer-roadmap",
+    "category": "Education, Cheatsheets & Resource Guides",
+    "tags": [
+      "roadmap",
+      "developer",
+      "learning",
+      "typescript",
+      "interactive"
+    ],
+    "summary": "Repository cung cấp các lộ trình học tập tương tác cho các nhà phát triển, bao gồm frontend, backend, DevOps, blockchain và nhiều chuyên ngành khác. Người dùng có thể click vào các node để đọc chi tiết và truy cập tài nguyên học tập.",
+    "use_cases": [
+      "Tra cứu lộ trình học cho một công nghệ cụ thể (ví dụ: React, Node.js)",
+      "Lập kế hoạch phát triển kỹ năng cá nhân hoặc đội ngũ phát triển phần mềm"
+    ],
+    "repo_url": "https://github.com/nilbuild/developer-roadmap",
+    "stars": 366382,
+    "language": "TypeScript",
+    "description": "Interactive roadmaps, guides and other educational content to help developers grow in their careers.",
+    "source_url": "https://www.facebook.com/reel/1397874561727330",
+    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/nilbuild_developer-roadmap_knowledge.md",
+    "synced_to_notebooklm": false,
+    "notebook_title": "",
+    "notebook_ref": "",
+    "created_at": "2026-09-06T06:05:21.639135"
   }
 ]

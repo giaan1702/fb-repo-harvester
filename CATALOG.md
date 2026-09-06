@@ -1,7 +1,7 @@
 # 📚 Kho Tham Chiếu Repository & Chỉ Mục Tri Thức Cho AI-Agent
 
-> Cập nhật lần cuối: 2026-09-06 03:14:50  
-> Tổng số repository: **38** | Phân loại thành: **9 danh mục**  
+> Cập nhật lần cuối: 2026-09-06 06:05:21  
+> Tổng số repository: **39** | Phân loại thành: **9 danh mục**  
 > Kiến trúc: *Thin Local Index (Chỉ mục cục bộ) + Google NotebookLM (Tri thức sâu)*
 
 ## 📌 Mục Lục Danh Mục Phân Loại Của AI:
@@ -11,7 +11,7 @@
 - [Backend & High-Performance Systems](#backend-high-performance-systems) (4 repos)
 - [Developer Tools, CLI & Terminal](#developer-tools-cli-terminal) (5 repos)
 - [Fullstack, Web & UI Frameworks](#fullstack-web-ui-frameworks) (4 repos)
-- [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (5 repos)
+- [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (6 repos)
 - [Cybersecurity & Reverse Engineering](#cybersecurity-reverse-engineering) (2 repos)
 - [Trading & Algorithmic Finance](#trading-algorithmic-finance) (2 repos)
 
@@ -310,7 +310,7 @@
 
 
 ## 📂 Education, Cheatsheets & Resource Guides
-*Tổng số: 5 repository*
+*Tổng số: 6 repository*
 
 ### 📦 [codecrafters-io/build-your-own-x](https://github.com/codecrafters-io/build-your-own-x)
 - **Chỉ số**: ⭐ **545,384** stars | 🍴 **51,357** forks | Ngôn ngữ: `Markdown` | License: `None` | Tags: `learning` `tutorial` `build-from-scratch`
@@ -321,6 +321,15 @@
 - **Ứng dụng thực tế**:
   - Áp dụng tự động hóa quy trình làm việc.
   - Tích hợp vào hệ thống lập trình cá nhân.
+
+### 📦 [nilbuild/developer-roadmap](https://github.com/nilbuild/developer-roadmap)
+- **Chỉ số**: ⭐ **366,382** stars | 🍴 **0** forks | Ngôn ngữ: `TypeScript` | License: `N/A` | Tags: `roadmap` `developer` `learning` `typescript` `interactive`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Repository cung cấp các lộ trình học tập tương tác cho các nhà phát triển, bao gồm frontend, backend, DevOps, blockchain và nhiều chuyên ngành khác. Người dùng có thể click vào các node để đọc chi tiết và truy cập tài nguyên học tập.
+- **Ứng dụng thực tế**:
+  - Tra cứu lộ trình học cho một công nghệ cụ thể (ví dụ: React, Node.js)
+  - Lập kế hoạch phát triển kỹ năng cá nhân hoặc đội ngũ phát triển phần mềm
 
 ### 📦 [jwasham/coding-interview-university](https://github.com/jwasham/coding-interview-university)
 - **Chỉ số**: ⭐ **360,389** stars | 🍴 **84,805** forks | Ngôn ngữ: `Unknown` | License: `CC-BY-SA-4.0` | Tags: `study-plan` `computer-science` `interview-preparation`
