@@ -38,24 +38,24 @@ class NotebookSyncEngine:
             logger.warning(f"Không thể tự động phục hồi headless auth: {e}")
         return False
 
-    def is_authenticated(self) -> bool:
-        """Kiểm tra xem nlm đã đăng nhập và sẵn sàng chưa. Tự động phục hồi qua Headless Chrome nếu hết hạn."""
+    def is_authenticated(self, auto_recover: bool = False) -> bool:
+        """Kiểm tra xem nlm đã đăng nhập và sẵn sàng chưa. Chỉ tự động chạy headless auth khi auto_recover=True."""
         if not self.nlm_available:
             logger.debug("nlm CLI không khả dụng trên server này, bỏ qua kiểm tra auth.")
             return False
         try:
             cmd = [self.nlm_exe, "login", "--check"]
-            res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=15)
+            res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=5)
             if res.returncode == 0:
                 return True
         except Exception as e:
             logger.debug(f"Không thể kiểm tra đăng nhập nlm: {e}")
 
-        # Tự động chạy Headless Auth phục hồi phiên đăng nhập
-        if self.recover_auth_headless():
+        # Chỉ chạy Headless Auth phục hồi khi được yêu cầu rõ ràng (tránh nghẽn server / healthcheck)
+        if auto_recover and self.recover_auth_headless():
             try:
                 cmd = [self.nlm_exe, "login", "--check"]
-                res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=15)
+                res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=5)
                 return res.returncode == 0
             except Exception:
                 pass

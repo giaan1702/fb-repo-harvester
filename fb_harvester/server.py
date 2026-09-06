@@ -1263,13 +1263,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                         return
             self._send_json({"error": "Không tìm thấy file"}, status=404)
         elif path == "/api/health":
-            catalog = CatalogManager(BASE_DIR)
             self._send_json({
                 "status": "healthy",
-                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "notebooklm_authenticated": get_cached_auth_status(),
-                "total_repos": len(catalog.load_data()),
-                "scheduler": scheduler.get_status()
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ")
             })
         elif path == "/api/settings":
             self._send_json(config_mgr.load())
