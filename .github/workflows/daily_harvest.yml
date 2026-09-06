@@ -44,8 +44,23 @@ jobs:
         env:
           NOTEBOOKLM_AUTH_JSON: ${{ secrets.NOTEBOOKLM_AUTH_JSON }}
         run: |
-          mkdir -p ~/.notebooklm-mcp-cli
-          echo "$NOTEBOOKLM_AUTH_JSON" > ~/.notebooklm-mcp-cli/auth.json
+          python -c "
+          import json, os
+          from pathlib import Path
+          raw = os.environ.get('NOTEBOOKLM_AUTH_JSON', '')
+          if raw:
+              data = json.loads(raw)
+              profile_dir = Path.home() / '.notebooklm-mcp-cli' / 'profiles' / 'default'
+              profile_dir.mkdir(parents=True, exist_ok=True)
+              with open(profile_dir / 'cookies.json', 'w', encoding='utf-8') as f:
+                  json.dump(data.get('cookies', []), f)
+              with open(profile_dir / 'metadata.json', 'w', encoding='utf-8') as f:
+                  json.dump(data.get('metadata', {}), f)
+              root_file = Path.home() / '.notebooklm-mcp-cli' / 'auth.json'
+              with open(root_file, 'w', encoding='utf-8') as f:
+                  f.write(raw)
+              print('✅ Restored profile files successfully!')
+          "
           nlm login --check || echo "NotebookLM session check warning"
 
       - name: Run Crawler for All Channels
