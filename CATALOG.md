@@ -1,15 +1,15 @@
 # 📚 Kho Tham Chiếu Repository & Chỉ Mục Tri Thức Cho AI-Agent
 
-> Cập nhật lần cuối: 2026-09-06 13:13:00  
-> Tổng số repository: **39** | Phân loại thành: **9 danh mục**  
+> Cập nhật lần cuối: 2026-09-07 03:10:50  
+> Tổng số repository: **42** | Phân loại thành: **9 danh mục**  
 > Kiến trúc: *Thin Local Index (Chỉ mục cục bộ) + Google NotebookLM (Tri thức sâu)*
 
 ## 📌 Mục Lục Danh Mục Phân Loại Của AI:
 - [Data Scraping & Web Automation](#data-scraping-web-automation) (2 repos)
 - [AI & Autonomous Agents](#ai-autonomous-agents) (10 repos)
-- [Computer Vision & Generative Media](#computer-vision-generative-media) (4 repos)
-- [Backend & High-Performance Systems](#backend-high-performance-systems) (4 repos)
-- [Developer Tools, CLI & Terminal](#developer-tools-cli-terminal) (5 repos)
+- [Computer Vision & Generative Media](#computer-vision-generative-media) (5 repos)
+- [Backend & High-Performance Systems](#backend-high-performance-systems) (5 repos)
+- [Developer Tools, CLI & Terminal](#developer-tools-cli-terminal) (6 repos)
 - [Fullstack, Web & UI Frameworks](#fullstack-web-ui-frameworks) (4 repos)
 - [Education, Cheatsheets & Resource Guides](#education-cheatsheets-resource-guides) (6 repos)
 - [Cybersecurity & Reverse Engineering](#cybersecurity-reverse-engineering) (2 repos)
@@ -123,7 +123,7 @@
 
 
 ## 📂 Backend & High-Performance Systems
-*Tổng số: 4 repository*
+*Tổng số: 5 repository*
 
 ### 📦 [fastapi/fastapi](https://github.com/fastapi/fastapi)
 - **Chỉ số**: ⭐ **102,095** stars | 🍴 **9,855** forks | Ngôn ngữ: `Python` | License: `MIT` | Tags: `fastapi` `python` `api` `async` `web framework`
@@ -144,6 +144,15 @@
 - **Ứng dụng thực tế**:
   - Tạo feed cá nhân cho các trang web không cung cấp RSS (ví dụ: Twitter, Bilibili) và đọc qua Inoreader, Feedbin.
   - Tích hợp vào quy trình tự động hoá (IFTTT, Zapier, GitHub Actions) để kích hoạt công việc khi có bài viết mới.
+
+### 📦 [wg/wrk](https://github.com/wg/wrk)
+- **Chỉ số**: ⭐ **40,405** stars | 🍴 **0** forks | Ngôn ngữ: `C` | License: `N/A` | Tags: `http` `benchmark` `performance` `cli` `load-testing`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > wrk là công cụ benchmark HTTP hiện đại, tạo tải cao trên CPU đa nhân bằng cách kết hợp đa luồng và hệ thống thông báo sự kiện mở rộng như epoll/kqueue. Nó cho phép chạy thử nghiệm với số luồng, kết nối, thời gian tùy chỉnh và có thể mở rộng bằng script LuaJIT để tạo request và xử lý phản hồi. Dùng khi cần đo lường hiệu suất, khả năng chịu tải của dịch vụ web hoặc API.
+- **Ứng dụng thực tế**:
+  - Đánh giá throughput và latency của API REST
+  - Kiểm tra khả năng chịu tải của máy chủ web trước khi triển khai production
 
 ### 📦 [qctfw/wibusaka](https://github.com/qctfw/wibusaka)
 - **Chỉ số**: ⭐ **61** stars | 🍴 **5** forks | Ngôn ngữ: `PHP` | License: `None` | Tags: `anime` `legal streaming` `Indonesia` `PHP website`
@@ -167,7 +176,7 @@
 
 
 ## 📂 Computer Vision & Generative Media
-*Tổng số: 4 repository*
+*Tổng số: 5 repository*
 
 ### 📦 [Comfy-Org/ComfyUI](https://github.com/Comfy-Org/ComfyUI)
 - **Chỉ số**: ⭐ **131,622** stars | 🍴 **15,515** forks | Ngôn ngữ: `Python` | License: `GPL-3.0` | Tags: `diffusion` `GUI` `Stable Diffusion` `nodes` `AI art`
@@ -178,6 +187,16 @@
 - **Ứng dụng thực tế**:
   - Áp dụng tự động hóa quy trình làm việc.
   - Tích hợp vào hệ thống lập trình cá nhân.
+
+### 📦 [11cafe/jaaz](https://github.com/11cafe/jaaz)
+- **Chỉ số**: ⭐ **6,626** stars | 🍴 **0** forks | Ngôn ngữ: `TypeScript` | License: `N/A` | Tags: `agent` `ai` `aiimagegenerator` `canva` `stable-diffusion`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Jaaz là một trợ lý sáng tạo đa phương thức mã nguồn mở, thay thế riêng tư cho Canva/Manus, cho phép chạy hoàn toàn cục bộ để thiết kế đồ họa và tạo hình ảnh AI. Nó kết hợp các tác nhân AI với một canvas tương tác để tạo ra nội dung trực quan nhanh chóng mà không cần phụ thuộc vào dịch vụ đám mây.
+- **Ứng dụng thực tế**:
+  - Thiết kế banner, poster hoặc nội dung mạng xã hội ở local mà không cần kết nối internet
+  - Tạo hình ảnh AI theo yêu cầu (prompt) và chỉnh sửa trực tiếp trên canvas để dùng trong chiến dịch marketing
+  - Xây dựng quy trình thiết kế tự động hóa bằng cách kết hợp các tác nhân AI với các công cụ chỉnh sửa vector
 
 ### 📦 [leeyeel/Sketch2Motion](https://github.com/leeyeel/Sketch2Motion)
 - **Chỉ số**: ⭐ **349** stars | 🍴 **0** forks | Ngôn ngữ: `Python` | License: `N/A` | Tags: `sketch-to-video` `manim` `image-to-svg` `animation`
@@ -256,7 +275,7 @@
 
 
 ## 📂 Developer Tools, CLI & Terminal
-*Tổng số: 5 repository*
+*Tổng số: 6 repository*
 
 ### 📦 [public-apis/public-apis](https://github.com/public-apis/public-apis)
 - **Chỉ số**: ⭐ **475,759** stars | 🍴 **52,553** forks | Ngôn ngữ: `Python` | License: `MIT` | Tags: `API` `danh sách` `miễn phí` `nguồn tài nguyên`
@@ -267,6 +286,15 @@
 - **Ứng dụng thực tế**:
   - Áp dụng tự động hóa quy trình làm việc.
   - Tích hợp vào hệ thống lập trình cá nhân.
+
+### 📦 [obra/superpowers](https://github.com/obra/superpowers)
+- **Chỉ số**: ⭐ **282,456** stars | 🍴 **0** forks | Ngôn ngữ: `Shell` | License: `N/A` | Tags: `ai` `developer-tools` `subagent-driven` `sdlc` `skills`
+- **Tham chiếu NotebookLM**: `Facebook Curated Tech Repositories` (⏳ Sẵn sàng nạp)
+- **🤖 Tóm tắt cho AI-Agent**:
+  > Superpowers là một framework kỹ năng hợp thành để giúp các coding agent thực hiện quy trình phát triển phần mềm từ việc thu thập yêu cầu lên kế hoạch và triển khai mã. Nó hoạt động bằng cách làm agent tạm dừng, hỏi mục tiêu thực tế, sau đó tạo ra spec và kế hoạch thực thi trước khi viết code. Dùng khi bạn muốn tự động hoá quy trình SDLC cho các trợ lý lập trình AI.
+- **Ứng dụng thực tế**:
+  - Tự động hoá việc thu thập yêu cầu và thiết kế cho dự án phần mềm
+  - Tăng cường khả năng của coding agent như Claude Code, GitHub Copilot CLI bằng cách cung cấp kỹ năng cấu trúc
 
 ### 📦 [astral-sh/uv](https://github.com/astral-sh/uv)
 - **Chỉ số**: ⭐ **89,479** stars | 🍴 **3,543** forks | Ngôn ngữ: `Rust` | License: `Apache-2.0` | Tags: `python` `package manager` `rust` `cli` `uv`

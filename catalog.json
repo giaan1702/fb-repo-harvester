@@ -1344,5 +1344,84 @@
     "notebook_ref": "c3472703-67c1-451c-8c62-a6818213d261",
     "created_at": "2026-09-06T06:05:21.639135",
     "updated_at": "2026-09-06T13:13:00.122964"
+  },
+  {
+    "full_name": "obra/superpowers",
+    "category": "Developer Tools, CLI & Terminal",
+    "tags": [
+      "ai",
+      "developer-tools",
+      "subagent-driven",
+      "sdlc",
+      "skills"
+    ],
+    "summary": "Superpowers là một framework kỹ năng hợp thành để giúp các coding agent thực hiện quy trình phát triển phần mềm từ việc thu thập yêu cầu lên kế hoạch và triển khai mã. Nó hoạt động bằng cách làm agent tạm dừng, hỏi mục tiêu thực tế, sau đó tạo ra spec và kế hoạch thực thi trước khi viết code. Dùng khi bạn muốn tự động hoá quy trình SDLC cho các trợ lý lập trình AI.",
+    "use_cases": [
+      "Tự động hoá việc thu thập yêu cầu và thiết kế cho dự án phần mềm",
+      "Tăng cường khả năng của coding agent như Claude Code, GitHub Copilot CLI bằng cách cung cấp kỹ năng cấu trúc"
+    ],
+    "repo_url": "https://github.com/obra/superpowers",
+    "stars": 282456,
+    "language": "Shell",
+    "description": "An agentic skills framework & software development methodology that works.",
+    "source_url": "https://www.facebook.com/reel/28196055226717318",
+    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/obra_superpowers_knowledge.md",
+    "synced_to_notebooklm": false,
+    "notebook_title": "",
+    "notebook_ref": "",
+    "created_at": "2026-09-07T03:10:05.149189"
+  },
+  {
+    "full_name": "11cafe/jaaz",
+    "category": "Computer Vision & Generative Media",
+    "tags": [
+      "agent",
+      "ai",
+      "aiimagegenerator",
+      "canva",
+      "stable-diffusion"
+    ],
+    "summary": "Jaaz là một trợ lý sáng tạo đa phương thức mã nguồn mở, thay thế riêng tư cho Canva/Manus, cho phép chạy hoàn toàn cục bộ để thiết kế đồ họa và tạo hình ảnh AI. Nó kết hợp các tác nhân AI với một canvas tương tác để tạo ra nội dung trực quan nhanh chóng mà không cần phụ thuộc vào dịch vụ đám mây.",
+    "use_cases": [
+      "Thiết kế banner, poster hoặc nội dung mạng xã hội ở local mà không cần kết nối internet",
+      "Tạo hình ảnh AI theo yêu cầu (prompt) và chỉnh sửa trực tiếp trên canvas để dùng trong chiến dịch marketing",
+      "Xây dựng quy trình thiết kế tự động hóa bằng cách kết hợp các tác nhân AI với các công cụ chỉnh sửa vector"
+    ],
+    "repo_url": "https://github.com/11cafe/jaaz",
+    "stars": 6626,
+    "language": "TypeScript",
+    "description": "The world's first open-source multimodal creative assistant  This is a substitute for Canva and Manus that prioritizes privacy and is usable locally.",
+    "source_url": "https://www.facebook.com/reel/1563452664864382",
+    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/11cafe_jaaz_knowledge.md",
+    "synced_to_notebooklm": false,
+    "notebook_title": "",
+    "notebook_ref": "",
+    "created_at": "2026-09-07T03:10:22.993525"
+  },
+  {
+    "full_name": "wg/wrk",
+    "category": "Backend & High-Performance Systems",
+    "tags": [
+      "http",
+      "benchmark",
+      "performance",
+      "cli",
+      "load-testing"
+    ],
+    "summary": "wrk là công cụ benchmark HTTP hiện đại, tạo tải cao trên CPU đa nhân bằng cách kết hợp đa luồng và hệ thống thông báo sự kiện mở rộng như epoll/kqueue. Nó cho phép chạy thử nghiệm với số luồng, kết nối, thời gian tùy chỉnh và có thể mở rộng bằng script LuaJIT để tạo request và xử lý phản hồi. Dùng khi cần đo lường hiệu suất, khả năng chịu tải của dịch vụ web hoặc API.",
+    "use_cases": [
+      "Đánh giá throughput và latency của API REST",
+      "Kiểm tra khả năng chịu tải của máy chủ web trước khi triển khai production"
+    ],
+    "repo_url": "https://github.com/wg/wrk",
+    "stars": 40405,
+    "language": "C",
+    "description": "Modern HTTP benchmarking tool",
+    "source_url": "https://www.facebook.com/reel/1093191696557652",
+    "knowledge_doc": "/home/runner/work/fb-repo-harvester/fb-repo-harvester/outputs/wg_wrk_knowledge.md",
+    "synced_to_notebooklm": false,
+    "notebook_title": "",
+    "notebook_ref": "",
+    "created_at": "2026-09-07T03:10:50.993733"
   }
 ]
