@@ -226,8 +226,9 @@ class LibsqlConnectionWrapper:
 
 class DatabaseManager:
     def __init__(self, db_path: str = "", turso_url: str = "", turso_token: str = ""):
-        self.turso_url = turso_url or os.getenv("TURSO_DATABASE_URL", "")
-        self.turso_token = turso_token or os.getenv("TURSO_AUTH_TOKEN", "")
+        from vault_engine.config import TURSO_DATABASE_URL, TURSO_AUTH_TOKEN
+        self.turso_url = turso_url or os.getenv("TURSO_DATABASE_URL", "") or TURSO_DATABASE_URL
+        self.turso_token = turso_token or os.getenv("TURSO_AUTH_TOKEN", "") or TURSO_AUTH_TOKEN
         self.db_path = db_path or os.getenv("VAULT_DB_PATH", "data/vault.db")
 
         # Nếu đang chạy UnitTest (TESTING=true), luôn dùng SQLite local
@@ -248,6 +249,15 @@ class DatabaseManager:
 
     def init_db(self):
         cursor = self.conn.cursor()
+        # Đối với Turso, kiểm tra nhanh nếu bảng vault_items đã có thì bỏ qua DDL để tăng tốc khởi động (< 50ms)
+        if self.is_turso:
+            try:
+                row = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='vault_items';").fetchone()
+                if row:
+                    return
+            except Exception:
+                pass
+
         for stmt in DDL_STATEMENTS:
             try:
                 cursor.execute(stmt)

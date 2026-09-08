@@ -32,7 +32,7 @@ TURSO_DATABASE_URL = os.getenv("TURSO_DATABASE_URL", "")
 TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "")
 
 # Fallback từ settings.json nếu .env chưa có
-if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID or not TURSO_DATABASE_URL:
     import json
     for p in [BASE_DIR / "settings.json", BASE_DIR / "archive" / "legacy_fb_harvester" / "settings.json"]:
         if p.exists():
@@ -41,6 +41,8 @@ if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
                     s_data = json.load(f)
                     TELEGRAM_BOT_TOKEN = TELEGRAM_BOT_TOKEN or s_data.get("telegram_bot_token", "")
                     TELEGRAM_CHAT_ID = TELEGRAM_CHAT_ID or s_data.get("telegram_chat_id", "")
+                    TURSO_DATABASE_URL = TURSO_DATABASE_URL or s_data.get("turso_database_url", "")
+                    TURSO_AUTH_TOKEN = TURSO_AUTH_TOKEN or s_data.get("turso_auth_token", "")
             except Exception:
                 pass
 
