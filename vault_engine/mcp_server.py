@@ -1,6 +1,14 @@
 import sys
+import os
 import json
 import logging
+from pathlib import Path
+
+# Đảm bảo root dự án luôn nằm trong sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from typing import Dict, Any, List, Optional
 from vault_engine.config import DB_PATH
 from vault_engine.db import DatabaseManager
@@ -283,7 +291,7 @@ def run_stdio_server():
     server = VaultMCPServer()
     logger.info("Knowledge Vault MCP Server started on StdIO.")
     for line in sys.stdin:
-        line = line.strip()
+        line = line.strip().lstrip('\ufeff')
         if not line:
             continue
         try:

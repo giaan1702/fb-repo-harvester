@@ -11,3 +11,6 @@
 * **CẢNH BÁO QUÁ TẢI NGỮ CẢNH (PROACTIVE CONTEXT WARNING):** Chủ động theo dõi và cảnh báo khi hội thoại quá dài hoặc ngữ cảnh bị phình to (Context Bloat do nhiều lượt trao đổi, log dài hoặc đọc nhiều file lớn). Khi chạm ngưỡng, chủ động tóm tắt ngắn gọn trạng thái hiện tại (state handoff) và gợi ý người dùng khởi tạo conversation mới để duy trì tốc độ phản hồi, giảm token và tránh suy giảm chất lượng suy luận.
 * Ưu tiên chạy các tác vụ nghiên cứu sâu thông qua quy trình tranh biện đối kháng có chọn lọc (Gated Multi-Agent Debate).
 
+## 3. Tích Hợp Tri Thức Thực Chiến (Cognitive Vault Heuristics)
+* **Khai thác kinh nghiệm đã thẩm định:** Khi triển khai kiến trúc hệ thống, backend hoặc các luồng agent phức tạp, Agent chủ động tham chiếu các nguyên lý và cạm bẫy từ Knowledge Vault (`vault_engine/mcp_server.py` / `agent_heuristics`) để loại bỏ rủi ro tái diễn (như chú ý bị trôi dạt, tràn ngữ cảnh, rò rỉ tài nguyên hay vi phạm chuỗi phụ thuộc).
+* **Vòng lặp đúc kết quy tắc:** Sau khi giải quyết xong các bài toán hóc búa hoặc nhận diện gotchas mới, chủ động đúc kết các quy tắc ngắn gọn để đưa vào Não Bộ Tự Học.
