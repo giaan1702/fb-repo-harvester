@@ -28,6 +28,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 RMKO_GATEWAY_URL = os.getenv("RMKO_GATEWAY_URL", "https://rmko-gateway.onrender.com")
+TURSO_DATABASE_URL = os.getenv("TURSO_DATABASE_URL", "")
+TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "")
 
 # Fallback từ settings.json nếu .env chưa có
 if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:

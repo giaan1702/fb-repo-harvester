@@ -149,12 +149,101 @@ DDL_STATEMENTS = [
     "CREATE INDEX IF NOT EXISTS idx_heuristics_topic ON agent_heuristics (topic);"
 ]
 
+class LibsqlRow(dict):
+    """Wrapper cho row của LibSQL để hỗ trợ cả truy cập theo tên cột row['title'] và theo chỉ số row[0]"""
+    def __init__(self, cols, values):
+        super().__init__(zip(cols, values))
+        self._values = tuple(values)
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return self._values[key]
+        return super().__getitem__(key)
+
+class LibsqlCursorWrapper:
+    def __init__(self, raw_cursor):
+        self._cur = raw_cursor
+
+    def execute(self, sql, params=()):
+        if params:
+            self._cur.execute(sql, params)
+        else:
+            self._cur.execute(sql)
+        return self
+
+    def executemany(self, sql, params_seq):
+        self._cur.executemany(sql, params_seq)
+        return self
+
+    def fetchone(self):
+        row = self._cur.fetchone()
+        if row is None:
+            return None
+        cols = [c[0] for c in self._cur.description]
+        return LibsqlRow(cols, row)
+
+    def fetchall(self):
+        rows = self._cur.fetchall()
+        if not rows:
+            return []
+        cols = [c[0] for c in self._cur.description]
+        return [LibsqlRow(cols, r) for r in rows]
+
+    @property
+    def lastrowid(self):
+        return getattr(self._cur, "lastrowid", None)
+
+    @property
+    def rowcount(self):
+        return getattr(self._cur, "rowcount", -1)
+
+    def __getattr__(self, name):
+        return getattr(self._cur, name)
+
+class LibsqlConnectionWrapper:
+    def __init__(self, raw_conn):
+        self._conn = raw_conn
+
+    def cursor(self):
+        return LibsqlCursorWrapper(self._conn.cursor())
+
+    def execute(self, sql, params=()):
+        cur = self.cursor()
+        cur.execute(sql, params)
+        return cur
+
+    def commit(self):
+        return self._conn.commit()
+
+    def rollback(self):
+        return self._conn.rollback()
+
+    def close(self):
+        return self._conn.close()
+
+    def __getattr__(self, name):
+        return getattr(self._conn, name)
+
 class DatabaseManager:
-    def __init__(self, db_path: str):
-        self.db_path = db_path
-        os.makedirs(os.path.dirname(os.path.abspath(db_path)), exist_ok=True)
-        self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
-        self.conn.row_factory = sqlite3.Row
+    def __init__(self, db_path: str = "", turso_url: str = "", turso_token: str = ""):
+        self.turso_url = turso_url or os.getenv("TURSO_DATABASE_URL", "")
+        self.turso_token = turso_token or os.getenv("TURSO_AUTH_TOKEN", "")
+        self.db_path = db_path or os.getenv("VAULT_DB_PATH", "data/vault.db")
+
+        # Nếu đang chạy UnitTest (TESTING=true), luôn dùng SQLite local
+        self.is_turso = bool(self.turso_url and self.turso_token and not os.getenv("TESTING"))
+
+        if self.is_turso:
+            import libsql
+            norm_url = self.turso_url
+            if norm_url.startswith("libsql://"):
+                norm_url = "https://" + norm_url[len("libsql://"):]
+            raw_conn = libsql.connect(norm_url, auth_token=self.turso_token)
+            self.conn = LibsqlConnectionWrapper(raw_conn)
+        else:
+            os.makedirs(os.path.dirname(os.path.abspath(self.db_path)), exist_ok=True)
+            self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
+            self.conn.row_factory = sqlite3.Row
         self.init_db()
 
     def init_db(self):
