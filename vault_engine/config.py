@@ -48,7 +48,15 @@ if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID or not TURSO_DATABASE_URL:
 
 SERVER_HOST = os.getenv("SERVER_HOST", "127.0.0.1")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "7860"))
-DASHBOARD_BASE_URL = os.getenv("DASHBOARD_BASE_URL", f"http://{SERVER_HOST}:{SERVER_PORT}")
+
+# Tự động nhận diện URL công khai của Render để link gửi Telegram mở được trên điện thoại
+RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+DASHBOARD_BASE_URL = os.getenv("DASHBOARD_BASE_URL", "").strip().rstrip("/")
+if not DASHBOARD_BASE_URL:
+    if RENDER_EXTERNAL_URL:
+        DASHBOARD_BASE_URL = RENDER_EXTERNAL_URL
+    else:
+        DASHBOARD_BASE_URL = "https://autonomous-knowledge-vault-v5.onrender.com"
 
 SCOUT_ENABLED = os.getenv("SCOUT_ENABLED", "true").lower() in ("true", "1", "yes")
 SCOUT_INTERVAL_SECONDS = int(os.getenv("SCOUT_INTERVAL_SECONDS", "14400"))

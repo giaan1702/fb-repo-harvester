@@ -125,7 +125,7 @@ class TelegramBot:
         if gotchas:
             gotchas_str = "\n⚠️ <b>Gotchas & Rủi ro:</b>\n" + "\n".join(f"• {g}" for g in gotchas[:3])
 
-        link = f"{DASHBOARD_BASE_URL}/"
+        link = f"{DASHBOARD_BASE_URL}/?id={item_id}"
 
         msg = (
             f"📥 <b>PHÂN TÍCH HOÀN TẤT (CHỜ DUYỆT SƠ KHẢO)</b>\n\n"

@@ -481,6 +481,27 @@
       const data = await res.json();
       currentItems = data.items || [];
       renderGrid();
+
+      // Tự động mở bài viết nếu URL có tham số ?id=... (Deep Linking từ Telegram)
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get("id");
+      if (targetId && !window.__hasAutoOpenedDrawer) {
+        window.__hasAutoOpenedDrawer = true;
+        const itemToOpen = currentItems.find(i => String(i.id) === String(targetId));
+        if (itemToOpen) {
+          setTimeout(() => openDrawer(itemToOpen.id), 200);
+        } else {
+          fetch(`/api/v1/vault/${targetId}`)
+            .then(r => r.json())
+            .then(item => {
+              if (item && item.id) {
+                currentItems.unshift(item);
+                setTimeout(() => openDrawer(item.id), 200);
+              }
+            })
+            .catch(() => {});
+        }
+      }
     } catch (err) {
       gridContainer.innerHTML = `<div class="col-span-full py-16 text-center text-rose-400 text-xs font-mono">⚠️ Lỗi tải dữ liệu: ${err.message}</div>`;
     }
