@@ -73,7 +73,8 @@ STATIC_DIR = BASE_DIR / "vault_engine" / "static"
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-@app.get("/api/health")
+@app.api_route("/health", methods=["GET", "HEAD", "POST", "OPTIONS"])
+@app.api_route("/api/health", methods=["GET", "HEAD", "POST", "OPTIONS"])
 async def health_check():
     return {"status": "ok", "service": "Autonomous Knowledge Vault v3.0"}
 
@@ -455,7 +456,7 @@ async def get_scout_status():
         "interval_hours": round(SCOUT_INTERVAL_SECONDS / 3600, 2)
     }
 
-@app.get("/", response_class=HTMLResponse)
+@app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def serve_dashboard():
     """Giao diện Bento Grid Dashboard"""
     index_path = STATIC_DIR / "index.html"
