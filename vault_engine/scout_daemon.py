@@ -37,7 +37,14 @@ class AutonomousScout:
     và tự động củng cố vào Cognitive Brain Vault.
     """
     def __init__(self, db_path: Optional[str] = None):
-        self.db = DatabaseManager(db_path or DB_PATH)
+        target_db = db_path or DB_PATH
+        db_existed = os.path.exists(target_db) and os.path.getsize(target_db) > 0
+        self.db = DatabaseManager(target_db)
+        if not db_existed:
+            dump_file = os.path.join(os.path.dirname(os.path.abspath(target_db)), "vault_dump.sql")
+            if os.path.exists(dump_file):
+                logger.info(f"🔄 Khởi tạo cơ sở dữ liệu từ {dump_file}...")
+                self.db.restore_sql(dump_file)
         self.ingest = IngestManager(db=self.db)
         self.pipeline = GeminiReflectivePipeline()
         self.github_ext = GitHubExtractor()

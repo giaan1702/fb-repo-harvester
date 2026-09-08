@@ -221,6 +221,71 @@ class DatabaseManager:
         except Exception:
             return False
 
+    def dump_sql(self, sql_path: str):
+        """Xuất toàn bộ cơ sở dữ liệu thành file SQL sạch, tự động lọc shadow tables của FTS5."""
+        os.makedirs(os.path.dirname(os.path.abspath(sql_path)), exist_ok=True)
+        with open(sql_path, "w", encoding="utf-8") as f:
+            for line in self.conn.iterdump():
+                # Lọc bỏ các bảng ảo/bảng bóng FTS5 để tránh xung đột sqlite_master
+                if any(x in line for x in ["vault_fts_data", "vault_fts_idx", "vault_fts_docsize", "vault_fts_config", "sqlite_master"]):
+                    continue
+                if line.startswith('INSERT INTO "vault_fts"') or line.startswith("INSERT INTO vault_fts"):
+                    continue
+                f.write(f"{line}\n")
+            # Tự động thêm lệnh rebuild FTS5 vào cuối dump
+            f.write("\n-- Rebuild FTS5 Search Index\n")
+            f.write("CREATE VIRTUAL TABLE IF NOT EXISTS vault_fts USING fts5(title, short_summary, tech_stack, deep_research_md, content='vault_items', content_rowid='id');\n")
+            f.write("INSERT INTO vault_fts(vault_fts) VALUES('rebuild');\n")
+
+    def restore_sql(self, sql_path: str) -> bool:
+        """Khôi phục dữ liệu từ file SQL vào cơ sở dữ liệu một cách idempotent và an toàn tuyệt đối."""
+        if not os.path.exists(sql_path):
+            return False
+
+        with open(sql_path, "r", encoding="utf-8") as f:
+            sql_script = f.read()
+
+        cursor = self.conn.cursor()
+        cursor.execute("PRAGMA foreign_keys = OFF;")
+        self.conn.commit()
+
+        # Xóa các bảng cũ trước khi nạp lại dump để đảm bảo tính Idempotent
+        cursor.executescript("""
+            DROP TABLE IF EXISTS dead_letter_queue;
+            DROP TABLE IF EXISTS brain_associations;
+            DROP TABLE IF EXISTS vault_embeddings;
+            DROP TABLE IF EXISTS brain_synthesis_topics;
+            DROP TABLE IF EXISTS agent_heuristics;
+            DROP TABLE IF EXISTS vault_items;
+            DROP TABLE IF EXISTS queue_tasks;
+            DROP TABLE IF EXISTS vault_fts;
+            DROP TABLE IF EXISTS vault_fts_data;
+            DROP TABLE IF EXISTS vault_fts_idx;
+            DROP TABLE IF EXISTS vault_fts_docsize;
+            DROP TABLE IF EXISTS vault_fts_config;
+            DROP TRIGGER IF EXISTS vault_ai;
+            DROP TRIGGER IF EXISTS vault_ad;
+            DROP TRIGGER IF EXISTS vault_au;
+        """)
+        self.conn.commit()
+
+        cursor.executescript(sql_script)
+        self.conn.commit()
+
+        # Đảm bảo FTS5 được khởi tạo và rebuild hoàn chỉnh
+        try:
+            cursor.execute("CREATE VIRTUAL TABLE IF NOT EXISTS vault_fts USING fts5(title, short_summary, tech_stack, deep_research_md, content='vault_items', content_rowid='id');")
+            cursor.execute("INSERT INTO vault_fts(vault_fts) VALUES('rebuild');")
+            self.conn.commit()
+        except Exception:
+            pass
+
+        cursor.execute("PRAGMA foreign_keys = ON;")
+        self.conn.commit()
+        self._run_migrations()
+        return True
+
+
 
 
     def execute_scalar(self, query: str, params: tuple = ()):
