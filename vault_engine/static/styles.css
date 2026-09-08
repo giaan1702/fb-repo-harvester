@@ -146,8 +146,15 @@ body {
    ========================================================================== */
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 1.15rem;
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1006,5 +1013,83 @@ body {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
   z-index: 20;
   transition: all 0.2s ease;
+}
+
+/* ==========================================================================
+   MOBILE-FIRST OPTIMIZATIONS & UTILITIES
+   ========================================================================== */
+
+/* HIDE SCROLLBAR BUT KEEP SMOOTH TOUCH SWIPING */
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 640px) {
+  /* RESPONSIVE ARTICLE PROSE */
+  .dossier-body {
+    font-size: 0.925rem;
+    line-height: 1.7;
+    padding-bottom: 3.5rem;
+  }
+  .dossier-body h1 {
+    font-size: 1.35rem;
+    line-height: 1.35;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .dossier-body h2 {
+    font-size: 1.125rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.65rem;
+  }
+  .dossier-body h3 {
+    font-size: 0.985rem;
+    margin-top: 1.25rem;
+  }
+  
+  /* RESPONSIVE CODE BLOCKS */
+  .dossier-body pre {
+    padding: 1rem 0.75rem 0.75rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    margin: 1rem -0.5rem;
+    border-radius: 6px;
+  }
+
+  /* RESPONSIVE TABLES: SCROLL HORIZONTALLY WITHOUT BREAKING PAGE */
+  .dossier-body table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.75rem;
+    margin: 1rem 0;
+  }
+  .dossier-body th, .dossier-body td {
+    padding: 0.5rem 0.65rem;
+    white-space: nowrap;
+  }
+
+  /* RESPONSIVE MERMAID SVGS */
+  .dossier-body .mermaid,
+  .dossier-body .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+    overflow-x: auto;
+  }
+
+  /* TOAST ON MOBILE */
+  .toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1.5rem;
+    justify-content: center;
+  }
 }
 

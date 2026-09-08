@@ -62,95 +62,96 @@
             </div>
 
             <!-- SEARCH BAR (High-Density FTS5 with Keyboard Shortcut) -->
-            <div class="flex-1 max-w-lg min-w-[280px]">
+            <div class="w-full sm:w-auto sm:flex-1 max-w-lg order-3 sm:order-2">
                 <div class="relative group">
                     <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5 group-focus-within:text-cyan-400 transition-colors"></i>
                     <input type="text" id="search-input" placeholder="Tìm kiếm toàn văn FTS5 (công nghệ, gotchas, architecture)..."
-                           class="w-full bg-[#111622] border border-[#20293d] rounded-lg pl-9 pr-14 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all shadow-inner">
-                    <div class="absolute right-2.5 top-2 flex items-center gap-1">
+                           class="w-full bg-[#111622] border border-[#20293d] rounded-lg pl-9 pr-4 sm:pr-14 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all shadow-inner">
+                    <div class="absolute right-2.5 top-2 hidden sm:flex items-center gap-1">
                         <kbd class="text-[10px] font-mono text-slate-400 px-1.5 py-0.5 rounded bg-[#182133] border border-slate-700/80">Ctrl K</kbd>
                     </div>
                 </div>
             </div>
 
             <!-- ACTIONS & STATS -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3 order-2 sm:order-3 ml-auto sm:ml-0">
                 <!-- GLOBAL GRAPH BUTTON -->
-                <button id="btn-open-global-graph" class="px-3 py-1.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-300 hover:text-purple-200 text-xs font-medium flex items-center gap-1.5 transition-all shadow-sm">
+                <button id="btn-open-global-graph" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-300 hover:text-purple-200 text-xs font-medium flex items-center gap-1.5 transition-all shadow-sm shrink-0">
                     <i data-lucide="network" class="w-3.5 h-3.5"></i>
-                    <span>Mạng Lưới</span>
+                    <span class="hidden xs:inline">Mạng Lưới</span>
                 </button>
 
                 <!-- INGEST BUTTON -->
-                <button id="btn-open-ingest" class="px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 hover:text-cyan-200 text-xs font-medium flex items-center gap-1.5 transition-all shadow-sm">
+                <button id="btn-open-ingest" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 hover:text-cyan-200 text-xs font-medium flex items-center gap-1.5 transition-all shadow-sm shrink-0">
                     <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
                     <span>Nạp Link</span>
                 </button>
 
                 <!-- STATS COUNTER -->
-                <div class="flex items-center space-x-1.5 text-xs font-mono" id="stats-container">
-                    <span class="px-2 py-1 rounded bg-[#121824] border border-[#1e273a] text-slate-300" title="Tổng số tài liệu">
+                <div class="flex items-center space-x-1 sm:space-x-1.5 text-xs font-mono" id="stats-container">
+                    <span class="px-1.5 sm:px-2 py-1 rounded bg-[#121824] border border-[#1e273a] text-slate-300" title="Tổng số tài liệu">
                         <strong id="stat-total" class="text-white">0</strong>
                     </span>
-                    <span class="px-2 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300" title="Chưa đọc">
+                    <span class="px-1.5 sm:px-2 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300" title="Chưa đọc">
                         Mới: <strong id="stat-unread">0</strong>
                     </span>
-                    <span class="px-2 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300" title="Đánh dấu VIP">
+                    <span class="px-1.5 sm:px-2 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300" title="Đánh dấu VIP">
                         ⭐ <strong id="stat-starred">0</strong>
                     </span>
                 </div>
             </div>
         </div>
 
-        <!-- COGNITIVE BRAIN MODE SWITCHER -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2.5 pb-1 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div class="flex items-center space-x-1.5 bg-[#0f1420] p-1 rounded-xl border border-[#1e2638]" id="brain-mode-nav">
-                <button class="brain-nav-btn active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-white bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 border border-cyan-500/40 shadow-sm" data-mode="APPROVED">
+        <!-- COGNITIVE BRAIN MODE SWITCHER (Horizontal Touch Swipe on Mobile) -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2.5 pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+            <div class="flex items-center space-x-1.5 bg-[#0f1420] p-1 rounded-xl border border-[#1e2638] overflow-x-auto whitespace-nowrap scrollbar-none max-w-full" id="brain-mode-nav">
+                <button class="brain-nav-btn active shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-white bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 border border-cyan-500/40 shadow-sm" data-mode="APPROVED">
                     <i data-lucide="brain" class="w-3.5 h-3.5 text-cyan-400"></i>
                     <span>Thư Viện Não Bộ</span>
                     <span id="badge-approved-count" class="ml-1 px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-[10px] text-cyan-300 font-mono">0</span>
                 </button>
-                <button class="brain-nav-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="INBOX">
+                <button class="brain-nav-btn shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="INBOX">
                     <i data-lucide="inbox" class="w-3.5 h-3.5 text-amber-400"></i>
                     <span>Chờ Duyệt (Inbox)</span>
                     <span id="badge-inbox-count" class="ml-1 px-1.5 py-0.2 rounded-full bg-amber-500/20 text-[10px] text-amber-300 font-mono">0</span>
                 </button>
-                <button class="brain-nav-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="TOPICS">
+                <button class="brain-nav-btn shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="TOPICS">
                     <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-400"></i>
                     <span>Chuyên Đề Sống</span>
                     <span id="badge-topics-count" class="ml-1 px-1.5 py-0.2 rounded-full bg-purple-500/20 text-[10px] text-purple-300 font-mono">0</span>
                 </button>
-                <button class="brain-nav-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="HEURISTICS">
+                <button class="brain-nav-btn shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent" data-mode="HEURISTICS">
                     <i data-lucide="zap" class="w-3.5 h-3.5 text-emerald-400"></i>
                     <span>Quy Tắc Agent</span>
                     <span id="badge-heuristics-count" class="ml-1 px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-[10px] text-emerald-300 font-mono">0</span>
                 </button>
             </div>
-            <div id="curation-hint" class="text-[11px] text-slate-400 italic flex items-center gap-1.5">
+            <div id="curation-hint" class="text-[11px] text-slate-400 italic hidden sm:flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                 <span>Kho tri thức tinh hoa đã được tuyển chọn & củng cố nơ-ron</span>
             </div>
         </div>
 
-        <!-- FILTER & ARCHETYPE BAR -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-[#161d2c]" id="sub-filter-bar">
-            <!-- Category & Archetype Filter Pills -->
-            <div class="flex flex-wrap items-center gap-1.5" id="category-pills">
-                <button class="cat-pill active" data-cat="">Tất cả</button>
-                <button class="cat-pill" data-cat="AI-Agents">🤖 AI-Agents</button>
-                <button class="cat-pill" data-cat="LLM-Infra">⚡ LLM-Infra</button>
-                <button class="cat-pill" data-cat="DevOps-Cloud">☁️ DevOps-Cloud</button>
-                <button class="cat-pill" data-cat="Web-Systems">🌐 Web-Systems</button>
-                <button class="cat-pill" data-cat="Data-Eng">📊 Data-Eng</button>
+        <!-- FILTER & ARCHETYPE BAR (Horizontal Swipe on Mobile) -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs border-t border-[#161d2c]" id="sub-filter-bar">
+            <!-- Category Filter Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 max-w-full" id="category-pills">
+                <button class="cat-pill active shrink-0" data-cat="">Tất cả</button>
+                <button class="cat-pill shrink-0" data-cat="AI-Agents">🤖 AI-Agents</button>
+                <button class="cat-pill shrink-0" data-cat="LLM-Infra">⚡ LLM-Infra</button>
+                <button class="cat-pill shrink-0" data-cat="DevOps-Cloud">☁️ DevOps-Cloud</button>
+                <button class="cat-pill shrink-0" data-cat="Web-Systems">🌐 Web-Systems</button>
+                <button class="cat-pill shrink-0" data-cat="Data-Eng">📊 Data-Eng</button>
             </div>
 
-            <!-- Archetype Quick Toggles -->
-            <div class="flex items-center flex-wrap gap-2.5 shrink-0">
-                <div class="flex items-center space-x-1 bg-[#101520] border border-[#1c2436] rounded-md p-0.5 shrink-0" id="archetype-filters">
-                    <button class="arch-toggle-btn active" data-arch="">Tất cả</button>
-                    <button class="arch-toggle-btn" data-arch="CODE_REPO">Mã nguồn</button>
-                    <button class="arch-toggle-btn" data-arch="CONCEPT_THOUGHT">Tư duy</button>
-                    <button class="arch-toggle-btn" data-arch="TECH_DEEPDIVE">Kỹ thuật</button>
+            <!-- Archetype Segmented Controls & Quick Filters -->
+            <div class="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 max-w-full">
+                <!-- Archetype Segmented Control -->
+                <div class="flex items-center bg-[#0e1420] p-0.5 rounded-md border border-[#1b2438] shrink-0" id="archetype-filters">
+                    <button class="arch-toggle-btn active shrink-0" data-arch="">Tất cả</button>
+                    <button class="arch-toggle-btn shrink-0" data-arch="CODE_REPO">Mã nguồn</button>
+                    <button class="arch-toggle-btn shrink-0" data-arch="SYSTEM_THINKING">Tư duy</button>
+                    <button class="arch-toggle-btn shrink-0" data-arch="TECH_ARTICLE">Kỹ thuật</button>
                 </div>
 
                 <span class="text-slate-700 hidden sm:inline">|</span>
@@ -172,7 +173,7 @@
     </header>
 
     <!-- MAIN BENTO GRID AREA -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-1 w-full">
         <div id="grid-container" class="bento-grid">
             <div class="col-span-full py-20 text-center text-slate-500 text-xs font-mono animate-pulse">⚡ Đang đồng bộ kho tri thức...</div>
         </div>
@@ -183,58 +184,61 @@
         <div class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" id="reader-overlay"></div>
         <div class="fixed inset-y-0 right-0 max-w-5xl w-full bg-[#0c1017] shadow-2xl border-l border-[#1f273b] flex flex-col z-50 transform transition-transform duration-300 translate-x-full" id="reader-panel">
 
-            <!-- DRAWER HEADER -->
-            <!-- DRAWER HEADER (Responsive Flex) -->
-            <div class="px-6 py-3 border-b border-[#1b2234] flex flex-wrap items-center justify-between gap-3 bg-[#0e131d]/95 backdrop-blur-md">
-                <div class="flex items-center space-x-2 truncate max-w-xl">
-                    <span id="drawer-category" class="px-2 py-0.5 rounded text-[11px] font-mono font-bold uppercase bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 shrink-0">Category</span>
-                    <span id="drawer-archetype" class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-blue-500/10 text-blue-300 border border-blue-500/20 shrink-0">Archetype</span>
-                    <span id="drawer-score" class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">8.5 ★</span>
-                    <h2 id="drawer-title" class="text-sm font-semibold text-white truncate">Tiêu đề bài viết</h2>
+            <!-- DRAWER HEADER (Responsive Two-Tier Layout) -->
+            <div class="px-4 py-2.5 sm:px-6 sm:py-3 border-b border-[#1b2234] flex flex-col gap-2 bg-[#0e131d]/95 backdrop-blur-md">
+                <div class="flex items-center justify-between gap-2 w-full">
+                    <div class="flex items-center space-x-1.5 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5">
+                        <span id="drawer-category" class="px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono font-bold uppercase bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 shrink-0">Category</span>
+                        <span id="drawer-archetype" class="px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono font-bold bg-blue-500/10 text-blue-300 border border-blue-500/20 shrink-0">Archetype</span>
+                        <span id="drawer-score" class="px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">8.5 ★</span>
+                    </div>
+
+                    <div class="flex items-center space-x-1.5 shrink-0">
+                        <a id="drawer-orig-link" href="#" target="_blank" rel="noopener noreferrer"
+                           class="px-2 py-1 rounded bg-[#151c2b] border border-[#222d42] text-[11px] font-mono text-cyan-300 hover:text-white hover:border-cyan-500/50 flex items-center space-x-1 transition-colors">
+                            <span>Nguồn</span>
+                            <span class="text-xs">↗</span>
+                        </a>
+                        <div id="drawer-curation-actions" class="flex items-center space-x-1"></div>
+                        <button id="btn-drawer-star" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#1c2436] text-slate-400 hover:text-amber-400 text-sm transition-colors" title="Đánh dấu VIP">★</button>
+                        <button id="btn-close-drawer" class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#151c2b] border border-[#222d42] text-slate-300 hover:text-white text-base leading-none transition-colors" title="Đóng (Esc)">✕</button>
+                    </div>
                 </div>
 
-                <div class="flex items-center space-x-2 shrink-0">
-                    <a id="drawer-orig-link" href="#" target="_blank" rel="noopener noreferrer"
-                       class="px-2 py-1 rounded bg-[#151c2b] border border-[#222d42] text-[11px] font-mono text-cyan-300 hover:text-white hover:border-cyan-500/50 flex items-center space-x-1 transition-colors">
-                        <span>Nguồn gốc</span>
-                        <span class="text-xs">↗</span>
-                    </a>
-                    <div id="drawer-curation-actions" class="flex items-center space-x-1.5"></div>
-                    <button id="btn-drawer-star" class="p-1.5 rounded hover:bg-[#1c2436] text-slate-400 hover:text-amber-400 text-sm transition-colors" title="Đánh dấu VIP">★</button>
-                    <button id="btn-close-drawer" class="p-1.5 rounded hover:bg-[#1c2436] text-slate-400 hover:text-white text-base leading-none transition-colors" title="Đóng (Esc)">✕</button>
-                </div>
+                <!-- Tiêu đề hiển thị trọn vẹn trên mobile -->
+                <h2 id="drawer-title" class="text-xs sm:text-sm font-semibold text-white line-clamp-2 sm:truncate">Tiêu đề bài viết</h2>
             </div>
 
             <!-- READER TABS NAVIGATION & LANGUAGE TOGGLE -->
-            <div class="px-6 py-2 border-b border-[#161e2e] bg-[#0a0e16] flex flex-wrap items-center justify-between gap-2">
+            <div class="px-4 py-2 sm:px-6 border-b border-[#161e2e] bg-[#0a0e16] flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center space-x-1 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 max-w-full" id="drawer-tabs">
-                    <button class="drawer-tab active" data-tab="all">
+                    <button class="drawer-tab active shrink-0" data-tab="all">
                         <i data-lucide="layers" class="w-3.5 h-3.5"></i>
                         <span>Toàn Bộ</span>
                     </button>
-                    <button class="drawer-tab" data-tab="brief">
+                    <button class="drawer-tab shrink-0" data-tab="brief">
                         <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                        <span>Hồ Sơ Kỹ Sư (Phần I)</span>
+                        <span>Hồ Sơ Kỹ Sư (I)</span>
                     </button>
-                    <button class="drawer-tab" data-tab="reader">
+                    <button class="drawer-tab shrink-0" data-tab="reader">
                         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                        <span>Bản Đọc Chuyên Sâu (Phần II)</span>
+                        <span>Bản Đọc Sâu (II)</span>
                     </button>
-                    <button class="drawer-tab" data-tab="network">
+                    <button class="drawer-tab shrink-0" data-tab="network">
                         <i data-lucide="network" class="w-3.5 h-3.5"></i>
-                        <span>Tri Thức Mở Rộng (Phần III)</span>
+                        <span>Mở Rộng (III)</span>
                     </button>
-                    <button class="drawer-tab" data-tab="associations">
+                    <button class="drawer-tab shrink-0" data-tab="associations">
                         <i data-lucide="git-merge" class="w-3.5 h-3.5 text-cyan-400"></i>
-                        <span>Nơ-ron Đối Chiếu (Phần IV)</span>
+                        <span>Nơ-ron (IV)</span>
                     </button>
                 </div>
 
                 <div class="flex items-center space-x-2 shrink-0">
                     <!-- LANGUAGE TOGGLE -->
                     <div class="inline-flex rounded-md bg-[#121824] p-0.5 border border-[#1f283d]" id="lang-toggle-group">
-                        <button class="px-2 py-0.5 text-[11px] font-mono rounded font-semibold text-cyan-400 bg-[#1c263c] transition-all" id="btn-lang-vi" data-lang="vi" title="Xem bản dịch kỹ thuật tiếng Việt">🇻🇳 Tiếng Việt</button>
-                        <button class="px-2 py-0.5 text-[11px] font-mono rounded font-medium text-slate-400 hover:text-white transition-all" id="btn-lang-en" data-lang="en" title="Xem nguyên tác gốc tiếng Anh">🇺🇸 English</button>
+                        <button class="px-2 py-0.5 text-[11px] font-mono rounded font-semibold text-cyan-400 bg-[#1c263c] transition-all" id="btn-lang-vi" data-lang="vi" title="Xem bản dịch kỹ thuật tiếng Việt">🇻🇳 VI</button>
+                        <button class="px-2 py-0.5 text-[11px] font-mono rounded font-medium text-slate-400 hover:text-white transition-all" id="btn-lang-en" data-lang="en" title="Xem nguyên tác gốc tiếng Anh">🇺🇸 EN</button>
                     </div>
 
                     <div class="text-[11px] text-slate-500 font-mono hidden md:flex items-center gap-1">
@@ -256,7 +260,7 @@
                 </aside>
 
                 <!-- MARKDOWN CONTENT -->
-                <article class="flex-1 p-6 sm:p-10 overflow-y-auto dossier-body relative" id="deep-research-content">
+                <article class="flex-1 p-4 sm:p-8 md:p-10 overflow-y-auto dossier-body relative" id="deep-research-content">
                     <!-- Markdown rendered here with Highlight.js, Mermaid diagrams & Callouts -->
                 </article>
 
