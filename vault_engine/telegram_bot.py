@@ -151,9 +151,28 @@ class TelegramBot:
         }
         return msg, reply_markup
 
+    def _is_authorized(self, chat_id: str) -> bool:
+        """Kiểm tra quyền truy cập của người gửi tin nhắn Telegram."""
+        if not self.default_chat_id:
+            return True
+        return str(chat_id) == str(self.default_chat_id)
+
     def process_url_task(self, raw_url: str, chat_id: str, reply_to_message_id: Optional[int] = None):
         clean_url = canonicalize_url(raw_url)
         stype = detect_source_type(clean_url)
+
+        # 0. Phòng thủ SSRF (Server-Side Request Forgery)
+        try:
+            from vault_engine.security import validate_safe_public_url
+            validate_safe_public_url(clean_url)
+        except ValueError as ssrf_err:
+            logger.warning(f"Chặn liên kết nguy hiểm (SSRF) từ Telegram chat {chat_id}: {clean_url} - {ssrf_err}")
+            self.send_message(
+                f"🛡️ <b>Từ chối xử lý liên kết (Bảo Mật SSRF):</b>\n<code>{clean_url}</code>\n<i>{ssrf_err}</i>",
+                chat_id=chat_id,
+                reply_to_message_id=reply_to_message_id
+            )
+            return
 
         try:
             # 1. Trinh sát & Khai phá bối cảnh đa tầng (Context Scout Agent)
@@ -213,7 +232,14 @@ class TelegramBot:
         data = cb.get("data", "")
         message = cb.get("message", {})
         chat_id = str(message.get("chat", {}).get("id", ""))
+        from_id = str(cb.get("from", {}).get("id", ""))
         msg_id = message.get("message_id")
+
+        # Kiểm tra phân quyền truy cập
+        if not self._is_authorized(chat_id) and not self._is_authorized(from_id):
+            logger.warning(f"Từ chối callback query từ người dùng chưa cấp quyền: chat_id={chat_id}, from_id={from_id}")
+            self.answer_callback_query(cb_id, text="⛔ Bạn không có quyền thực hiện thao tác này.")
+            return
 
         if data.startswith("brain:approve:"):
             try:
@@ -249,10 +275,17 @@ class TelegramBot:
 
     def handle_message(self, message: Dict[str, Any]):
         chat_id = str(message.get("chat", {}).get("id", ""))
+        from_id = str(message.get("from", {}).get("id", ""))
         text = message.get("text") or message.get("caption") or ""
         msg_id = message.get("message_id")
 
         if not text:
+            return
+
+        # Kiểm tra phân quyền truy cập
+        if not self._is_authorized(chat_id) and not self._is_authorized(from_id):
+            logger.warning(f"Từ chối tin nhắn từ người dùng chưa cấp quyền: chat_id={chat_id}, from_id={from_id}")
+            self.send_message("⛔ <b>Truy cập bị từ chối.</b> Bạn không có quyền điều khiển Bộ Não Tự Hành này.", chat_id=chat_id, reply_to_message_id=msg_id)
             return
 
         text_strip = text.strip()

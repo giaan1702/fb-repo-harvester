@@ -69,6 +69,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Autonomous Knowledge Vault", version="3.0.0", lifespan=lifespan)
 
+from vault_engine.security import (
+    SecurityHeadersMiddleware,
+    validate_safe_public_url,
+    ingest_limiter,
+    explain_limiter,
+    scout_limiter
+)
+app.add_middleware(SecurityHeadersMiddleware)
+
 STATIC_DIR = BASE_DIR / "vault_engine" / "static"
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -163,6 +172,12 @@ async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
 
     queued = []
     for u in urls:
+        try:
+            validate_safe_public_url(u)
+        except ValueError as ssrf_err:
+            logger.warning(f"Bỏ qua URL vi phạm SSRF từ webhook Telegram: {u} - {ssrf_err}")
+            continue
+
         stype = detect_source_type(u)
         res = ingest.enqueue_url(u, source_type=stype)
         if res and "task_id" in res:
@@ -179,8 +194,18 @@ class ExplainInlineRequest(BaseModel):
     article_title: Optional[str] = ""
 
 @app.post("/api/v1/explain-inline")
-def explain_inline(payload: ExplainInlineRequest):
+def explain_inline(payload: ExplainInlineRequest, request: Request):
     """Giải thích siêu cô đọng 2-3 câu đoạn trích kỹ thuật được bôi đen"""
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    if not os.getenv("TESTING"):
+        allowed, retry_after = explain_limiter.is_allowed(client_ip)
+        if not allowed:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Quá nhiều yêu cầu giải thích AI từ IP của bạn. Vui lòng chờ {retry_after} giây trước khi thử lại.",
+                headers={"Retry-After": str(retry_after)}
+            )
+
     text = payload.selected_text.strip()
     if not text:
         raise HTTPException(status_code=400, detail="Text cannot be empty")
@@ -207,11 +232,27 @@ class IngestRequest(BaseModel):
     url: str
 
 @app.post("/api/v1/ingest")
-async def direct_ingest(payload: IngestRequest, background_tasks: BackgroundTasks):
-    """API nạp trực tiếp URL từ Web UI"""
+async def direct_ingest(payload: IngestRequest, request: Request, background_tasks: BackgroundTasks):
+    """API nạp trực tiếp URL từ Web UI với bảo vệ SSRF và Rate Limiting"""
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    if not os.getenv("TESTING"):
+        allowed, retry_after = ingest_limiter.is_allowed(client_ip)
+        if not allowed:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Quá nhiều yêu cầu nạp link từ IP của bạn. Vui lòng chờ {retry_after} giây trước khi thử lại.",
+                headers={"Retry-After": str(retry_after)}
+            )
+
     raw_url = payload.url.strip()
     if not raw_url.startswith("http"):
         raise HTTPException(status_code=400, detail="URL không hợp lệ. Phải bắt đầu bằng http:// hoặc https://")
+
+    # Phòng thủ SSRF (Server-Side Request Forgery)
+    try:
+        validate_safe_public_url(raw_url)
+    except ValueError as ssrf_err:
+        raise HTTPException(status_code=400, detail=f"Từ chối xử lý URL (Bảo Mật SSRF): {ssrf_err}")
 
     clean_url = canonicalize_url(raw_url)
     stype = detect_source_type(clean_url)
@@ -432,8 +473,18 @@ async def get_vault_stats():
     }
 
 @app.post("/api/v1/scout/trigger")
-async def trigger_scout_cycle(background_tasks: BackgroundTasks):
-    """Kích hoạt một chu kỳ săn lùng tri thức tự hành ngay lập tức"""
+async def trigger_scout_cycle(request: Request, background_tasks: BackgroundTasks):
+    """Kích hoạt một chu kỳ săn lùng tri thức tự hành ngay lập tức có rate limiting"""
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    if not os.getenv("TESTING"):
+        allowed, retry_after = scout_limiter.is_allowed(client_ip)
+        if not allowed:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Chu kỳ săn lùng vừa được kích hoạt. Vui lòng chờ {retry_after} giây trước khi gọi lại.",
+                headers={"Retry-After": str(retry_after)}
+            )
+
     if not scout_daemon:
         raise HTTPException(status_code=503, detail="Autonomous Scout chưa được khởi tạo")
     

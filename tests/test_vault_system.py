@@ -850,6 +850,90 @@ class TestVaultSystemComprehensive(unittest.TestCase):
         self.assertEqual(res_syn["topic_slug"], "security-standards")
         self.assertEqual(res_syn["version"], 1)
 
+    def test_ssrf_validator_blocks_private_ips_and_schemes(self):
+        from vault_engine.security import validate_safe_public_url
+
+        # Invalid schemes
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("ftp://example.com/file")
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("file:///etc/passwd")
+
+        # Localhost / Private IPs
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("http://127.0.0.1:8000/secret")
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("http://localhost:3000")
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("http://169.254.169.254/latest/meta-data")
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("http://10.0.0.1/admin")
+        with self.assertRaises(ValueError):
+            validate_safe_public_url("http://192.168.1.1/router")
+
+        # Valid public URLs
+        self.assertTrue(validate_safe_public_url("https://github.com/openai/skills"))
+        self.assertTrue(validate_safe_public_url("http://example.com"))
+
+    def test_rate_limiter_sliding_window(self):
+        from vault_engine.security import SlidingWindowRateLimiter
+        import time
+
+        # Rate limiter với 2 req / min
+        limiter = SlidingWindowRateLimiter(requests_per_minute=2)
+        ip = "192.0.2.1" # TEST-NET-1 public test IP
+
+        # Lần 1 và 2 hợp lệ
+        allowed1, _ = limiter.is_allowed(ip)
+        self.assertTrue(allowed1)
+        allowed2, _ = limiter.is_allowed(ip)
+        self.assertTrue(allowed2)
+
+        # Lần 3 bị chặn
+        allowed3, retry_after = limiter.is_allowed(ip)
+        self.assertFalse(allowed3)
+        self.assertGreater(retry_after, 0)
+
+        # Khác client IP vẫn được đi qua
+        allowed_other, _ = limiter.is_allowed("192.0.2.2")
+        self.assertTrue(allowed_other)
+
+    def test_security_headers_middleware(self):
+        resp = self.client.get("/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers.get("x-content-type-options"), "nosniff")
+        self.assertEqual(resp.headers.get("x-frame-options"), "SAMEORIGIN")
+        self.assertEqual(resp.headers.get("x-xss-protection"), "1; mode=block")
+        self.assertIn("strict-transport-security", resp.headers)
+
+    def test_telegram_bot_unauthorized_access_control(self):
+        from vault_engine.telegram_bot import TelegramBot
+        bot = TelegramBot(token="dummy_token", default_chat_id="123456789")
+
+        # Test user trái phép gửi tin nhắn
+        unauthorized_message = {
+            "chat": {"id": 999999999},
+            "from": {"id": 999999999},
+            "text": "https://github.com/test/repo",
+            "message_id": 123
+        }
+        with unittest.mock.patch.object(bot, "send_message") as mock_send:
+            bot.handle_message(unauthorized_message)
+            mock_send.assert_called_once()
+            args, _ = mock_send.call_args
+            self.assertIn("Truy cập bị từ chối", args[0])
+
+        # Test callback query trái phép
+        unauthorized_cb = {
+            "id": "cb_1",
+            "from": {"id": 888888888},
+            "message": {"chat": {"id": 888888888}, "message_id": 10},
+            "data": "brain:approve:1"
+        }
+        with unittest.mock.patch.object(bot, "answer_callback_query") as mock_answer:
+            bot.handle_callback_query(unauthorized_cb)
+            mock_answer.assert_called_once_with("cb_1", text="⛔ Bạn không có quyền thực hiện thao tác này.")
+
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestVaultSystemComprehensive)
     runner = unittest.TextTestRunner(verbosity=2)
