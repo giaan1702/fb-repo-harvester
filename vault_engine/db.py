@@ -194,24 +194,6 @@ class DatabaseManager:
             except Exception:
                 pass
 
-    def dump_sql(self, sql_path: str):
-        """Xuất toàn bộ cơ sở dữ liệu thành file SQL để đồng bộ Git an toàn."""
-        os.makedirs(os.path.dirname(os.path.abspath(sql_path)), exist_ok=True)
-        with open(sql_path, "w", encoding="utf-8") as f:
-            for line in self.conn.iterdump():
-                f.write(f"{line}\n")
-
-    def restore_sql(self, sql_path: str):
-        """Khôi phục dữ liệu từ file SQL vào cơ sở dữ liệu."""
-        if not os.path.exists(sql_path):
-            return False
-        with open(sql_path, "r", encoding="utf-8") as f:
-            sql_script = f.read()
-        self.conn.executescript(sql_script)
-        self.conn.commit()
-        return True
-
-
         cursor.execute("PRAGMA table_info(brain_synthesis_topics);")
         topic_cols = {row["name"] for row in cursor.fetchall()}
         if "core_principles" not in topic_cols:
@@ -229,6 +211,17 @@ class DatabaseManager:
                 pass
 
         self.conn.commit()
+
+    def checkpoint(self):
+        """Flush toàn bộ dữ liệu WAL vào file sqlite .db chính để đồng bộ Git trọn vẹn."""
+        try:
+            self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+            self.conn.commit()
+            return True
+        except Exception:
+            return False
+
+
 
     def execute_scalar(self, query: str, params: tuple = ()):
         cursor = self.conn.cursor()

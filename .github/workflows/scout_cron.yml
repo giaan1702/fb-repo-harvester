@@ -1,4 +1,4 @@
-﻿name: Autonomous Knowledge Scout & Brain Sync
+name: Autonomous Knowledge Scout & Brain Sync
 
 on:
   schedule:
@@ -43,5 +43,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/vault_dump.sql outputs/
+          git add data/vault.db
           git diff --staged --quiet || (git commit -m "chore(brain): auto-sync knowledge vault [skip ci]" && git push origin main)
+

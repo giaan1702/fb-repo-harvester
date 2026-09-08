@@ -37,14 +37,7 @@ class AutonomousScout:
     và tự động củng cố vào Cognitive Brain Vault.
     """
     def __init__(self, db_path: Optional[str] = None):
-        target_db = db_path or DB_PATH
-        db_existed = os.path.exists(target_db) and os.path.getsize(target_db) > 0
-        self.db = DatabaseManager(target_db)
-        if not db_existed:
-            dump_file = os.path.join(os.path.dirname(os.path.abspath(target_db)), "vault_dump.sql")
-            if os.path.exists(dump_file):
-                logger.info(f"🔄 Khởi tạo cơ sở dữ liệu từ {dump_file}...")
-                self.db.restore_sql(dump_file)
+        self.db = DatabaseManager(db_path or DB_PATH)
         self.ingest = IngestManager(db=self.db)
         self.pipeline = GeminiReflectivePipeline()
         self.github_ext = GitHubExtractor()
@@ -237,13 +230,12 @@ class AutonomousScout:
         logger.info(f"🏁 KẾT THÚC CHU KỲ: Quét {stats['total_scanned']} bài | Duyệt Não: {stats['auto_approved']} | Inbox: {stats['sent_to_inbox']} | Loại: {stats['rejected']}")
         logger.info("=" * 70)
 
-        # Tự động xuất vault_dump.sql để đồng bộ Git
+        # Flush toàn bộ dữ liệu WAL vào file vault.db chính
         try:
-            dump_file = os.path.join(os.path.dirname(os.path.abspath(self.db.db_path)), "vault_dump.sql")
-            self.db.dump_sql(dump_file)
-            logger.info(f"✓ Đã đồng bộ cơ sở dữ liệu sang {dump_file}")
+            self.db.checkpoint()
+            logger.info("✓ Đã checkpoint WAL vào vault.db")
         except Exception as e:
-            logger.warning(f"Không thể dump SQL: {e}")
+            logger.warning(f"Không thể checkpoint DB: {e}")
 
         return stats
 

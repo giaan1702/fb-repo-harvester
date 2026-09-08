@@ -10,9 +10,10 @@ settings.json
 apikey*.txt
 
 # Databases and data
-data/*.db
 data/*.db-wal
 data/*.db-shm
+data/test_*.db
+
 
 # Cloned repositories & temporary outputs
 repos/
