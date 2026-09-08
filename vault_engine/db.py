@@ -393,6 +393,37 @@ class DatabaseManager:
         row = cursor.fetchone()
         return row[0] if row else None
 
+    @staticmethod
+    def sanitize_deep_research_md(raw: str) -> str:
+        """Tự động phát hiện và bóc tách chuỗi JSON nếu deep_research_md bị wrap lỗi."""
+        if not raw or not isinstance(raw, str):
+            return ""
+        raw_clean = raw.strip()
+        if raw_clean.startswith("{") and '"deep_research_md":' in raw_clean:
+            marker = '"deep_research_md":'
+            idx = raw_clean.find(marker)
+            if idx != -1:
+                val_part = raw_clean[idx + len(marker):].strip()
+                if val_part.startswith('"'):
+                    val_part = val_part[1:]
+                val_part = re.sub(r'"\s*\}[\s\`]*$', '', val_part)
+                def repl(m):
+                    esc = m.group(1)
+                    if esc == 'n': return '\n'
+                    if esc == 'r': return '\r'
+                    if esc == 't': return '\t'
+                    if esc == '"': return '"'
+                    if esc == '\\': return '\\'
+                    if esc == '/': return '/'
+                    if esc.startswith('u') and len(esc) == 5:
+                        try:
+                            return chr(int(esc[1:], 16))
+                        except Exception:
+                            return m.group(0)
+                    return esc
+                return re.sub(r'\\(n|r|t|"|\\|/|u[0-9a-fA-F]{4})', repl, val_part).strip()
+        return raw
+
     def insert_vault_item(self, item: Dict[str, Any]) -> int:
         cursor = self.conn.cursor()
         sql = """INSERT OR REPLACE INTO vault_items (
@@ -414,6 +445,9 @@ class DatabaseManager:
             try: ref_docs = json.loads(ref_docs)
             except Exception: ref_docs = []
 
+        raw_deep_md = item.get("deep_research_md", "")
+        clean_deep_md = self.sanitize_deep_research_md(raw_deep_md)
+
         payload = {
             "url_hash": item["url_hash"],
             "canonical_url": item["canonical_url"],
@@ -425,7 +459,7 @@ class DatabaseManager:
             "score_reason": item.get("score_reason", ""),
             "tech_stack": json.dumps(item.get("tech_stack", []), ensure_ascii=False) if isinstance(item.get("tech_stack"), list) else item.get("tech_stack", "[]"),
             "gotchas_and_risks": json.dumps(item.get("gotchas_and_risks", []), ensure_ascii=False) if isinstance(item.get("gotchas_and_risks"), list) else item.get("gotchas_and_risks", "[]"),
-            "deep_research_md": item.get("deep_research_md", ""),
+            "deep_research_md": clean_deep_md,
             "original_md": item.get("original_md", ""),
             "referenced_docs": json.dumps(ref_docs, ensure_ascii=False),
             "github_repo": item.get("github_repo", None),

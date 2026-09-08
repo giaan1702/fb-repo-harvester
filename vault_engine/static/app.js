@@ -1029,13 +1029,47 @@
     return result.join("\n");
   }
 
+  function unwrapMarkdownPayload(raw) {
+    if (!raw || typeof raw !== "string") return "";
+    const trimmed = raw.trim();
+    if (trimmed.startsWith("{") && trimmed.includes('"deep_research_md"')) {
+      try {
+        const obj = JSON.parse(trimmed);
+        if (obj.deep_research_md) return obj.deep_research_md;
+      } catch (e) {
+        // Fallback bóc tách an toàn nếu JSON bị lỗi escape
+        const marker = '"deep_research_md":';
+        const idx = trimmed.indexOf(marker);
+        if (idx !== -1) {
+          let val = trimmed.substring(idx + marker.length).trim();
+          if (val.startsWith('"')) val = val.substring(1);
+          val = val.replace(/"\s*\}[\s\`]*$/, '');
+          return val.replace(/\\(n|r|t|"|\\|\/|u[0-9a-fA-F]{4})/g, (match, esc) => {
+            if (esc === 'n') return '\n';
+            if (esc === 'r') return '\r';
+            if (esc === 't') return '\t';
+            if (esc === '"') return '"';
+            if (esc === '\\') return '\\';
+            if (esc === '/') return '/';
+            if (esc.startsWith('u') && esc.length === 5) {
+              try { return String.fromCharCode(parseInt(esc.substring(1), 16)); } catch(err) { return match; }
+            }
+            return esc;
+          }).trim();
+        }
+      }
+    }
+    return raw;
+  }
+
   // Language Toggle & Content Selection
   function updateActiveItemFullMd(item) {
     if (!item) return;
     if (currentLang === "en" && item.original_md) {
-      activeItemFullMd = item.original_md;
+      activeItemFullMd = unwrapMarkdownPayload(item.original_md);
     } else {
-      activeItemFullMd = item.deep_research_md || `## ${item.title}\n\n${item.short_summary}`;
+      const rawContent = item.deep_research_md || `## ${item.title}\n\n${item.short_summary}`;
+      activeItemFullMd = unwrapMarkdownPayload(rawContent);
     }
   }
 

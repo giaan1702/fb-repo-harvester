@@ -326,6 +326,7 @@ class GeminiReflectivePipeline:
         summary_m = re.search(r'"short_summary"\s*:\s*"([^"]+)"', text)
         score_m = re.search(r'"practical_score"\s*:\s*(\d+)', text)
         if title_m and summary_m:
+            deep_md = self._extract_deep_research_md(text)
             return {
                 "title": title_m.group(1),
                 "category": cat_m.group(1) if cat_m else "AI-Agents",
@@ -334,10 +335,44 @@ class GeminiReflectivePipeline:
                 "score_reason": "Trích xuất từ đánh giá đối kháng của RMKO Gateway",
                 "tech_stack": ["AI-Engineering"],
                 "gotchas_and_risks": ["Cần giám sát tài nguyên và kiểm tra tính tương thích"],
-                "deep_research_md": text
+                "deep_research_md": deep_md
             }
 
         raise ValueError("Không thể phân giải JSON từ phản hồi LLM")
+
+    def _extract_deep_research_md(self, raw: str) -> str:
+        """Trích xuất và giải mã an toàn trường deep_research_md từ chuỗi JSON lỗi format."""
+        raw_clean = raw.strip()
+        marker = '"deep_research_md":'
+        idx = raw_clean.find(marker)
+        if idx == -1:
+            return raw_clean
+
+        val_part = raw_clean[idx + len(marker):].strip()
+        if val_part.startswith('"'):
+            val_part = val_part[1:]
+
+        # Cắt bỏ ngoặc kép đóng cuối chuỗi JSON
+        val_part = re.sub(r'"\s*\}[\s\`]*$', '', val_part)
+
+        # Unescape an toàn các ký tự escape của JSON mà không làm hỏng tiếng Việt Unicode
+        def repl(m):
+            esc = m.group(1)
+            if esc == 'n': return '\n'
+            if esc == 'r': return '\r'
+            if esc == 't': return '\t'
+            if esc == '"': return '"'
+            if esc == '\\': return '\\'
+            if esc == '/': return '/'
+            if esc.startswith('u') and len(esc) == 5:
+                try:
+                    return chr(int(esc[1:], 16))
+                except Exception:
+                    return m.group(0)
+            return esc
+
+        cleaned = re.sub(r'\\(n|r|t|"|\\|/|u[0-9a-fA-F]{4})', repl, val_part)
+        return cleaned.strip()
 
     def _call_gemini_api(self, prompt: str, is_json: bool = False, model: str = "gemini-3.5-flash-lite", retries: int = 2) -> str:
         fallback_models = [model, "gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-flash-latest"]
