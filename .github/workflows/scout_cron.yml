@@ -1,0 +1,47 @@
+﻿name: Autonomous Knowledge Scout & Brain Sync
+
+on:
+  schedule:
+    # Chạy mỗi 4 tiếng (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Nút bấm chạy thủ công ngay lập tức trên GitHub Actions
+
+jobs:
+  scout-and-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Autonomous Scout Cycle (via RMKO Gateway)
+        env:
+          RMKO_GATEWAY_URL: ${{ secrets.RMKO_GATEWAY_URL || 'https://rmko-gateway.onrender.com' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python -m vault_engine.scout_daemon
+
+      - name: Commit & Push Brain Knowledge Sync
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/vault_dump.sql outputs/
+          git diff --staged --quiet || (git commit -m "chore(brain): auto-sync knowledge vault [skip ci]" && git push origin main)

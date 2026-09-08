@@ -1,0 +1,26 @@
+{
+  "url": "http://127.0.0.1:7860",
+  "timestamp": "2026-09-08T08:06:08.583Z",
+  "screenshots": [
+    {
+      "device": "mobile",
+      "width": 375,
+      "height": 812,
+      "path": "d:\\PROJECT\\REPOCraw\\ui_inspections\\screenshot_mobile_375x812.png",
+      "filename": "screenshot_mobile_375x812.png"
+    },
+    {
+      "device": "desktop",
+      "width": 1440,
+      "height": 900,
+      "path": "d:\\PROJECT\\REPOCraw\\ui_inspections\\screenshot_desktop_1440x900.png",
+      "filename": "screenshot_desktop_1440x900.png"
+    }
+  ],
+  "consoleErrors": [],
+  "consoleWarnings": [
+    "[mobile] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation",
+    "[desktop] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation"
+  ],
+  "failedRequests": []
+}

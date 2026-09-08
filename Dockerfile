@@ -1,4 +1,4 @@
-# Dockerfile cho FB Repo Harvester & Co-Ideation Service trên Render
+# Dockerfile cho Autonomous Knowledge Vault v3.0
 FROM python:3.11-slim
 
 # Thiết lập môi trường
@@ -26,5 +26,6 @@ COPY . .
 # Mở cổng dịch vụ
 EXPOSE 7860
 
-# Khởi chạy máy chủ Web UI kết hợp Background Scheduler
-CMD ["python", "-m", "fb_harvester.server"]
+# Khởi chạy máy chủ Web UI Autonomous Knowledge Vault tương thích cổng động của Render
+CMD ["sh", "-c", "python -m uvicorn vault_engine.server:app --host 0.0.0.0 --port ${PORT:-7860}"]
+

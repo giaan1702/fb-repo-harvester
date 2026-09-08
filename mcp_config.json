@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "knowledge-vault": {
+      "command": "python",
+      "args": ["-m", "vault_engine.mcp_server"],
+      "cwd": "d:\\PROJECT\\REPOCraw",
+      "env": {
+        "PYTHONPATH": "d:\\PROJECT\\REPOCraw"
+      }
+    }
+  }
+}

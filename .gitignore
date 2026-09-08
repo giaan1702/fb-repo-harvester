@@ -2,15 +2,27 @@
 __pycache__/
 *.py[cod]
 *$py.class
+# Environment and secrets
 *.env
-.venv/
-venv/
-ENV/
+.env
+.env.*
+settings.json
+apikey*.txt
+
+# Databases and data
+data/*.db
+data/*.db-wal
+data/*.db-shm
 
 # Cloned repositories & temporary outputs
 repos/
 *.log
+outputs/
+ui_inspections/*.png
+ui_sentinel_reports/
 
 # Operating System
 .DS_Store
 Thumbs.db
+
+

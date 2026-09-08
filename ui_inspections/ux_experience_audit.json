@@ -1,0 +1,98 @@
+[
+  {
+    "category": "Performance",
+    "title": "Initial Load Time",
+    "status": "WARNING",
+    "observation": "2329ms"
+  },
+  {
+    "category": "UX",
+    "title": "Initial Grid Count",
+    "status": "GOOD",
+    "observation": "7 items loaded"
+  },
+  {
+    "category": "Usability",
+    "title": "Keyboard Shortcut (Ctrl+K)",
+    "status": "GOOD",
+    "observation": "Focuses input immediately"
+  },
+  {
+    "category": "Search",
+    "title": "FTS5 Filter Behavior",
+    "status": "GOOD",
+    "observation": "Expected 1 card for crawl4ai, got 1"
+  },
+  {
+    "category": "Filters",
+    "title": "Category Pill Filter",
+    "status": "GOOD",
+    "observation": "Found 3 cards for LLM-Infra"
+  },
+  {
+    "category": "UX Interaction",
+    "title": "Card Star Toggle",
+    "status": "GOOD",
+    "observation": "Toggle state from false to true"
+  },
+  {
+    "category": "Feedback",
+    "title": "Toast Notification on Star",
+    "status": "GOOD",
+    "observation": "Toast appeared cleanly"
+  },
+  {
+    "category": "Drawer",
+    "title": "Slide-over Drawer Open",
+    "status": "GOOD",
+    "observation": "Drawer slide-in complete"
+  },
+  {
+    "category": "Drawer",
+    "title": "TOC Navigation",
+    "status": "GOOD",
+    "observation": "Clicked TOC item \"PHẦN I: HỒ SƠ TỔNG QUAN KỸ SƯ (EXECUTIVE BRIEF)\""
+  },
+  {
+    "category": "Code Block",
+    "title": "1-Click Copy Button",
+    "status": "WARNING",
+    "observation": "Button text changed to \"COPY\""
+  },
+  {
+    "category": "Smart Reader",
+    "title": "Original Text Tab (Phần II)",
+    "status": "GOOD",
+    "observation": "Original text with annotations loaded"
+  },
+  {
+    "category": "Usability",
+    "title": "Escape Key Closes Drawer",
+    "status": "GOOD",
+    "observation": "Drawer hidden successfully"
+  },
+  {
+    "category": "Modal",
+    "title": "Ingest Modal Open",
+    "status": "GOOD",
+    "observation": "Modal rendered with backdrop"
+  },
+  {
+    "category": "Validation",
+    "title": "Empty URL Submission",
+    "status": "GOOD",
+    "observation": "Modal stays open when empty"
+  },
+  {
+    "category": "Usability",
+    "title": "Escape Key Closes Modal",
+    "status": "GOOD",
+    "observation": "Modal dismissed via Esc"
+  },
+  {
+    "category": "Typography",
+    "title": "Font Family Hierarchy",
+    "status": "GOOD",
+    "observation": "Body: Inter | Title: Inter"
+  }
+]
