@@ -254,6 +254,7 @@ class DatabaseManager:
             try:
                 row = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='vault_items';").fetchone()
                 if row:
+                    self._run_migrations()
                     return
             except Exception:
                 pass
@@ -458,6 +459,28 @@ class DatabaseManager:
         raw_deep_md = item.get("deep_research_md", "")
         clean_deep_md = self.sanitize_deep_research_md(raw_deep_md)
 
+        # Bảo toàn trạng thái duyệt nếu bài viết đã được người dùng Approved hoặc Rejected
+        existing_status = None
+        existing_curated_at = None
+        try:
+            cursor.execute("SELECT curation_status, curated_at FROM vault_items WHERE url_hash = ? LIMIT 1;", (item["url_hash"],))
+            existing_row = cursor.fetchone()
+            if existing_row:
+                existing_status = existing_row["curation_status"]
+                existing_curated_at = existing_row["curated_at"]
+        except Exception:
+            pass
+
+        incoming_curation_status = item.get("curation_status")
+        incoming_curated_at = item.get("curated_at")
+
+        if existing_status in ("APPROVED", "REJECTED") and (not incoming_curation_status or incoming_curation_status == "INBOX"):
+            final_curation_status = existing_status
+            final_curated_at = existing_curated_at
+        else:
+            final_curation_status = incoming_curation_status if incoming_curation_status else "INBOX"
+            final_curated_at = incoming_curated_at
+
         payload = {
             "url_hash": item["url_hash"],
             "canonical_url": item["canonical_url"],
@@ -478,8 +501,8 @@ class DatabaseManager:
             "audio_podcast_path": item.get("audio_podcast_path", None),
             "reading_status": item.get("reading_status", "UNREAD"),
             "is_starred": int(item.get("is_starred", 0)),
-            "curation_status": item.get("curation_status", "INBOX"),
-            "curated_at": item.get("curated_at", None)
+            "curation_status": final_curation_status,
+            "curated_at": final_curated_at
         }
         cursor.execute(sql, payload)
         self.conn.commit()

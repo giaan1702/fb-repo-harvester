@@ -203,29 +203,39 @@ class ContextScout:
     def infer_repo_name_from_text(self, text: str) -> Optional[str]:
         """
         Dùng heuristics & regex để tìm tên thư viện / repo được nhắc trong bài viết
-        ví dụ: "thư viện vllm", "repo crawl4ai", "dự án Nanobot", "framework LangGraph", "vllm-project/vllm"
+        ví dụ: "thư viện vllm", "repo crawl4ai", "dự án Nanobot", "framework LangGraph", "brayonpi/hexstellar"
         """
         if not text:
             return None
 
-        # 1. Ưu tiên tìm slug owner/repo viết trực tiếp trong văn bản (ví dụ: unclecode/crawl4ai, vllm-project/vllm)
-        slug_match = re.search(r'\b([a-zA-Z0-9_.-]{2,30}/[a-zA-Z0-9_.-]{2,35})\b', text)
-        if slug_match:
-            candidate = slug_match.group(1).strip()
-            if not re.match(r'^\d+/\d+$', candidate) and not any(ext in candidate.lower() for ext in ["image/", "text/", "application/"]):
-                return candidate
+        # 1. Lọc bỏ toàn bộ URLs (http://, https://, www.) để tránh match nhầm domain như www.facebook.com/reel
+        clean_text = re.sub(r'https?://[^\s<>"]+|www\.[^\s<>"]+', ' ', text)
 
-        # 2. Regex tìm các mẫu: (thư viện|repo|dự án|framework|package|công cụ|tool) [Tên]
+        # 2. Tìm các mẫu rõ ràng: (thư viện|repo|dự án|framework|package|công cụ|tool|mã nguồn) [Tên]
+        # Hỗ trợ cả các biến thể như: "Repo AI hôm nay: brayonpi/hexstellar"
         pattern = re.compile(
-            r'(?:thư viện|repo|dự án|framework|package|công cụ|tool)\s+([a-zA-Z0-9_\-\./]{2,40})',
+            r'(?:thư viện|repo(?:\s+ai)?(?:\s+hôm nay)?|dự án|framework|package|công cụ|tool|mã nguồn)[:\s]+([a-zA-Z0-9_\-\./]{2,45})',
             re.IGNORECASE
         )
-        match = pattern.search(text)
+        match = pattern.search(clean_text)
         if match:
-            candidate = match.group(1).strip().rstrip(".,;:")
-            # Bỏ qua các từ thông dụng tiếng Việt / tiếng Anh
-            stop_words = {"nay", "kia", "do", "va", "cua", "trong", "cho", "la", "new", "this", "that", "the"}
-            if candidate.lower() not in stop_words:
-                return candidate
+            candidate = match.group(1).strip().rstrip(".,;:!?)")
+            stop_words = {"nay", "kia", "do", "va", "cua", "trong", "cho", "la", "new", "this", "that", "the", "ai", "hay"}
+            if candidate.lower() not in stop_words and not any(candidate.lower().startswith(b) for b in ["facebook", "google", "youtube", "tiktok"]):
+                # Nếu candidate là slug owner/repo hợp lệ
+                if "/" in candidate:
+                    parts = candidate.split("/")
+                    if len(parts) == 2 and not any(d in candidate.lower() for d in [".com", ".org", ".net", ".io", ".vn"]):
+                        return candidate
+                elif len(candidate) >= 3:
+                    return candidate
+
+        # 3. Tìm slug owner/repo dạng a-zA-Z0-9_-/a-zA-Z0-9_.-
+        slug_matches = re.findall(r'\b([a-zA-Z0-9_-]{2,30}/[a-zA-Z0-9_.-]{2,35})\b', clean_text)
+        for cand in slug_matches:
+            cand = cand.strip().rstrip(".,;:!?)")
+            # Loại trừ nếu chứa đuôi domain hoặc mime-type hoặc thuần số
+            if not any(d in cand.lower() for d in [".com", ".org", ".net", ".io", ".vn", ".html", ".php", "image/", "text/"]) and not re.match(r'^\d+/\d+$', cand):
+                return cand
 
         return None
