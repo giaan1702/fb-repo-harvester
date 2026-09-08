@@ -49,9 +49,13 @@ if SCOUT_ENABLED:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    is_cloud_webhook = bool(os.getenv("RENDER") or os.getenv("TELEGRAM_USE_WEBHOOK", "").lower() in ("true", "1"))
     if telegram_bot and not os.getenv("TESTING"):
-        telegram_bot.start_background()
-        logger.info("Telegram Bot 24/7 Long-polling Worker started.")
+        if is_cloud_webhook:
+            logger.info("Môi trường Cloud/Webhook phát hiện: Bỏ qua long-polling, sử dụng Webhook tiếp nhận tin nhắn.")
+        else:
+            telegram_bot.start_background()
+            logger.info("Telegram Bot 24/7 Long-polling Worker started.")
     if scout_daemon and not os.getenv("TESTING"):
         scout_daemon.start_background(interval_seconds=SCOUT_INTERVAL_SECONDS)
         logger.info(f"Autonomous Scout 24/7 Daemon started (interval: {SCOUT_INTERVAL_SECONDS}s).")

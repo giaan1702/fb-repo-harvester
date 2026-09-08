@@ -411,8 +411,9 @@ class TelegramBot:
             except Exception as e:
                 err_str = str(e)
                 if "409" in err_str or "Conflict" in err_str:
-                    logger.info("Telegram Bot: Webhook đang được thiết lập, tạm dừng polling 30s...")
-                    time.sleep(30)
+                    logger.info("Telegram Bot: Webhook đang hoạt động (409 Conflict), dừng long-polling worker.")
+                    self._running = False
+                    break
                 else:
                     logger.error(f"Lỗi trong vòng lặp polling: {e}")
                     time.sleep(2)
