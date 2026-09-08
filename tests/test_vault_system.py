@@ -934,6 +934,75 @@ class TestVaultSystemComprehensive(unittest.TestCase):
             bot.handle_callback_query(unauthorized_cb)
             mock_answer.assert_called_once_with("cb_1", text="⛔ Bạn không có quyền thực hiện thao tác này.")
 
+    def test_mermaid_diagram_sanitizer(self):
+        from vault_engine.consolidation import sanitize_mermaid_diagram
+        raw_md = """# Architecture
+```mermaid
+flowchart TD
+    A["[[Superpowers Framework]]"] --> B[LangGraph (Multi-Agent)]
+    B --> C["PostgreSQL (Vector DB)"]
+```
+Some other text."""
+        sanitized = sanitize_mermaid_diagram(raw_md)
+        self.assertIn('A["Superpowers Framework"]', sanitized)
+        self.assertIn('B["LangGraph (Multi-Agent)"]', sanitized)
+        self.assertIn('C["PostgreSQL (Vector DB)"]', sanitized)
+        self.assertNotIn('[[', sanitized)
+
+    def test_heuristics_deduplication_via_cosine_similarity(self):
+        from vault_engine.consolidation import ConsolidationEngine
+        engine = ConsolidationEngine(db=self.db)
+
+        topic_info = {
+            "slug": "ai-agents",
+            "title": "Kiến Trúc Multi-Agent & RAG Nhận Thức Tự Hành",
+            "description": "Test Topic"
+        }
+
+        # Item 1 với gotcha tràn context
+        item_id1 = self.db.insert_vault_item({
+            "url_hash": "hash_rag_1",
+            "canonical_url": "https://github.com/rag/framework-a",
+            "source_type": "GITHUB",
+            "title": "Framework RAG A",
+            "category": "AI-Agents",
+            "short_summary": "RAG framework",
+            "practical_score": 9,
+            "score_reason": "Good",
+            "tech_stack": ["Python"],
+            "gotchas_and_risks": ["Context window overflow khi nạp dữ liệu lớn"]
+        })
+        item1 = self.db.get_vault_item_by_id(item_id1)
+        res1 = engine._extract_procedural_heuristics(item1, topic_info)
+        self.assertEqual(len(res1), 1)
+        self.assertFalse(res1[0].get("deduplicated"))
+        hid1 = res1[0]["id"]
+
+        # Item 2 với gotcha tương đương
+        item_id2 = self.db.insert_vault_item({
+            "url_hash": "hash_rag_2",
+            "canonical_url": "https://github.com/rag/framework-b",
+            "source_type": "GITHUB",
+            "title": "Framework RAG B",
+            "category": "AI-Agents",
+            "short_summary": "RAG framework",
+            "practical_score": 9,
+            "score_reason": "Good",
+            "tech_stack": ["Python"],
+            "gotchas_and_risks": ["Context window overflow khi nạp dữ liệu lớn"]
+        })
+        item2 = self.db.get_vault_item_by_id(item_id2)
+        res2 = engine._extract_procedural_heuristics(item2, topic_info)
+        self.assertEqual(len(res2), 1)
+        # Kiểm tra item 2 đã được khử trùng lặp và củng cố rule cũ
+        self.assertTrue(res2[0].get("deduplicated"))
+        self.assertEqual(res2[0]["id"], hid1)
+
+        # Kiểm tra điểm confidence_score của rule 1 đã được boost
+        heuristics = self.db.get_agent_heuristics(topic=topic_info["title"])
+        matched = next(h for h in heuristics if h["id"] == hid1)
+        self.assertGreater(matched["confidence_score"], 1.0)
+
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestVaultSystemComprehensive)
     runner = unittest.TextTestRunner(verbosity=2)

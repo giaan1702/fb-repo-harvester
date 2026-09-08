@@ -1,3 +1,4 @@
+import os
 import re
 import json
 import time
@@ -6,6 +7,38 @@ from typing import Dict, Any, List, Optional
 from vault_engine.db import DatabaseManager
 
 logger = logging.getLogger("vault_consolidation")
+
+def sanitize_mermaid_diagram(raw_markdown: str) -> str:
+    """
+    Chuẩn hóa và bảo vệ cú pháp Mermaid trong tài liệu Markdown:
+    - Bọc nhãn node trong dấu ngoặc kép an toàn: id["Label"]
+    - Khử các dấu ngoặc vuông lồng nhau [[...]] bên trong nhãn Mermaid để tránh lỗi vỡ parser.
+    - Escape các ký tự nháy kép bên trong nhãn.
+    """
+    if not raw_markdown or "```mermaid" not in raw_markdown:
+        return raw_markdown
+
+    def clean_mermaid_block(match):
+        code = match.group(1)
+        # Khử toàn bộ cú pháp wikilink [[...]] bên trong mermaid block trước tiên để tránh lỗi bracket lồng nhau
+        code = re.sub(r'\[\[(.*?)\]\]', r'\1', code)
+        lines = code.split("\n")
+        cleaned_lines = []
+        for line in lines:
+            def fix_node_label(m):
+                node_id = m.group(1)
+                label = m.group(2).strip()
+                if (label.startswith('"') and label.endswith('"')) or (label.startswith("'") and label.endswith("'")):
+                    label = label[1:-1].strip()
+                clean_lbl = label.replace('"', "'")
+                return f'{node_id}["{clean_lbl}"]'
+
+            line = re.sub(r'([a-zA-Z0-9_\-]+)\[([^\]\n]+)\]', fix_node_label, line)
+            cleaned_lines.append(line)
+        return "```mermaid\n" + "\n".join(cleaned_lines) + "\n```"
+
+    pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+    return pattern.sub(clean_mermaid_block, raw_markdown)
 
 TOPIC_CATALOG = {
     "AI-Agents": {
@@ -167,8 +200,21 @@ Nhiệm vụ: Trả về JSON đúng cấu trúc:
         from vault_engine.config import RMKO_GATEWAY_URL
         import urllib.request
 
+        # Bounded Context: Khi chuyên đề lớn hơn 8 bài, chọn lọc đại diện tiêu biểu (Top score + newest)
+        if len(items) > 8:
+            sorted_items = sorted(items, key=lambda x: x.get("practical_score", 0), reverse=True)
+            chosen = sorted_items[:6]
+            newest = items[-1]
+            if newest["id"] not in [c["id"] for c in chosen]:
+                chosen.append(newest)
+            target_items = chosen
+            context_note = f"\n(Lưu ý: Chuyên đề gồm tổng cộng {len(items)} giải pháp. Dưới đây là {len(target_items)} đại diện tiêu biểu có điểm thực chiến cao nhất.)\n"
+        else:
+            target_items = items
+            context_note = ""
+
         items_summary = []
-        for it in items:
+        for it in target_items:
             tech = it.get("tech_stack", [])
             if isinstance(tech, str):
                 try: tech = json.loads(tech)
@@ -189,7 +235,7 @@ Nhiệm vụ: Trả về JSON đúng cấu trúc:
 Nhiệm vụ: TỔNG HỢP VÀ BIÊN TẬP TOÀN DIỆN CÁC TÀI LIỆU DƯỚI ĐÂY THÀNH MỘT BẢN TỔNG LUẬN KIẾN TRÚC SỐNG (LIVING ARCHITECTURE WHITEPAPER).
 
 CHỦ ĐỀ: {topic_info['title']}
-MÔ TẢ: {topic_info['description']}
+MÔ TẢ: {topic_info['description']}{context_note}
 
 DANH SÁCH {len(items_summary)} GIẢI PHÁP / CÔNG NGHỆ TRONG CHUYÊN ĐỀ:
 {json.dumps(items_summary, ensure_ascii=False, indent=2)}
@@ -245,7 +291,7 @@ Xuất ra trực tiếp nội dung Markdown."""
                     content = data["choices"][0]["message"]["content"].strip()
                     if len(content) > 500:
                         logger.info(f"✓ Đã sinh thành công Master Synthesis Whitepaper ({len(content)} ký tự) qua RMKO Gateway")
-                        return content
+                        return sanitize_mermaid_diagram(content)
             except Exception as gw_err:
                 logger.warning(f"Không thể sinh synthesis qua RMKO Gateway: {gw_err}")
 
@@ -255,7 +301,7 @@ Xuất ra trực tiếp nội dung Markdown."""
                 res = self.pipeline._call_gemini_api(prompt, is_json=False)
                 if res and len(res.strip()) > 500:
                     logger.info(f"✓ Đã sinh thành công Master Synthesis Whitepaper ({len(res)} ký tự) qua Gemini Direct")
-                    return res.strip()
+                    return sanitize_mermaid_diagram(res.strip())
             except Exception as g_err:
                 logger.warning(f"Không thể sinh synthesis qua Gemini Direct: {g_err}")
 
@@ -317,33 +363,130 @@ Tập hợp các giải pháp công nghệ đã qua kiểm duyệt thực tế b
         return {"version": cur_version + 1, "topic_slug": slug}
 
     def _extract_procedural_heuristics(self, item: Dict[str, Any], topic_info: Dict[str, str]) -> List[Dict[str, Any]]:
-        """Rút trích các quy tắc hành động (Actionable Rules) và Anti-patterns cho Agent."""
-        gotchas = item.get("gotchas_and_risks", [])
-        topic = topic_info["title"]
-        extracted = []
+        """Rút trích các quy tắc hành động (Actionable Rules) và Anti-patterns cho Agent kèm cơ chế Khử trùng lặp."""
+        from vault_engine.config import RMKO_GATEWAY_URL
+        from vault_engine.embedding import get_embedding, cosine_similarity
+        import urllib.request
 
-        if gotchas:
-            for g in gotchas[:2]:
-                rule = f"Khi thiết kế {item.get('category', 'hệ thống')}, phải chủ động xử lý: {g}."
-                anti = f"Bỏ qua kiểm soát hoặc cấu hình mặc định dẫn đến nguy cơ: {g}."
+        topic = topic_info["title"]
+        existing_heuristics = self.db.get_agent_heuristics(topic=topic, limit=50)
+
+        # 1. Trích xuất quy tắc cấu trúc Prescriptive
+        extracted_rules = []
+        gotchas = item.get("gotchas_and_risks", [])
+        if isinstance(gotchas, str):
+            try: gotchas = json.loads(gotchas)
+            except Exception: gotchas = []
+
+        prompt = f"""Bạn là Kỹ sư Trưởng hệ thống. Hãy trích xuất 1-2 Quy tắc Thực chiến (Procedural Heuristics) cho AI Coding Agent từ giải pháp công nghệ sau:
+Tên giải pháp: "{item['title']}"
+Danh mục: {item.get('category', 'Tech')}
+Tóm tắt kỹ thuật: {item.get('short_summary', '')}
+Gotchas & Cạm bẫy: {json.dumps(gotchas, ensure_ascii=False)}
+
+YÊU CẦU BẮT BUỘC:
+- Không viết cảnh báo chung chung. Phải đưa ra CHỈ DẪN HÀNH ĐỘNG CỤ THỂ (Agent phải làm gì để né lỗi / tối ưu).
+- Định dạng JSON thuần túy:
+{{
+  "heuristics": [
+    {{
+      "trigger_context": "Khi nào áp dụng quy tắc này (ví dụ: 'Khi cấu hình connection pool cho PostgreSQL/FastAPI')",
+      "action_directive": "Mệnh lệnh hành động dứt khoát (ví dụ: 'Luôn giới hạn max_connections và thiết lập pool_recycle=1800')",
+      "anti_pattern": "Hành vi sai lầm dẫn đến sập (ví dụ: 'Mở kết nối mới trên mỗi request mà không trả về pool')",
+      "rule_type": "MUST_DO"
+    }}
+  ]
+}}"""
+        if RMKO_GATEWAY_URL and not os.getenv("TESTING"):
+            try:
+                url = f"{RMKO_GATEWAY_URL.rstrip('/')}/v1/chat/completions"
+                payload = {
+                    "model": "gemini-3.5-flash-lite",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.2,
+                    "max_tokens": 1024
+                }
+                req = urllib.request.Request(
+                    url,
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json", "x-role": "reviewer"}
+                )
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    raw_res = data["choices"][0]["message"]["content"].strip()
+                    clean_json = raw_res.replace("```json", "").replace("```", "").strip()
+                    extracted_rules = json.loads(clean_json).get("heuristics", [])
+            except Exception as e:
+                logger.warning(f"Không thể trích xuất heuristics qua RMKO Gateway: {e}")
+
+        # Fallback có cấu trúc nếu LLM offline hoặc test mode
+        if not extracted_rules:
+            if gotchas:
+                for g in gotchas[:2]:
+                    extracted_rules.append({
+                        "trigger_context": f"Khi thiết kế {item.get('category', 'hệ thống')} liên quan đến [[{item['title']}]]",
+                        "action_directive": f"Chủ động thiết lập cơ chế kiểm soát, giám sát và phân tầng nhằm phòng ngừa: {g}",
+                        "anti_pattern": f"Bỏ qua kiểm soát cấu hình mặc định dẫn đến nguy cơ: {g}",
+                        "rule_type": "MUST_DO"
+                    })
+            else:
+                extracted_rules.append({
+                    "trigger_context": f"Khi triển khai giải pháp dựa trên [[{item['title']}]]",
+                    "action_directive": f"Áp dụng triệt để kiến trúc cốt lõi từ [[{item['title']}]], thiết lập timeout và retry lũy kế",
+                    "anti_pattern": "Thiết kế monolithic phân tán không có cơ chế timeout và retry lũy kế",
+                    "rule_type": "MUST_DO"
+                })
+
+        # 2. Khử trùng lặp (Deduplication) qua Cosine Similarity Vector Embedding
+        final_results = []
+        for r in extracted_rules:
+            action = r.get("action_directive", "").strip()
+            context = r.get("trigger_context", "").strip()
+            anti = r.get("anti_pattern", "").strip()
+            rtype = r.get("rule_type", "MUST_DO")
+            rule_stmt = f"{context}: {action}" if context else action
+
+            is_duplicate = False
+            try:
+                new_vec = get_embedding(action)
+                if new_vec and existing_heuristics:
+                    for ex in existing_heuristics:
+                        ex_text = ex.get("action_directive") or ex.get("rule_statement", "")
+                        ex_vec = get_embedding(ex_text)
+                        if ex_vec:
+                            sim = cosine_similarity(new_vec, ex_vec)
+                            if sim >= 0.85:
+                                # Trùng lặp ngữ nghĩa! Củng cố quy tắc cũ thay vì insert dòng mới
+                                self.db.boost_heuristic_confidence(ex["id"], delta=0.1)
+                                is_duplicate = True
+                                final_results.append({
+                                    "id": ex["id"],
+                                    "rule": ex["rule_statement"],
+                                    "anti_pattern": ex["anti_pattern"],
+                                    "deduplicated": True,
+                                    "boosted": True
+                                })
+                                logger.info(f"Khử trùng lặp Heuristic: Củng cố rule #{ex['id']} (sim={sim:.2f})")
+                                break
+            except Exception as sim_err:
+                logger.warning(f"Lỗi khi tính cosine similarity khử trùng lặp heuristics: {sim_err}")
+
+            if not is_duplicate:
                 hid = self.db.add_agent_heuristic(
                     topic=topic,
-                    rule_statement=rule,
+                    rule_statement=rule_stmt,
                     anti_pattern=anti,
                     evidence_item_id=item["id"],
-                    confidence_score=1.0
+                    confidence_score=1.0,
+                    rule_type=rtype,
+                    trigger_context=context,
+                    action_directive=action
                 )
-                extracted.append({"id": hid, "rule": rule, "anti_pattern": anti})
-        else:
-            rule = f"Áp dụng triệt để kiến trúc cốt lõi từ [[{item['title']}]] để tối ưu hóa hiệu năng."
-            anti = "Thiết kế monolithic phân tán không có cơ chế timeout và retry lũy kế."
-            hid = self.db.add_agent_heuristic(
-                topic=topic,
-                rule_statement=rule,
-                anti_pattern=anti,
-                evidence_item_id=item["id"],
-                confidence_score=1.0
-            )
-            extracted.append({"id": hid, "rule": rule, "anti_pattern": anti})
+                final_results.append({
+                    "id": hid,
+                    "rule": rule_stmt,
+                    "anti_pattern": anti,
+                    "deduplicated": False
+                })
 
-        return extracted
+        return final_results

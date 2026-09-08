@@ -308,6 +308,16 @@ class DatabaseManager:
                 cursor.execute("ALTER TABLE agent_heuristics ADD COLUMN rule_type TEXT DEFAULT 'MUST_DO';")
             except Exception:
                 pass
+        if "trigger_context" not in h_cols:
+            try:
+                cursor.execute("ALTER TABLE agent_heuristics ADD COLUMN trigger_context TEXT DEFAULT '';")
+            except Exception:
+                pass
+        if "action_directive" not in h_cols:
+            try:
+                cursor.execute("ALTER TABLE agent_heuristics ADD COLUMN action_directive TEXT DEFAULT '';")
+            except Exception:
+                pass
 
         self.conn.commit()
 
@@ -738,16 +748,35 @@ class DatabaseManager:
         """Thêm một quy tắc hành động thực chiến vào Procedural Memory của Agent."""
         t = topic if topic else category
         statement = rule_statement if rule_statement else action_directive
+        action = action_directive if action_directive else statement
+        context = trigger_context or ""
         ev_id = evidence_item_id if evidence_item_id is not None else source_item_id
         r_type = rule_type or kwargs.get("rule_type", "MUST_DO")
 
         cursor = self.conn.cursor()
         cursor.execute("""
-            INSERT INTO agent_heuristics (topic, rule_statement, anti_pattern, evidence_item_id, confidence_score, rule_type)
-            VALUES (?, ?, ?, ?, ?, ?);
-        """, (t, statement, anti_pattern, ev_id, confidence_score, r_type))
+            INSERT INTO agent_heuristics (topic, rule_statement, anti_pattern, evidence_item_id, confidence_score, rule_type, trigger_context, action_directive)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        """, (t, statement, anti_pattern, ev_id, confidence_score, r_type, context, action))
         self.conn.commit()
         return cursor.lastrowid
+
+    def boost_heuristic_confidence(self, heuristic_id: int, delta: float = 0.1) -> bool:
+        """Củng cố và tăng điểm tin cậy cho quy tắc khi có thêm tài liệu/bằng chứng chứng thực."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT confidence_score FROM agent_heuristics WHERE id = ?;", (heuristic_id,))
+        row = cursor.fetchone()
+        if not row:
+            return False
+        cur_score = row[0] or 1.0
+        new_score = min(2.0, round(cur_score + delta, 2))
+        cursor.execute("""
+            UPDATE agent_heuristics
+            SET confidence_score = ?, updated_at = strftime('%s', 'now')
+            WHERE id = ?;
+        """, (new_score, heuristic_id))
+        self.conn.commit()
+        return True
 
     def get_agent_heuristics(self, topic: Optional[str] = None, rule_type: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
         """Lấy danh sách quy tắc hành động của Agent, sắp xếp theo điểm tin cậy cao nhất."""

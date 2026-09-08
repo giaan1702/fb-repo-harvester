@@ -226,6 +226,28 @@ class TelegramBot:
                 reply_to_message_id=reply_to_message_id
             )
 
+    def _async_consolidate(self, item_id: int, chat_id: str, reply_to_message_id: Optional[int] = None):
+        """Chạy chu trình hợp nhất não bộ ngầm trên background thread để không block Telegram Webhook."""
+        def worker():
+            try:
+                from vault_engine.consolidation import ConsolidationEngine
+                consolidation = ConsolidationEngine(db=self.db, pipeline=self.pipeline)
+                res = consolidation.consolidate_item(item_id)
+                reply_text = (
+                    f"🧠 <b>HỢP NHẤT NÃO BỘ THÀNH CÔNG (ITEM #{item_id})!</b>\n\n"
+                    f"📌 <b>Tiêu đề:</b> {res['title']}\n"
+                    f"🔗 <b>Đối chiếu nơ-ron:</b> Đã liên kết với <b>{res['associations_count']}</b> tài liệu liên quan.\n"
+                    f"🏛️ <b>Hồ sơ chuyên đề sống:</b> Cập nhật <code>{res['synthesis_topic']}</code> (v{res['synthesis_version']}).\n"
+                    f"⚡ <b>Procedural Memory:</b> Nạp <b>{res['heuristics_count']}</b> quy tắc hành động vào bộ nhớ Agent.\n\n"
+                    f"<i>Tri thức đã được củng cố và sẵn sàng cho Agent khai thác qua MCP!</i>"
+                )
+                self.send_message(reply_text, chat_id=chat_id, reply_to_message_id=reply_to_message_id)
+            except Exception as e:
+                logger.error(f"Lỗi khi hợp nhất item #{item_id} trên background thread: {e}", exc_info=True)
+                self.send_message(f"❌ Lỗi khi hợp nhất tài liệu #{item_id}: {e}", chat_id=chat_id)
+
+        threading.Thread(target=worker, daemon=True).start()
+
     def handle_callback_query(self, cb: Dict[str, Any]):
         """Xử lý sự kiện bấm nút Inline Keyboard từ người dùng trên Telegram."""
         cb_id = cb.get("id")
@@ -244,22 +266,9 @@ class TelegramBot:
         if data.startswith("brain:approve:"):
             try:
                 item_id = int(data.split(":")[-1])
-                self.answer_callback_query(cb_id, text="Đang duyệt và hợp nhất vào Não Bộ...")
+                self.answer_callback_query(cb_id, text="Đã duyệt! Đang hợp nhất nơ-ron ngầm...")
                 self.db.curate_vault_item(item_id, "APPROVED")
-
-                from vault_engine.consolidation import ConsolidationEngine
-                consolidation = ConsolidationEngine(db=self.db, pipeline=self.pipeline)
-                res = consolidation.consolidate_item(item_id)
-
-                reply_text = (
-                    f"🧠 <b>ĐÃ DUYỆT THÀNH CÔNG VÀO NÃO BỘ (ITEM #{item_id})!</b>\n\n"
-                    f"📌 <b>Tiêu đề:</b> {res['title']}\n"
-                    f"🔗 <b>Đối chiếu nơ-ron:</b> Đã liên kết với <b>{res['associations_count']}</b> tài liệu liên quan.\n"
-                    f"🏛️ <b>Hồ sơ chuyên đề sống:</b> Cập nhật <code>{res['synthesis_topic']}</code> (v{res['synthesis_version']}).\n"
-                    f"⚡ <b>Procedural Memory:</b> Nạp <b>{res['heuristics_count']}</b> quy tắc hành động vào bộ nhớ Agent.\n\n"
-                    f"<i>Tri thức đã được củng cố và sẵn sàng cho Agent khai thác qua MCP!</i>"
-                )
-                self.send_message(reply_text, chat_id=chat_id, reply_to_message_id=msg_id)
+                self._async_consolidate(item_id, chat_id=chat_id, reply_to_message_id=msg_id)
             except Exception as e:
                 logger.error(f"Lỗi khi duyệt item qua Telegram callback: {e}", exc_info=True)
                 self.send_message(f"❌ Lỗi khi duyệt tài liệu: {e}", chat_id=chat_id)
@@ -313,17 +322,8 @@ class TelegramBot:
                 item_id = int(parts[1])
                 try:
                     self.db.curate_vault_item(item_id, "APPROVED")
-                    from vault_engine.consolidation import ConsolidationEngine
-                    consolidation = ConsolidationEngine(db=self.db, pipeline=self.pipeline)
-                    res = consolidation.consolidate_item(item_id)
-                    reply_text = (
-                        f"🧠 <b>ĐÃ DUYỆT THÀNH CÔNG VÀO NÃO BỘ (ITEM #{item_id})!</b>\n\n"
-                        f"📌 <b>{res['title']}</b>\n"
-                        f"🔗 Liên kết nơ-ron: <b>{res['associations_count']}</b> tài liệu.\n"
-                        f"🏛️ Cập nhật chuyên đề: <code>{res['synthesis_topic']}</code> (v{res['synthesis_version']}).\n"
-                        f"⚡ Sinh <b>{res['heuristics_count']}</b> quy tắc hành động cho Agent."
-                    )
-                    self.send_message(reply_text, chat_id=chat_id, reply_to_message_id=msg_id)
+                    self.send_message(f"⏳ <b>Đã duyệt Item #{item_id}!</b> Đang hợp nhất nơ-ron và tổng luận ngầm...", chat_id=chat_id, reply_to_message_id=msg_id)
+                    self._async_consolidate(item_id, chat_id=chat_id, reply_to_message_id=msg_id)
                 except Exception as e:
                     self.send_message(f"❌ Lỗi khi duyệt: {e}", chat_id=chat_id)
             else:
