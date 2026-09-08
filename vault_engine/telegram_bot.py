@@ -381,6 +381,17 @@ class TelegramBot:
             )
             t.start()
 
+    def process_raw_update(self, update: Dict[str, Any]):
+        """Xử lý update nhận từ webhook hoặc polling"""
+        cb = update.get("callback_query")
+        if cb:
+            self.handle_callback_query(cb)
+            return
+
+        message = update.get("message") or update.get("channel_post")
+        if message:
+            self.handle_message(message)
+
     def start_polling(self):
         """Vòng lặp Long-polling chạy nền liên tục 24/7"""
         self._running = True
@@ -395,17 +406,16 @@ class TelegramBot:
                     if update_id is not None:
                         last_update_id = update_id + 1
 
-                    message = update.get("message") or update.get("channel_post")
-                    if message:
-                        self.handle_message(message)
-
-                    cb = update.get("callback_query")
-                    if cb:
-                        self.handle_callback_query(cb)
+                    self.process_raw_update(update)
 
             except Exception as e:
-                logger.error(f"Lỗi trong vòng lặp polling: {e}")
-                time.sleep(2)
+                err_str = str(e)
+                if "409" in err_str or "Conflict" in err_str:
+                    logger.info("Telegram Bot: Webhook đang được thiết lập, tạm dừng polling 30s...")
+                    time.sleep(30)
+                else:
+                    logger.error(f"Lỗi trong vòng lặp polling: {e}")
+                    time.sleep(2)
 
     def start_background(self):
         """Bắt đầu chạy polling trong một thread riêng"""

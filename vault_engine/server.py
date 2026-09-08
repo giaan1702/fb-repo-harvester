@@ -138,10 +138,20 @@ async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
     except Exception:
         return {"status": "ignored", "reason": "invalid_json"}
 
+    # 1. Hỗ trợ Callback Query từ nút bấm Inline Keyboard
+    if "callback_query" in data and telegram_bot:
+        background_tasks.add_task(telegram_bot.handle_callback_query, data["callback_query"])
+        return {"status": "ok", "action": "callback_handled"}
+
     message = data.get("message") or data.get("channel_post") or {}
     text = message.get("text") or message.get("caption") or ""
-    chat_id = message.get("chat", {}).get("id")
 
+    # 2. Hỗ trợ các lệnh điều khiển bot (/start, /stats, /brain_stats, /approve, /reject)
+    if telegram_bot and text.strip().startswith("/"):
+        background_tasks.add_task(telegram_bot.handle_message, message)
+        return {"status": "ok", "action": "command_handled"}
+
+    # 3. Trích xuất URL và nạp hàng đợi
     urls = URL_REGEX.findall(text)
     if not urls:
         return {"status": "ok", "message": "no_url_found"}
@@ -152,7 +162,6 @@ async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
         res = ingest.enqueue_url(u, source_type=stype)
         if res and "task_id" in res:
             queued.append(res)
-            # Thêm tác vụ nền xử lý
             background_tasks.add_task(
                 process_task_background,
                 res["task_id"], res["task_uuid"], res["canonical_url"], res["source_type"]
