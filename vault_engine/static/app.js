@@ -605,9 +605,11 @@
       const res = await fetch(`/api/v1/brain/topics/${slug}`);
       if (!res.ok) throw new Error("Không thể tải chuyên đề");
       const topic = await res.json();
-      drawerTitle.textContent = topic.topic_title;
+      
+      activeItemId = null;
+      drawerTitle.textContent = topic.topic_title || "Chuyên đề sống";
       drawerCategory.textContent = "CHUYÊN ĐỀ SỐNG";
-      drawerArchetype.textContent = `v${topic.version}`;
+      drawerArchetype.textContent = `v${topic.version || 1}`;
       drawerScore.textContent = `${(topic.included_item_ids || []).length} BÀI`;
       drawerOrigLink.style.display = "none";
       if (drawerCurationActions) {
@@ -615,11 +617,19 @@
       }
       btnDrawerStar.style.display = "none";
 
-      activeItemFullMd = topic.master_synthesis_md;
+      // Ẩn thanh tab chia phần đối với bản tổng luận sống (Living Synthesis là tài liệu liền mạch)
+      if (drawerTabs) drawerTabs.style.display = "none";
+
+      activeItemFullMd = unwrapMarkdownPayload(topic.master_synthesis_md || "");
       renderActiveTabContent();
-      readerDrawer.classList.remove("translate-x-full");
-      readerOverlay.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
+
+      // Mở Drawer đồng bộ với cơ chế CSS của #reader-drawer
+      readerDrawer.classList.remove("hidden");
+      void readerDrawer.offsetWidth;
+      readerDrawer.classList.add("active");
+      readingProgress.style.width = "0%";
+      deepResearchContent.scrollTop = 0;
+      hydrateIcons();
     } catch (err) {
       showToast("Lỗi: " + err.message, "error");
     }
@@ -1159,7 +1169,8 @@
 
     updateDrawerStarUI(item.is_starred);
 
-    // Default to 'all' tab
+    // Restore and default to 'all' tab
+    if (drawerTabs) drawerTabs.style.display = "";
     activeTab = "all";
     drawerTabs.querySelectorAll(".drawer-tab").forEach(t => {
       if (t.dataset.tab === "all") t.classList.add("active");
@@ -1379,6 +1390,9 @@
       readerDrawer.classList.add("hidden");
       activeItemId = null;
       readingProgress.style.width = "0%";
+      if (drawerTabs) drawerTabs.style.display = "";
+      if (btnDrawerStar) btnDrawerStar.style.display = "";
+      if (drawerOrigLink) drawerOrigLink.style.display = "";
     }, 250);
   }
 
