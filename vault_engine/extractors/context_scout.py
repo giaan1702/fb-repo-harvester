@@ -119,7 +119,7 @@ class ContextScout:
             if yt_data and "error" not in yt_data:
                 title = yt_data.get("title", title)
                 primary_content = yt_data.get("content", "")
-                video_transcript = yt_data.get("raw_transcript", "")
+                video_transcript = yt_data.get("transcript", "") or yt_data.get("raw_transcript", "")
             else:
                 extraction_error = yt_data.get("error") if yt_data else "YouTube extraction failed"
         else:

@@ -20,20 +20,26 @@ def sanitize_mermaid_diagram(raw_markdown: str) -> str:
 
     def clean_mermaid_block(match):
         code = match.group(1)
-        # Khử toàn bộ cú pháp wikilink [[...]] bên trong mermaid block trước tiên để tránh lỗi bracket lồng nhau
-        code = re.sub(r'\[\[(.*?)\]\]', r'\1', code)
+        # Khử wikilink [[...]] không đứng liền sau node ID (ví dụ: A["[[Label]]"] -> A["Label"])
+        code = re.sub(r'(?<![a-zA-Z0-9_\-])\[\[(.*?)\]\]', r'\1', code)
         lines = code.split("\n")
         cleaned_lines = []
         for line in lines:
-            def fix_node_label(m):
+            def fix_double_node(m):
                 node_id = m.group(1)
-                label = m.group(2).strip()
-                if (label.startswith('"') and label.endswith('"')) or (label.startswith("'") and label.endswith("'")):
-                    label = label[1:-1].strip()
+                label = m.group(2).strip("\"' ")
                 clean_lbl = label.replace('"', "'")
                 return f'{node_id}["{clean_lbl}"]'
 
-            line = re.sub(r'([a-zA-Z0-9_\-]+)\[([^\]\n]+)\]', fix_node_label, line)
+            line = re.sub(r'([a-zA-Z0-9_\-]+)\[\[([^\]\n]+)\]\]', fix_double_node, line)
+
+            def fix_single_node(m):
+                node_id = m.group(1)
+                label = m.group(2).strip("\"' ")
+                clean_lbl = label.replace('"', "'")
+                return f'{node_id}["{clean_lbl}"]'
+
+            line = re.sub(r'([a-zA-Z0-9_\-]+)\[([^\]\n]+)\]', fix_single_node, line)
             cleaned_lines.append(line)
         return "```mermaid\n" + "\n".join(cleaned_lines) + "\n```"
 

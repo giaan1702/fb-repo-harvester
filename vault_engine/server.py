@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from typing import Optional, Dict, Any, List
 from fastapi import FastAPI, BackgroundTasks, Request, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from pydantic import BaseModel
 
 from vault_engine.config import DB_PATH, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, BASE_DIR, SCOUT_ENABLED, SCOUT_INTERVAL_SECONDS
@@ -309,9 +309,17 @@ def get_vault_items(q: str = "", category: str = "", min_score: int = 1,
         "items": results
     }
 
+def run_background_consolidation(i_id: int):
+    try:
+        from vault_engine.consolidation import ConsolidationEngine
+        consolidation = ConsolidationEngine(db=db, pipeline=pipeline)
+        consolidation.consolidate_item(i_id)
+    except Exception as e:
+        logger.error(f"Error in background consolidation for item #{i_id}: {e}")
+
 @app.post("/api/v1/vault/{item_id}/curate")
-def curate_item(item_id: int, payload: CuratePayload):
-    """Duyệt hoặc loại bỏ bài viết. Nếu duyệt (APPROVE) -> kích hoạt ConsolidationEngine tự học."""
+def curate_item(item_id: int, payload: CuratePayload, background_tasks: BackgroundTasks):
+    """Duyệt hoặc loại bỏ bài viết. Nếu duyệt (APPROVE) -> kích hoạt ConsolidationEngine tự học trong nền."""
     act = payload.action.upper()
     if act not in ("APPROVE", "REJECT"):
         raise HTTPException(status_code=400, detail="Action must be APPROVE or REJECT")
@@ -325,10 +333,8 @@ def curate_item(item_id: int, payload: CuratePayload):
         return {"status": "rejected", "curation_status": "REJECTED", "item_id": item_id}
 
     db.curate_vault_item(item_id, "APPROVED")
-    from vault_engine.consolidation import ConsolidationEngine
-    consolidation = ConsolidationEngine(db=db, pipeline=pipeline)
-    res = consolidation.consolidate_item(item_id)
-    return {"status": "approved", "curation_status": "APPROVED", "item_id": item_id, "consolidation": res}
+    background_tasks.add_task(run_background_consolidation, item_id)
+    return {"status": "approved", "curation_status": "APPROVED", "item_id": item_id, "consolidation": "in_progress"}
 
 @app.get("/api/v1/vault/{item_id}/associations")
 def get_item_associations(item_id: int):
@@ -361,6 +367,98 @@ def record_agent_feedback(payload: HeuristicFeedbackPayload):
     if not ok:
         raise HTTPException(status_code=404, detail="Heuristic not found")
     return {"status": "success", "heuristic_id": payload.heuristic_id, "recorded": True}
+
+@app.get("/api/v1/brain/export-rules")
+def export_workspace_rules(topic: Optional[str] = None, format: str = "gemini", download: bool = False, as_json: bool = False):
+    """Xuất bộ quy tắc thực chiến đã kiểm chứng trong Não bộ thành file GEMINI.md hoặc .cursorrules."""
+    heuristics = db.get_agent_heuristics(topic=topic, limit=100)
+
+    fmt = format.lower().strip()
+    if fmt == "cursorrules":
+        filename = ".cursorrules"
+        lines = [
+            "# Cursor Rules - Generated from Cognitive Brain Vault",
+            f"# Active Heuristics Count: {len(heuristics)}",
+            "",
+            "You are an expert autonomous software engineer. Strictly adhere to these procedural rules when writing and refactoring code:",
+            ""
+        ]
+        for idx, h in enumerate(heuristics, 1):
+            r_type = h.get("rule_type", "MUST_DO")
+            ctx = h.get("trigger_context") or h.get("topic") or "General"
+            action = h.get("action_directive") or h.get("rule_statement", "")
+            anti = h.get("anti_pattern", "")
+            lines.append(f"## Rule {idx}: [{r_type}] When {ctx}")
+            lines.append(f"- DIRECTIVE: {action}")
+            if anti:
+                lines.append(f"- AVOID: {anti}")
+            if h.get("evidence_title"):
+                lines.append(f"- RATIONALE: Certified via {h.get('evidence_title')} (Confidence: {h.get('confidence_score', 1.0)})")
+            lines.append("")
+        content = "\n".join(lines)
+    else:
+        filename = "GEMINI.md"
+        must_dos = [h for h in heuristics if h.get("rule_type") == "MUST_DO"]
+        never_dos = [h for h in heuristics if h.get("rule_type") == "NEVER_DO"]
+        other_rules = [h for h in heuristics if h.get("rule_type") not in ("MUST_DO", "NEVER_DO")]
+
+        lines = [
+            "# PROJECT RULES & GUIDELINES (GEMINI.md)",
+            "",
+            "## 1. Nguyên Tắc Cốt Lõi: Đề Xuất Giải Pháp & Xác Minh Thực Nghiệm",
+            "* **KIỂM CHỨNG NGẦM BẰNG TEST-CASE (HIDDEN VERIFICATION):** Khi đề xuất bất kỳ giải pháp kỹ thuật nào chưa kiểm chứng, Agent tự kiểm thử, benchmark hoặc rà soát qua các kịch bản test-case ở chế độ nền/suy luận để đảm bảo độ chính xác tuyệt đối.",
+            "* **PHẢN HỒI GỌN GÀNG, TIÊU CHUẨN BÌNH THƯỜNG:** Không bày biện các khối test-case, kịch bản rườm rà hay phân vai tranh luận vào câu trả lời trực tiếp trừ khi người dùng yêu cầu xem chi tiết. Câu trả lời phải đi thẳng vào trọng tâm, cấu trúc rõ ràng, dễ đọc và dễ áp dụng.",
+            "* **KHÔNG ĐƯA RA KẾT LUẬN CẢM TÍNH:** Mọi nhận định kỹ thuật đều phải dựa trên cơ sở đo lường hoặc thực tế vận hành.",
+            "",
+            "## 2. Quy Tắc Thực Chiến Theo Bối Cảnh (Cognitive Vault Heuristics)",
+            ""
+        ]
+
+        if must_dos:
+            lines.append("### A. MUST DO (Chỉ Dẫn Bắt Buộc)")
+            for h in must_dos:
+                ctx = h.get("trigger_context") or h.get("topic") or "Toàn cục"
+                action = h.get("action_directive") or h.get("rule_statement", "")
+                anti = h.get("anti_pattern", "")
+                lines.append(f"* **Bối cảnh:** `{ctx}`")
+                lines.append(f"  * **Hành động:** {action}")
+                if anti:
+                    lines.append(f"  * **Cạm bẫy cần tránh:** `{anti}`")
+                if h.get("evidence_title"):
+                    lines.append(f"  * *Minh chứng:* [{h.get('evidence_title')}]({h.get('evidence_url', '#')}) (Độ tin cậy: {h.get('confidence_score', 1.0)})")
+                lines.append("")
+
+        if never_dos:
+            lines.append("### B. NEVER DO (Cấm Tuyệt Đối)")
+            for h in never_dos:
+                ctx = h.get("trigger_context") or h.get("topic") or "Toàn cục"
+                action = h.get("action_directive") or h.get("rule_statement", "")
+                anti = h.get("anti_pattern", "")
+                lines.append(f"* **Bối cảnh:** `{ctx}`")
+                lines.append(f"  * **Cấm vi phạm:** {anti or action}")
+                if action and action != anti:
+                    lines.append(f"  * **Giải pháp thay thế:** {action}")
+                if h.get("evidence_title"):
+                    lines.append(f"  * *Minh chứng:* [{h.get('evidence_title')}]({h.get('evidence_url', '#')}) (Độ tin cậy: {h.get('confidence_score', 1.0)})")
+                lines.append("")
+
+        if other_rules:
+            lines.append("### C. BEST PRACTICES & TIÊU CHUẨN KỸ THUẬT")
+            for h in other_rules:
+                action = h.get("action_directive") or h.get("rule_statement", "")
+                lines.append(f"* {action}")
+            lines.append("")
+
+        content = "\n".join(lines)
+
+    if as_json:
+        return {"filename": filename, "format": fmt, "count": len(heuristics), "rules_markdown": content}
+
+    headers = {}
+    if download:
+        headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    return Response(content=content, media_type="text/markdown; charset=utf-8", headers=headers)
 
 @app.get("/api/v1/vault/stats")
 async def get_vault_stats_alias():

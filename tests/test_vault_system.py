@@ -1003,6 +1003,78 @@ Some other text."""
         matched = next(h for h in heuristics if h["id"] == hid1)
         self.assertGreater(matched["confidence_score"], 1.0)
 
+    def test_sanitize_mermaid_double_brackets(self):
+        from vault_engine.consolidation import sanitize_mermaid_diagram
+        raw_md = """```mermaid
+flowchart TD
+    D1[Start] --> D2[[HydraFusion: Tối Ưu Hóa]]
+    D2 --> D3["Final Node"]
+```"""
+        sanitized = sanitize_mermaid_diagram(raw_md)
+        self.assertIn('D1["Start"]', sanitized)
+        self.assertIn('D2["HydraFusion: Tối Ưu Hóa"]', sanitized)
+        self.assertIn('D3["Final Node"]', sanitized)
+        self.assertNotIn('[[', sanitized)
+
+    def test_export_rules_api(self):
+        # Tạo test heuristic
+        self.db.add_agent_heuristic(
+            rule_type="MUST_DO",
+            category="AI-Agents",
+            trigger_context="Khi gọi LLM streaming",
+            action_directive="Luôn bắt GeneratorExit để giải phóng SSE connection",
+            anti_pattern="Nuốt GeneratorExit gây rò rỉ socket connection",
+            confidence_score=1.5
+        )
+        self.db.add_agent_heuristic(
+            rule_type="NEVER_DO",
+            category="AI-Agents",
+            trigger_context="Khi lưu trữ sensitive keys",
+            action_directive="Không hardcode secret token trong codebase",
+            anti_pattern="Lộ secret key lên GitHub công khai",
+            confidence_score=1.8
+        )
+
+        # 1. Test format GEMINI.md
+        resp_g = self.client.get("/api/v1/brain/export-rules?format=gemini")
+        self.assertEqual(resp_g.status_code, 200)
+        self.assertIn("PROJECT RULES & GUIDELINES (GEMINI.md)", resp_g.text)
+        self.assertIn("MUST DO", resp_g.text)
+        self.assertIn("GeneratorExit", resp_g.text)
+        self.assertIn("NEVER DO", resp_g.text)
+
+        # 2. Test format .cursorrules
+        resp_c = self.client.get("/api/v1/brain/export-rules?format=cursorrules")
+        self.assertEqual(resp_c.status_code, 200)
+        self.assertIn("Cursor Rules", resp_c.text)
+        self.assertIn("GeneratorExit", resp_c.text)
+
+        # 3. Test format as JSON for clipboard
+        resp_j = self.client.get("/api/v1/brain/export-rules?format=gemini&as_json=true")
+        self.assertEqual(resp_j.status_code, 200)
+        data = resp_j.json()
+        self.assertIn("rules_markdown", data)
+        self.assertGreaterEqual(data["count"], 2)
+
+    def test_curate_api_async_status(self):
+        item_id = self.db.insert_vault_item({
+            "url_hash": "hash_async_curate_test",
+            "canonical_url": "https://example.com/async-curate",
+            "source_type": "WEB_ARTICLE",
+            "title": "Async Curate Item",
+            "curation_status": "INBOX"
+        })
+        resp = self.client.post(f"/api/v1/vault/{item_id}/curate", json={"action": "APPROVE"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data["status"], "approved")
+        self.assertEqual(data["curation_status"], "APPROVED")
+        self.assertEqual(data["consolidation"], "in_progress")
+
+        # Xác nhận DB đã cập nhật trạng thái APPROVED
+        item = self.db.get_vault_item(item_id)
+        self.assertEqual(item["curation_status"], "APPROVED")
+
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestVaultSystemComprehensive)
     runner = unittest.TextTestRunner(verbosity=2)

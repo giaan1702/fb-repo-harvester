@@ -464,7 +464,7 @@
     const params = new URLSearchParams();
     if (searchQuery) params.append("q", searchQuery);
     if (currentCategory) params.append("category", currentCategory);
-    if (onlyStarred) params.append("starred", "true");
+    if (onlyStarred) params.append("is_starred", "1");
     if (minScore > 1) params.append("min_score", minScore.toString());
     params.append("curation_status", currentBrainMode);
 
@@ -508,28 +508,39 @@
   }
 
   async function curateItem(id, action) {
+    // 1. Optimistic UI: Làm mờ và xóa card ngay lập tức
+    const card = gridContainer.querySelector(`.bento-card[data-id="${id}"]`);
+    if (card) {
+      card.style.transition = "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+      card.style.opacity = "0";
+      card.style.transform = "scale(0.92)";
+      setTimeout(() => {
+        card.remove();
+        currentItems = currentItems.filter(i => i.id !== id);
+      }, 250);
+    }
+
+    if (activeItemId === id) {
+      closeDrawer();
+    }
+
+    if (action === "APPROVE") {
+      showToast("🧠 Đã duyệt vào Não Bộ! Hợp nhất nơ-ron và quy tắc đang chạy ngầm.", "success");
+    } else {
+      showToast("🗑️ Đã loại bỏ tài liệu khỏi danh sách.", "info");
+    }
+
     try {
-      showToast(action === "APPROVE" ? "🧠 Đang duyệt và hợp nhất vào Não Bộ..." : "Đang loại bỏ...", "info");
       const res = await fetch(`/api/v1/vault/${id}/curate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (action === "APPROVE") {
-        const cons = data.consolidation || {};
-        showToast(`🧠 Đã duyệt vào Não Bộ! Nối ${cons.associations_count || 0} nơ-ron và nạp ${cons.heuristics_count || 0} quy tắc Agent.`, "success");
-      } else {
-        showToast("🗑️ Đã loại bỏ tài liệu.", "info");
-      }
-      closeDrawer();
       loadVaultStats();
-      if (currentBrainMode === "INBOX" || currentBrainMode === "APPROVED") {
-        loadVaultItems();
-      }
     } catch (err) {
       showToast("❌ Lỗi duyệt: " + err.message, "error");
+      loadVaultItems();
     }
   }
 
@@ -1203,83 +1214,59 @@
   }
 
   function renderActiveTabContent() {
-    if (activeTab === "associations" && activeItemId) {
-      renderAssociationsTab(activeItemId);
-      return;
-    }
-
-    let mdToRender = activeItemFullMd;
     const item = currentItems.find(i => i.id === activeItemId);
-    const part2Pos = activeItemFullMd.indexOf("## PHẦN II");
-    const part3Pos = activeItemFullMd.indexOf("## PHẦN III");
+    const md = activeItemFullMd || "";
 
-    if (activeTab === "brief") {
-      // Show only Part I: up until '## PHẦN II'
-      if (part2Pos !== -1) {
-        mdToRender = activeItemFullMd.substring(0, part2Pos).trim();
-      }
-    } else if (activeTab === "reader") {
-      // Show only Part II: from '## PHẦN II' up to '## PHẦN III'
-      if (part2Pos !== -1) {
-        const titleMatch = activeItemFullMd.match(/^#\s+([^\n]+)/);
-        const heading = titleMatch ? `# ${titleMatch[1]}\n\n` : "";
-        if (part3Pos !== -1 && part3Pos > part2Pos) {
-          mdToRender = heading + activeItemFullMd.substring(part2Pos, part3Pos).trim();
-        } else {
-          mdToRender = heading + activeItemFullMd.substring(part2Pos).trim();
-        }
-      }
-    } else if (activeTab === "network") {
-      // Show Part III: from '## PHẦN III' onward
-      if (part3Pos !== -1) {
-        mdToRender = activeItemFullMd.substring(part3Pos).trim();
-      } else {
-        mdToRender = `## PHẦN III: MẠNG LƯỚI TRI THỨC LIÊN KẾT (REFERENCED KNOWLEDGE)\n\n> [!NOTE]\n> **Thông tin mạng lưới:** Bài viết này không chứa liên kết trích dẫn chéo (ArXiv Paper hoặc GitHub Repository) nào bên trong nội dung gốc.`;
-      }
-    }
+    const part2Pos = md.indexOf("## PHẦN II");
+    let contentHtml = "";
 
-    const normalizedMd = normalizeMarkdownTables(mdToRender);
-    const parsedHtml = marked.parse(normalizedMd);
-    const enrichedHtml = parseGitHubCallouts(parsedHtml);
-    const withWikiLinks = parseWikiLinks(enrichedHtml);
-    deepResearchContent.innerHTML = withWikiLinks;
+    if (part2Pos !== -1) {
+      const part1Md = md.substring(0, part2Pos).trim();
+      const part2Md = md.substring(part2Pos).trim();
 
-    // Phase 2: Render Interactive Knowledge Graph if in 'network' tab
-    if (activeTab === "network" && activeItemId) {
-      const graphCardHtml = `
-        <div class="network-graph-card mb-8">
-          <div class="flex items-center justify-between px-4 py-3 border-b border-[#1f293d] bg-[#0c1017]">
-            <div class="flex items-center gap-2">
-              <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i>
-              <span class="text-xs font-bold text-slate-200 uppercase tracking-wider">ĐỒ THỊ TRI THỨC TƯƠNG TÁC (FORCE-DIRECTED GRAPH)</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button id="btn-graph-fit" class="graph-ctrl-btn" title="Căn chỉnh toàn cảnh"><i data-lucide="maximize-2" class="w-3.5 h-3.5"></i></button>
-              <button id="btn-graph-physics" class="graph-ctrl-btn active" title="Bật/Tắt vật lý động"><i data-lucide="activity" class="w-3.5 h-3.5"></i></button>
-            </div>
-          </div>
-          <div id="vis-graph-canvas">
-            <div id="graph-loading" class="absolute inset-0 flex items-center justify-center text-xs font-mono text-slate-400">
-              <i data-lucide="loader-2" class="w-4 h-4 animate-spin mr-2 text-cyan-400"></i> Đang tính toán đồ thị tri thức...
-            </div>
-            <div id="graph-node-popover" class="graph-node-popover hidden"></div>
-          </div>
-          <div class="flex flex-wrap items-center gap-3 px-4 py-2 border-t border-[#1a2335] bg-[#0c1017] text-[11px] font-mono text-slate-400">
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#38bdf8]"></span> Bài này</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#475569]"></span> Bài khác</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-[#10b981]"></span> Tech Stack</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-[#a855f7]"></span> Danh mục</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#06b6d4]"></span> WikiLink</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rotate-45 bg-[#f59e0b]"></span> Trích dẫn</span>
-          </div>
+      const p1Parsed = marked.parse(normalizeMarkdownTables(part1Md));
+      const p1Enriched = parseWikiLinks(parseGitHubCallouts(p1Parsed));
+      const p1Safe = window.DOMPurify ? window.DOMPurify.sanitize(p1Enriched) : p1Enriched;
+
+      const p2Parsed = marked.parse(normalizeMarkdownTables(part2Md));
+      const p2Enriched = parseWikiLinks(parseGitHubCallouts(p2Parsed));
+      const p2Safe = window.DOMPurify ? window.DOMPurify.sanitize(p2Enriched) : p2Enriched;
+
+      contentHtml = `
+        <div id="sec-brief" class="article-section mb-10 scroll-mt-6">
+          ${p1Safe}
+        </div>
+        <div id="sec-deep-read" class="article-section pt-8 border-t border-[#1e2638] mb-10 scroll-mt-6">
+          ${p2Safe}
         </div>
       `;
-      deepResearchContent.insertAdjacentHTML("afterbegin", graphCardHtml);
-      setTimeout(() => renderNetworkGraph(activeItemId), 40);
+    } else {
+      const pParsed = marked.parse(normalizeMarkdownTables(md));
+      const pEnriched = parseWikiLinks(parseGitHubCallouts(pParsed));
+      const pSafe = window.DOMPurify ? window.DOMPurify.sanitize(pEnriched) : pEnriched;
+
+      contentHtml = `
+        <div id="sec-brief" class="article-section mb-10 scroll-mt-6">
+          ${pSafe}
+        </div>
+      `;
     }
 
-    // Render interactive Reference Cards Grid if referenced_docs exist and in 'all' or 'network' tab
-    if (item && (activeTab === "all" || activeTab === "network")) {
+    // Append Associations & Reference cards inline in continuous flow
+    contentHtml += `
+      <div id="sec-associations" class="article-section pt-8 border-t border-[#1e2638] mb-12 scroll-mt-6">
+        <div id="inline-associations-container">
+          <div class="py-6 text-center text-slate-500 text-xs font-mono">
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin inline-block mr-1 text-cyan-400"></i> Đang tải đối chiếu nơ-ron...
+          </div>
+        </div>
+      </div>
+    `;
+
+    deepResearchContent.innerHTML = contentHtml;
+
+    // Render interactive Reference Cards Grid if referenced_docs exist
+    if (item) {
       let refDocs = [];
       try {
         if (Array.isArray(item.referenced_docs)) {
@@ -1297,6 +1284,40 @@
     }
 
     // Render Mermaid diagrams
+    if (window.mermaid) {
+      try {
+        const mermaidElements = deepResearchContent.querySelectorAll(".mermaid");
+        if (mermaidElements.length > 0) {
+          window.mermaid.run({ nodes: mermaidElements });
+        }
+      } catch (mErr) {
+        console.warn("Lỗi render Mermaid:", mErr);
+      }
+    }
+
+    attachCodeCopyButtons();
+    generateAutoTOC();
+    hydrateIcons();
+
+    // Load inline neural associations
+    if (activeItemId) {
+      loadInlineAssociations(activeItemId);
+    }
+
+    // Quick-jump scroll handling
+    if (activeTab === "brief") {
+      const el = document.getElementById("sec-brief");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (activeTab === "reader") {
+      const el = document.getElementById("sec-deep-read");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (activeTab === "associations") {
+      const el = document.getElementById("sec-associations");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      deepResearchContent.scrollTop = 0;
+    }
+  }
     if (window.mermaid) {
       try {
         const mermaidElements = deepResearchContent.querySelectorAll(".mermaid");
@@ -1903,6 +1924,153 @@
         </div>
       `;
     }
+  async function loadInlineAssociations(itemId) {
+    const container = document.getElementById("inline-associations-container");
+    if (!container) return;
+
+    try {
+      const res = await fetch(`/api/v1/vault/${itemId}/associations`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const assocs = data.associations || [];
+
+      const relConfig = {
+        REINFORCES: { label: "CỦNG CỐ (+1)", color: "emerald", icon: "shield-check", desc: "Tương đồng hoặc bổ trợ luận điểm" },
+        CONTRADICTS: { label: "MÂU THUẪN", color: "rose", icon: "alert-triangle", desc: "Trực diện đối lập cách tiếp cận" },
+        EXTENDS: { label: "MỞ RỘNG", color: "indigo", icon: "git-branch", desc: "Kế thừa và đào sâu khía cạnh mới" },
+        ALTERNATIVE: { label: "THAY THẾ", color: "amber", icon: "shuffle", desc: "Phương pháp tương đương" }
+      };
+
+      if (assocs.length === 0) {
+        container.innerHTML = `
+          <div class="py-6 px-4 rounded-xl bg-[#090e17] border border-[#1a2336] text-center">
+            <div class="w-9 h-9 mx-auto mb-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+              <i data-lucide="git-merge" class="w-4 h-4"></i>
+            </div>
+            <p class="text-xs font-semibold text-slate-300">Chưa có liên kết nơ-ron chéo</p>
+            <p class="text-[11px] text-slate-500 mt-1 font-mono">Tài liệu độc lập, chưa có bài đối chiếu cùng chuyên đề.</p>
+          </div>
+        `;
+        hydrateIcons();
+        return;
+      }
+
+      let html = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="git-merge" class="w-4 h-4 text-cyan-400"></i>
+              <span>MẠNG LƯỚI NƠ-RON ĐỐI CHIẾU (${assocs.length} KẾT NỐI)</span>
+            </h3>
+            <span class="text-[10px] text-slate-500 font-mono">Bấm để mở bài đối chiếu</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      `;
+
+      assocs.forEach(a => {
+        const type = (a.relation_type || "REINFORCES").toUpperCase();
+        const conf = relConfig[type] || relConfig.REINFORCES;
+        const targetTitle = a.target_title || `Tài liệu #${a.target_item_id}`;
+
+        html += `
+          <div class="rounded-xl bg-[#0d131f] border border-[#1f293d] p-3.5 hover:border-cyan-500/40 transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider bg-${conf.color}-500/15 text-${conf.color}-300 border border-${conf.color}-500/30 flex items-center gap-1">
+                  <i data-lucide="${conf.icon}" class="w-3 h-3"></i>
+                  ${conf.label}
+                </span>
+                <button onclick="window.__openVaultDoc(${a.target_item_id})" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[11px] font-mono flex items-center gap-1 transition-all">
+                  <span>Mở đọc</span>
+                  <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+              <h4 class="text-xs font-semibold text-slate-200 hover:text-cyan-300 cursor-pointer mb-1.5" onclick="window.__openVaultDoc(${a.target_item_id})">
+                ${escapeHtml(targetTitle)}
+              </h4>
+              <p class="text-[11px] text-slate-400 italic leading-relaxed">
+                “${escapeHtml(a.reasoning || "Tài liệu có sự giao thoa luận điểm.")}”
+              </p>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+      hydrateIcons();
+    } catch (err) {
+      container.innerHTML = `<div class="py-4 text-center text-slate-500 text-xs font-mono">Không thể nạp mạng lưới nơ-ron: ${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  // Export Rules Modal Interactions
+  const btnExportRules = document.getElementById("btn-export-rules");
+  const exportRulesModal = document.getElementById("export-rules-modal");
+  const btnCloseExportRules = document.getElementById("btn-close-export-rules");
+  const exportFormatSelect = document.getElementById("export-format-select");
+  const btnCopyRulesClipboard = document.getElementById("btn-copy-rules-clipboard");
+  const btnDownloadRulesFile = document.getElementById("btn-download-rules-file");
+  const exportRulesPreview = document.getElementById("export-rules-preview");
+
+  async function openExportRulesModal() {
+    if (!exportRulesModal) return;
+    exportRulesModal.classList.remove("hidden");
+    hydrateIcons();
+    await loadExportRulesPreview();
+  }
+
+  function closeExportRulesModal() {
+    if (!exportRulesModal) return;
+    exportRulesModal.classList.add("hidden");
+  }
+
+  async function loadExportRulesPreview() {
+    if (!exportRulesPreview) return;
+    exportRulesPreview.textContent = "⚡ Đang kết xuất quy tắc thực chiến từ Não Bộ...";
+    const fmt = exportFormatSelect ? exportFormatSelect.value : "gemini";
+    try {
+      const res = await fetch(`/api/v1/brain/export-rules?format=${encodeURIComponent(fmt)}&as_json=true`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      exportRulesPreview.textContent = data.rules_markdown || "Chưa có quy tắc nào trong kho.";
+    } catch (e) {
+      exportRulesPreview.textContent = "⚠️ Lỗi tạo quy tắc: " + e.message;
+    }
+  }
+
+  if (btnExportRules) btnExportRules.addEventListener("click", openExportRulesModal);
+  if (btnCloseExportRules) btnCloseExportRules.addEventListener("click", closeExportRulesModal);
+  if (exportRulesModal) {
+    exportRulesModal.addEventListener("click", (e) => {
+      if (e.target === exportRulesModal) closeExportRulesModal();
+    });
+  }
+  if (exportFormatSelect) {
+    exportFormatSelect.addEventListener("change", loadExportRulesPreview);
+  }
+  if (btnCopyRulesClipboard) {
+    btnCopyRulesClipboard.addEventListener("click", async () => {
+      if (!exportRulesPreview) return;
+      const text = exportRulesPreview.textContent;
+      try {
+        await copyTextToClipboard(text);
+        showToast("📋 Đã sao chép bộ quy tắc thực chiến vào Clipboard!", "success");
+      } catch (e) {
+        showToast("Không thể sao chép: " + e.message, "error");
+      }
+    });
+  }
+  if (btnDownloadRulesFile) {
+    btnDownloadRulesFile.addEventListener("click", () => {
+      const fmt = exportFormatSelect ? exportFormatSelect.value : "gemini";
+      window.open(`/api/v1/brain/export-rules?format=${encodeURIComponent(fmt)}&download=true`, "_blank");
+      showToast("💾 Đang tải file quy tắc thực chiến...", "info");
+    });
   }
 
   // Expose global opener for associations and cross-doc navigation

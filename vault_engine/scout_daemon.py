@@ -135,7 +135,7 @@ class AutonomousScout:
             title_hint = data.get("title", "")
         else:
             data = self.web_ext.extract(clean_url)
-            content = data.get("clean_text", "")
+            content = data.get("content", "")
             title_hint = data.get("title", "")
 
         if len(content) < 300:
@@ -168,11 +168,21 @@ class AutonomousScout:
         item_id = self.db.insert_vault_item(payload)
         logger.info(f"💾 Đã lưu vào Vault Item #{item_id} (Trạng thái: {curation_status})")
 
+        # Tính toán và lưu vector embedding cho tìm kiếm ngữ nghĩa
+        try:
+            from vault_engine.embedding import get_embedding
+            text_for_vec = f"{schema_item.title} {schema_item.short_summary}"
+            vec = get_embedding(text_for_vec)
+            if vec:
+                self.db.save_embedding(item_id, vec)
+        except Exception as e:
+            logger.warning(f"Lỗi tính vector embedding cho Scout Item #{item_id}: {e}")
+
         # 5. Nếu đạt chuẩn Auto-Approve -> Kích hoạt Memory Consolidation
         if is_auto_approved:
             logger.info(f"🧠 Điểm xuất sắc {score}/10 >= {AUTO_APPROVE_THRESHOLD} -> KÍCH HOẠT TỰ ĐỘNG DUYỆT VÀO NÃO BỘ!")
             con_res = self.consolidation.consolidate_item(item_id)
-            logger.info(f"✓ Củng cố nơ-ron hoàn tất: {con_res.get('new_associations', 0)} liên kết mới, {con_res.get('new_heuristics', 0)} quy tắc Agent")
+            logger.info(f"✓ Củng cố nơ-ron hoàn tất: {con_res.get('associations_count', con_res.get('new_associations', 0))} liên kết mới, {con_res.get('heuristics_count', con_res.get('new_heuristics', 0))} quy tắc Agent")
 
             # Thông báo Telegram thành công
             if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
@@ -184,7 +194,7 @@ class AutonomousScout:
                     f"🛠️ <b>Tech:</b> {', '.join(schema_item.tech_stack[:4])}\n\n"
                     f"🧠 <i>Hệ thống đã tự động đối chiếu nơ-ron & cập nhật quy tắc cho AI Agent!</i>"
                 )
-                self.bot.send_message(TELEGRAM_CHAT_ID, msg)
+                self.bot.send_message(text=msg, chat_id=TELEGRAM_CHAT_ID)
         else:
             # Gửi thông báo chờ duyệt về Telegram
             if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
@@ -192,9 +202,9 @@ class AutonomousScout:
                 msg_out = self.bot.format_completion_message(saved_item, item_id)
                 if isinstance(msg_out, tuple):
                     msg, markup = msg_out
-                    self.bot.send_message(TELEGRAM_CHAT_ID, msg, reply_markup=markup)
+                    self.bot.send_message(text=msg, chat_id=TELEGRAM_CHAT_ID, reply_markup=markup)
                 else:
-                    self.bot.send_message(TELEGRAM_CHAT_ID, msg_out)
+                    self.bot.send_message(text=msg_out, chat_id=TELEGRAM_CHAT_ID)
 
         return {
             "item_id": item_id,
